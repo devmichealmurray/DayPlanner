@@ -4,11 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.databinding.BindingAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.data.model.entity.HourlyForecastEntity
@@ -16,7 +15,6 @@ import com.devmmurray.dayplanner.databinding.FragmentHomeBinding
 import com.devmmurray.dayplanner.ui.adapter.DayPlannerRecyclerView
 import com.devmmurray.dayplanner.ui.viewmodel.HomeViewModel
 import com.devmmurray.dayplanner.util.ListFlags
-import com.squareup.picasso.Picasso
 import org.jetbrains.anko.support.v4.alert
 
 private const val TAG = "Home Fragment"
@@ -38,6 +36,11 @@ class HomeFragment : Fragment() {
             progress.observe(viewLifecycleOwner, progressObserver)
             forecastList.observe(viewLifecycleOwner, listObserver)
             homeErrorMessage.observe(viewLifecycleOwner, errorObserver)
+        }
+
+        homeBinding.addEvent.setOnClickListener {
+            Navigation.findNavController(homeBinding.addEvent)
+                .navigate(R.id.action_navigation_home_to_addEventFragment)
         }
         return homeBinding.root
     }

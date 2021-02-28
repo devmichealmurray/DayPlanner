@@ -6,10 +6,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.devmmurray.dayplanner.data.model.entity.TodoTaskEntity
+import com.devmmurray.dayplanner.util.time.TimeFlags
+import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import java.util.*
 
 private const val TAG = "TodoViewModel"
 
@@ -18,41 +21,26 @@ class TodoViewModel(application: Application) : SplashActivityViewModel(applicat
     private val _todoTaskList by lazy { MutableLiveData<List<TodoTaskEntity>>() }
     val todoTaskList: LiveData<List<TodoTaskEntity>> get() = _todoTaskList
 
-    private val _refreshFragment by lazy { MutableLiveData<Boolean>() }
-    val refreshFragment: LiveData<Boolean> get() = _refreshFragment
+    private val _todoErrorMessage by lazy { MutableLiveData<String>() }
+    val todoErrorMessage: LiveData<String> get() = _todoErrorMessage
 
-    private val _progress by lazy { MutableLiveData<Boolean>() }
-    val progress: LiveData<Boolean> get() = _progress
-
-    private val _todoError by lazy { MutableLiveData<String>() }
-    val todoError: LiveData<String> get() = _todoError
-
-    fun addTaskToDb(task: TodoTaskEntity) {
-        viewModelScope.launch {
-            dbRepo.addTodoTask(task)
-        }
-    }
 
     fun getTasksFromDB() {
-        _progress.value = true
         viewModelScope.launch {
             try {
                 dbRepo.getToDoTasks()
                     .flowOn(Dispatchers.IO)
                     .collect {
                         _todoTaskList.value = it
-                        _progress.value = false
                     }
             } catch (e: Exception) {
-                _progress.value = false
-                _todoError.value = e.message.toString()
+                _todoErrorMessage.value = e.message.toString()
             }
         }
     }
 
     private fun refreshToDoFragment() {
         getTasksFromDB()
-        _refreshFragment.value = true
     }
 
     fun removeTask(id: Long) {
@@ -61,5 +49,29 @@ class TodoViewModel(application: Application) : SplashActivityViewModel(applicat
             dbRepo.deleteToDoTask(id)
         }
         refreshToDoFragment()
+    }
+
+    fun prepareTask(text: String) {
+        if (text.isNotEmpty()) {
+            val date: Long = System.currentTimeMillis()
+            val taskEntity = TodoTaskEntity(
+                title = text.capitalize(Locale.ROOT),
+                dateAdded = date.let { TimeStampProcessing.transformSystemTime(it, TimeFlags.FULL) }
+            )
+            addTaskToDb(taskEntity)
+        } else {
+            _todoErrorMessage.value = "You Must Have A Task To Add"
+        }
+    }
+
+    private fun addTaskToDb(task: TodoTaskEntity) {
+        viewModelScope.launch {
+            try {
+                dbRepo.addTodoTask(task)
+            } catch (e: Exception) {
+                _todoErrorMessage.value = e.message.toString()
+            }
+
+        }
     }
 }

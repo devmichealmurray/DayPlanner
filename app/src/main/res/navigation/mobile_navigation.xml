@@ -9,25 +9,21 @@
         android:id="@+id/navigation_home"
         android:name="com.devmmurray.dayplanner.ui.fragment.HomeFragment"
         android:label="@string/menu_item_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_addEventFragment"
+            app:destination="@id/addEventFragment"
+            app:enterAnim="@anim/slide_in_down"
+            app:exitAnim="@anim/slide_out_up"
+            app:popEnterAnim="@anim/slide_in_down"
+            app:popExitAnim="@anim/slide_out_up" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_todo"
         android:name="com.devmmurray.dayplanner.ui.fragment.TodoFragment"
         android:label="@string/menu_item_todo"
-        tools:layout="@layout/fragment_todo" >
-        <action
-            android:id="@+id/action_navigation_todo_to_addTodo"
-            app:destination="@id/addTodo"
-            app:enterAnim="@anim/slide_in_down"
-            app:exitAnim="@anim/slide_out_up"
-            app:popEnterAnim="@anim/slide_in_down"
-            app:popExitAnim="@anim/slide_out_up"
-            app:popUpTo="@id/addTodo" />
-        <action
-            android:id="@+id/action_navigation_todo_to_updateTodo"
-            app:destination="@id/updateTodo" />
-    </fragment>
+        tools:layout="@layout/fragment_todo" />
 
     <fragment
         android:id="@+id/navigation_notifications"
@@ -35,22 +31,8 @@
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
     <fragment
-        android:id="@+id/addTodo"
-        android:name="com.devmmurray.dayplanner.ui.fragment.AddTodo"
-        android:label="fragment_add_todo"
-        tools:layout="@layout/fragment_add_todo" >
-        <action
-            android:id="@+id/action_addTodo_to_navigation_todo"
-            app:destination="@id/navigation_todo"
-            app:enterAnim="@anim/slide_in_up"
-            app:exitAnim="@anim/slide_out_down"
-            app:popEnterAnim="@anim/slide_in_up"
-            app:popExitAnim="@anim/slide_out_down"
-            app:popUpTo="@id/navigation_todo" />
-    </fragment>
-    <fragment
-        android:id="@+id/updateTodo"
-        android:name="com.devmmurray.dayplanner.ui.fragment.UpdateTodo"
-        android:label="fragment_update_todo"
-        tools:layout="@layout/fragment_update_todo" />
+        android:id="@+id/addEventFragment"
+        android:name="com.devmmurray.dayplanner.ui.fragment.AddEventFragment"
+        android:label="fragment_add_event"
+        tools:layout="@layout/fragment_add_event" />
 </navigation>

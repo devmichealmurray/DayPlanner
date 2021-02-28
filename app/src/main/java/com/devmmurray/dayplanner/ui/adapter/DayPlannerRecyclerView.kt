@@ -1,5 +1,6 @@
 package com.devmmurray.dayplanner.ui.adapter
 
+import android.app.Application
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
@@ -9,6 +10,7 @@ import com.devmmurray.dayplanner.data.model.local.HourlyForecasts
 import com.devmmurray.dayplanner.data.model.local.TodoTask
 import com.devmmurray.dayplanner.databinding.HourlyForecastItemBinding
 import com.devmmurray.dayplanner.databinding.TodoItemBinding
+import com.devmmurray.dayplanner.ui.viewmodel.TodoViewModel
 import com.devmmurray.dayplanner.util.ListFlags
 
 class RVHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -18,8 +20,9 @@ class RVHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(b
         binding.executePendingBindings()
     }
 
-    fun bindTodoTasks(task: TodoTask) {
+    fun bindTodoTasks(task: TodoTask, viewModel: TodoViewModel) {
         binding.setVariable(BR.taskObject, task)
+        binding.setVariable(BR.todoViewModel, viewModel)
         binding.executePendingBindings()
     }
 }
@@ -48,7 +51,7 @@ class DayPlannerRecyclerView(private val list: List<Any>, private val flag: List
                 holder.bindForecasts(list[position] as HourlyForecasts)
             }
             ListFlags.TODO -> {
-                holder.bindTodoTasks(list[position] as TodoTask)
+                holder.bindTodoTasks(list[position] as TodoTask, TodoViewModel(Application()))
             }
         }
 
