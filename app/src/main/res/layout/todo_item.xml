@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="todoViewModel"
+            type="com.devmmurray.dayplanner.ui.viewmodel.TodoViewModel" />
+
+        <variable
+            name="taskObject"
+            type="com.devmmurray.dayplanner.data.model.local.TodoTask" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/card_background"
+        android:padding="8dp">
+
+        <CheckBox
+            android:id="@+id/todo_check_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:checked="false"
+            android:onClick="@{() -> todoViewModel.removeTask(taskObject.uid)}"
+            android:text="@{taskObject.title.toString()}"
+            app:layout_constraintBottom_toTopOf="@+id/todo_item_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/todo_item_date"
+            style="@style/TinyText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@{taskObject.dateAdded.toString()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/todo_check_box" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
