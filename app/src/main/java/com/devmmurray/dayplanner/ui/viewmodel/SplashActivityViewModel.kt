@@ -24,11 +24,16 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
     val dbRepo: DatabaseRepository
 
     init {
+
         val hourlyForecastDAO = RoomDatabaseClient
             .getDbInstance(application).hourlyForecastsDAO()
         val todoTaskDAO = RoomDatabaseClient
             .getDbInstance(application).todoTaskDAO()
-        dbRepo = DatabaseRepository(hourlyForecastDAO, todoTaskDAO)
+        val eventDAO = RoomDatabaseClient
+            .getDbInstance(application).eventDAO()
+
+        dbRepo = DatabaseRepository(hourlyForecastDAO, todoTaskDAO, eventDAO)
+
     }
 
     /**

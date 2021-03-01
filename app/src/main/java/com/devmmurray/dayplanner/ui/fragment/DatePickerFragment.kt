@@ -9,7 +9,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.devmmurray.dayplanner.databinding.FragmentDatePickerBinding
 import com.devmmurray.dayplanner.ui.viewmodel.AddEventViewModel
-import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class DatePickerFragment : Fragment() {
 
@@ -27,12 +26,12 @@ class DatePickerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        datePickerBinding.cancelButton.onClick {
+        datePickerBinding.cancelButton.setOnClickListener {
             Navigation.findNavController(datePickerBinding.cancelButton)
                 .popBackStack()
         }
 
-        datePickerBinding.saveAction.onClick {
+        datePickerBinding.saveAction.setOnClickListener {
             val datePicker = datePickerBinding.datePicker1
             val timePicker = datePickerBinding.timePicker1
             val day = datePicker.dayOfMonth
@@ -45,7 +44,7 @@ class DatePickerFragment : Fragment() {
         }
     }
 
-    
+
 
 
 

@@ -11,6 +11,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.data.model.entity.HourlyForecastEntity
+import com.devmmurray.dayplanner.data.model.local.Event
 import com.devmmurray.dayplanner.databinding.FragmentHomeBinding
 import com.devmmurray.dayplanner.ui.adapter.DayPlannerRecyclerView
 import com.devmmurray.dayplanner.ui.viewmodel.HomeViewModel
@@ -33,8 +34,11 @@ class HomeFragment : Fragment() {
 
         homeViewModel.apply {
             getWeatherFromDB()
-            progress.observe(viewLifecycleOwner, progressObserver)
-            forecastList.observe(viewLifecycleOwner, listObserver)
+            getEventsFromDB()
+            weatherProgress.observe(viewLifecycleOwner, weatherProgressObserver)
+            eventProgress.observe(viewLifecycleOwner, eventProgressObserver)
+            forecastList.observe(viewLifecycleOwner, weatherListObserver)
+            eventsList.observe(viewLifecycleOwner, eventListObserver)
             homeErrorMessage.observe(viewLifecycleOwner, errorObserver)
         }
 
@@ -48,17 +52,25 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        homeViewModel.forecastList.observe(viewLifecycleOwner, listObserver)
+        /**
+         * Huh??? observing twice??
+         */
+        homeViewModel.forecastList.observe(viewLifecycleOwner, weatherListObserver)
     }
 
-    private val progressObserver = Observer<Boolean> {
+    /**
+     *  Weather Observers
+     */
+
+    private val weatherProgressObserver = Observer<Boolean> {
         if (!it) {
             homeBinding.hourlyForecastRecycler.visibility = View.VISIBLE
             homeBinding.forecastProgressBar.visibility = View.INVISIBLE
         }
     }
 
-    private val listObserver = Observer<List<HourlyForecastEntity>> { list ->
+
+    private val weatherListObserver = Observer<List<HourlyForecastEntity>> { list ->
         val forecastList = list.map { it.toHourlyForecastObject() }
         if (forecastList.isNotEmpty()) {
             homeBinding.hourlyForecastRecycler.apply {
@@ -68,6 +80,31 @@ class HomeFragment : Fragment() {
             }
         }
     }
+
+    /**
+     *  Event Observers
+     */
+
+
+    private val eventProgressObserver = Observer<Boolean> {
+        if (it) homeBinding.eventRecyclerProgressBar.visibility = View.VISIBLE else View.INVISIBLE
+    }
+
+    private val eventListObserver = Observer<List<Event>> { eventList ->
+        if (eventList.isEmpty()) {
+            homeBinding.noEventsTextView.visibility = View.VISIBLE
+        } else {
+            homeBinding.noEventsTextView.visibility = View.INVISIBLE
+            homeBinding.todaysEventsRecycler.apply {
+                layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                adapter = DayPlannerRecyclerView(eventList, ListFlags.EVENTS)
+            }
+            homeBinding.todaysEventsRecycler.visibility = View.VISIBLE
+        }
+    }
+
+
 
     private val errorObserver = Observer<String> { errorMessage ->
         alert {

@@ -13,8 +13,8 @@ interface EventDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addEvent(event: EventEntity)
 
-    @Query("SELECT * FROM events")
-    fun getEvents(): Flow<List<EventEntity>>
+    @Query("SELECT * FROM events WHERE date_id = :dateId")
+    fun getEvents(dateId: String): Flow<List<EventEntity>>
 
     @Query("DELETE FROM events WHERE uid = :id")
     suspend fun deleteEvent(id: Long)

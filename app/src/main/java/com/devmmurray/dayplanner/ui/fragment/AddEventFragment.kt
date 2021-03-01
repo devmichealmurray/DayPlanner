@@ -12,7 +12,6 @@ import com.devmmurray.dayplanner.databinding.FragmentAddEventBinding
 import com.devmmurray.dayplanner.ui.viewmodel.AddEventViewModel
 import com.devmmurray.dayplanner.util.time.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
-import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class AddEventFragment : Fragment() {
 
@@ -30,20 +29,28 @@ class AddEventFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Set Date Picker Time To Current System Time
         val date: Long = System.currentTimeMillis()
         addEventBinding.eventDatePicker.text =
             date.let { TimeStampProcessing.transformSystemTime(it, TimeFlags.FULL) }
 
-        addEventBinding.eventDatePicker.onClick {
+        // Set Up Click to Navigate to Date Picker Fragment
+        addEventBinding.eventDatePicker.setOnClickListener {
             Navigation.findNavController(addEventBinding.eventDatePicker)
                 .navigate(R.id.action_addEventFragment_to_datePickerFragment)
         }
 
-        addEventBinding.cancelButton.onClick {
+        // Observer to change date to date picked from Date Picker Fragment
+        addEventViewModel.preparedDate.observe(viewLifecycleOwner, {
+            addEventBinding.eventDatePicker.text = it
+        })
+
+        // Cancel and Save button functions
+        addEventBinding.cancelButton.setOnClickListener {
             Navigation.findNavController(addEventBinding.cancelButton).popBackStack()
         }
 
-        addEventBinding.saveAction.onClick {
+        addEventBinding.saveAction.setOnClickListener {
             val title = addEventBinding.eventTitle.text.toString()
             val locationName = addEventBinding.eventLocationName.text.toString()
             val locationAddress = addEventBinding.eventLocationAddress.text.toString()
@@ -51,9 +58,7 @@ class AddEventFragment : Fragment() {
             addEventViewModel.prepareEvent(title, locationName, locationAddress, notes)
         }
 
-        addEventViewModel.preparedDate.observe(viewLifecycleOwner, {
-            addEventBinding.eventDatePicker.text = it
-        })
+
     }
 
 

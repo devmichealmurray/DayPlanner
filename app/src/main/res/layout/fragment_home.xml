@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools">
 
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -63,12 +62,12 @@
             android:id="@+id/add_event"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_add_24"
             android:clickable="true"
-            app:layout_constraintStart_toEndOf="@id/todays_events"
-            app:layout_constraintTop_toBottomOf="@id/hourly_forecast_recycler"
+            android:src="@drawable/ic_baseline_add_24"
+            app:layout_constraintBottom_toTopOf="@id/todays_events_recycler"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/todays_events_recycler"/>
+            app:layout_constraintStart_toEndOf="@id/todays_events"
+            app:layout_constraintTop_toBottomOf="@id/hourly_forecast_recycler" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/todays_events_recycler"
@@ -77,6 +76,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/todays_events" />
@@ -86,9 +86,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="40dp"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/todays_events"/>
+            app:layout_constraintTop_toBottomOf="@id/todays_events" />
 
         <TextView
             android:id="@+id/no_events_textView"
@@ -96,9 +97,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:text="No Events Currently Scheduled"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/todays_events"/>
+            app:layout_constraintTop_toBottomOf="@id/todays_events" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

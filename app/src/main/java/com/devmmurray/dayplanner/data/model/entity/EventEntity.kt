@@ -9,20 +9,12 @@ import com.devmmurray.dayplanner.data.model.local.Event
 class EventEntity(
     @PrimaryKey(autoGenerate = true)
     val uid: Long = 0L,
+    @ColumnInfo(name = "date_id")
+    val dateId: String?,
     @ColumnInfo(name = "title")
     val title: String?,
-    @ColumnInfo(name = "date_day")
-    val dateDay: Int?,
-    @ColumnInfo(name = "date_month")
-    val dateMonth: Int?,
-    @ColumnInfo(name = "date_year")
-    val dateYear: Int?,
-    @ColumnInfo(name = "date_hour")
-    val dateHour: Int?,
-    @ColumnInfo(name = "date_minute")
-    val dateMinute: Int?,
-    @ColumnInfo(name = "time_period")
-    val timePeriod: String?,
+    @ColumnInfo(name = "event_time")
+    val eventTime: Long?,
     @ColumnInfo(name = "location")
     val locationName: String?,
     @ColumnInfo(name = "address")
@@ -33,14 +25,11 @@ class EventEntity(
 
     fun toEventObject() = Event(
         uid,
+        dateId,
         title,
-        dateDay,
-        dateMonth,
-        dateYear,
-        dateHour,
-        dateMinute,
-        timePeriod,
+        eventTime,
         locationName,
         address,
-        notes)
+        notes
+    )
 }
