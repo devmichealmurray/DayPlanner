@@ -17,11 +17,30 @@ class EventEntity(
     val dateMonth: Int?,
     @ColumnInfo(name = "date_year")
     val dateYear: Int?,
+    @ColumnInfo(name = "date_hour")
+    val dateHour: Int?,
+    @ColumnInfo(name = "date_minute")
+    val dateMinute: Int?,
+    @ColumnInfo(name = "time_period")
+    val timePeriod: String?,
     @ColumnInfo(name = "location")
-    val location: String?,
+    val locationName: String?,
+    @ColumnInfo(name = "address")
+    val address: String?,
     @ColumnInfo(name = "notes")
     val notes: String?
 ) {
 
-    fun toEventObject() = Event(uid, title, dateDay, dateMonth, dateYear, location, notes)
+    fun toEventObject() = Event(
+        uid,
+        title,
+        dateDay,
+        dateMonth,
+        dateYear,
+        dateHour,
+        dateMinute,
+        timePeriod,
+        locationName,
+        address,
+        notes)
 }

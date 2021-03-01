@@ -46,17 +46,17 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/event_date_textview"
+                android:id="@+id/event_date_textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:padding="8dp"
                 android:text="Event Date"
-                android:textSize="20sp"
+                android:textSize="16sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/event_date_picker"
                 app:layout_constraintEnd_toStartOf="@+id/event_date_picker"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/event_location_name"/>
 
             <TextView
                 android:id="@+id/event_date_picker"
@@ -65,25 +65,42 @@
                 android:layout_marginTop="12dp"
                 android:clickable="true"
                 android:padding="8dp"
-                android:text="TextView"
-                android:textSize="20sp"
+                android:gravity="end"
+                android:text="Mon, March 1 00:00 PM"
+                android:textSize="16sp"
+                app:layout_constraintStart_toEndOf="@id/event_date_textView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/event_title" />
 
             <EditText
-                android:id="@+id/event_location"
+                android:id="@+id/event_location_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:drawableStart="@drawable/ic_location"
                 android:ems="10"
-                android:hint="Event Location"
+                android:hint="Location Name"
                 android:inputType="textPostalAddress"
                 android:padding="8dp"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/event_date_picker" />
+
+            <EditText
+                android:id="@+id/event_location_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:drawableStart="@drawable/ic_location"
+                android:ems="10"
+                android:hint="Location Address"
+                android:inputType="textPostalAddress"
+                android:padding="8dp"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/event_location_name" />
 
             <EditText
                 android:id="@+id/event_notes"
@@ -99,7 +116,7 @@
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/event_location" />
+                app:layout_constraintTop_toBottomOf="@+id/event_location_address" />
 
             <TextView
                 android:id="@+id/cancel_button"

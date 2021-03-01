@@ -34,13 +34,19 @@ class DatePickerFragment : Fragment() {
 
         datePickerBinding.saveAction.onClick {
             val datePicker = datePickerBinding.datePicker1
+            val timePicker = datePickerBinding.timePicker1
             val day = datePicker.dayOfMonth
             val month = datePicker.month
             val year = datePicker.year
+            val hour = timePicker.hour
+            val minute = timePicker.minute
 
-            addEventViewModel.prepareDate(day, month, year)
+            addEventViewModel.prepareDate(day, month, year, hour, minute)
         }
     }
+
+    
+
 
 
 }

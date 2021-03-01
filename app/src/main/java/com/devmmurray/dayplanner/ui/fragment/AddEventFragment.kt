@@ -45,9 +45,10 @@ class AddEventFragment : Fragment() {
 
         addEventBinding.saveAction.onClick {
             val title = addEventBinding.eventTitle.text.toString()
-            val location = addEventBinding.eventLocation.text.toString()
+            val locationName = addEventBinding.eventLocationName.text.toString()
+            val locationAddress = addEventBinding.eventLocationAddress.text.toString()
             val notes = addEventBinding.eventNotes.text.toString()
-            addEventViewModel.prepareEvent(title, location, notes)
+            addEventViewModel.prepareEvent(title, locationName, locationAddress, notes)
         }
 
         addEventViewModel.preparedDate.observe(viewLifecycleOwner, {

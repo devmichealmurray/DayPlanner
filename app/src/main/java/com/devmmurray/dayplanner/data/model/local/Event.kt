@@ -6,6 +6,10 @@ data class Event(
     val dateDay: Int?,
     val dateMonth: Int?,
     val dateYear: Int?,
-    val location: String?,
+    val dateHour: Int?,
+    val dateMinute: Int?,
+    val timePeriod: String?,
+    val locationName: String?,
+    val address: String?,
     val notes: String?
 )
