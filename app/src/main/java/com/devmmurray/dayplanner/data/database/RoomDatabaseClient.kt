@@ -4,16 +4,17 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.devmmurray.dayplanner.data.model.entity.EventEntity
 import com.devmmurray.dayplanner.data.model.entity.HourlyForecastEntity
 import com.devmmurray.dayplanner.data.model.entity.TodoTaskEntity
 
-const val DATABASE_SCHEMA_VERSION = 4
+const val DATABASE_SCHEMA_VERSION = 5
 const val DB_NAME = "day-planner"
 
 @Database(
     version = DATABASE_SCHEMA_VERSION,
     entities = [
-        HourlyForecastEntity::class, TodoTaskEntity::class
+        HourlyForecastEntity::class, TodoTaskEntity::class, EventEntity::class
     ],
     exportSchema = false
 )
@@ -22,6 +23,7 @@ abstract class RoomDatabaseClient : RoomDatabase() {
 
     abstract fun hourlyForecastsDAO(): HourlyForecastDAO
     abstract fun todoTaskDAO(): TodoTaskDAO
+    abstract fun eventDAO(): EventDAO
 
     companion object {
         private var instance: RoomDatabaseClient? = null
