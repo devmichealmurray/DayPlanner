@@ -10,8 +10,8 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.devmmurray.dayplanner.R
+import com.devmmurray.dayplanner.data.model.entity.EventEntity
 import com.devmmurray.dayplanner.data.model.entity.HourlyForecastEntity
-import com.devmmurray.dayplanner.data.model.local.Event
 import com.devmmurray.dayplanner.databinding.FragmentHomeBinding
 import com.devmmurray.dayplanner.ui.adapter.DayPlannerRecyclerView
 import com.devmmurray.dayplanner.ui.viewmodel.HomeViewModel
@@ -46,17 +46,10 @@ class HomeFragment : Fragment() {
             Navigation.findNavController(homeBinding.addEvent)
                 .navigate(R.id.action_navigation_home_to_addEventFragment)
         }
+
         return homeBinding.root
     }
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        /**
-         * Huh??? observing twice??
-         */
-        homeViewModel.forecastList.observe(viewLifecycleOwner, weatherListObserver)
-    }
 
     /**
      *  Weather Observers
@@ -81,30 +74,31 @@ class HomeFragment : Fragment() {
         }
     }
 
+
     /**
      *  Event Observers
      */
 
-
-    private val eventProgressObserver = Observer<Boolean> {
-        if (it) homeBinding.eventRecyclerProgressBar.visibility = View.VISIBLE else View.INVISIBLE
-    }
-
-    private val eventListObserver = Observer<List<Event>> { eventList ->
-        if (eventList.isEmpty()) {
-            homeBinding.noEventsTextView.visibility = View.VISIBLE
-        } else {
+    private val eventListObserver = Observer<List<EventEntity>> { list ->
+        val eventsList = list.map { it.toEventObject() }
+        if (!eventsList.isNullOrEmpty()) {
+            homeBinding.eventRecyclerProgressBar.visibility = View.INVISIBLE
             homeBinding.noEventsTextView.visibility = View.INVISIBLE
             homeBinding.todaysEventsRecycler.apply {
                 layoutManager =
                     LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                adapter = DayPlannerRecyclerView(eventList, ListFlags.EVENTS)
+                adapter =
+                    DayPlannerRecyclerView(eventsList, ListFlags.EVENTS)
             }
-            homeBinding.todaysEventsRecycler.visibility = View.VISIBLE
+        } else {
+            homeBinding.eventRecyclerProgressBar.visibility = View.INVISIBLE
+            homeBinding.noEventsTextView.visibility = View.VISIBLE
         }
     }
 
-
+    private val eventProgressObserver = Observer<Boolean> {
+        if (it) homeBinding.eventRecyclerProgressBar.visibility = View.VISIBLE else View.INVISIBLE
+    }
 
     private val errorObserver = Observer<String> { errorMessage ->
         alert {
@@ -116,7 +110,6 @@ class HomeFragment : Fragment() {
             }
         }.show()
     }
-
 
 
 }

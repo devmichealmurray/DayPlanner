@@ -2,7 +2,6 @@ package com.devmmurray.dayplanner.ui.viewmodel
 
 import android.app.Application
 import android.location.Location
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -63,7 +62,6 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
             try {
                 val result = ApiRepository.getWeatherOneCall(lat, lon, units)
                 if (result.isSuccessful) {
-                    Log.d(TAG, "* * * *  Result is successful * * * * *")
                     val hourlyForecast = JsonProcessing.parseForHourlyForecast(result)
                     hourlyForecast.forEach { addForecastsToDB(it) }
 
@@ -89,7 +87,6 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
 
     private fun addForecastsToDB(forecast: HourlyForecastEntity) {
        viewModelScope.launch {
-           Log.d(TAG, "* * * * * addForecastsToDB Called * * * * *")
            dbRepo.addHourlyForecasts(forecast)
        }
     }

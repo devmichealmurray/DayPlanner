@@ -1,6 +1,5 @@
 package com.devmmurray.dayplanner.util
 
-import android.util.Log
 import com.devmmurray.dayplanner.data.model.dto.WeatherDTO
 import com.devmmurray.dayplanner.data.model.entity.HourlyForecastEntity
 import com.devmmurray.dayplanner.data.model.entity.HourlyForecastWeatherEntity
@@ -33,11 +32,6 @@ object JsonProcessing {
                 )
                 hourlyForecastList.add(hourlyForecast)
             }
-            Log.d(
-                TAG,
-                "* * * Hourly Forecast = ${hourlyForecastWeather.toString()} * * *"
-            )
-
 
         }
 

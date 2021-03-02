@@ -4,6 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.devmmurray.dayplanner.data.model.local.Event
+import com.devmmurray.dayplanner.util.time.TimeFlags
+import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 
 @Entity(tableName = "events")
 class EventEntity(
@@ -27,7 +29,7 @@ class EventEntity(
         uid,
         dateId,
         title,
-        eventTime,
+        eventTime?.let { TimeStampProcessing.transformSystemTime(it, TimeFlags.FULL) },
         locationName,
         address,
         notes

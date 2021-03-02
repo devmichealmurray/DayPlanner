@@ -1,6 +1,7 @@
 package com.devmmurray.dayplanner.ui.viewmodel
 
 import android.app.Application
+import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
@@ -8,7 +9,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.devmmurray.dayplanner.data.model.entity.EventEntity
 import com.devmmurray.dayplanner.data.model.entity.HourlyForecastEntity
-import com.devmmurray.dayplanner.data.model.local.Event
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
@@ -30,17 +30,25 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
         }
     }
 
-    private val _weatherProgress: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
-    val weatherProgress: LiveData<Boolean> get() = _weatherProgress
+    /**
+     * Weather Live Data
+     */
 
-    private val _eventProgress: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
-    val eventProgress: LiveData<Boolean> get() = _eventProgress
+    private val _weatherProgress by lazy { MutableLiveData<Boolean>() }
+    val weatherProgress: LiveData<Boolean> get() = _weatherProgress
 
     private val _forecastList by lazy { MutableLiveData<List<HourlyForecastEntity>>() }
     val forecastList: LiveData<List<HourlyForecastEntity>> get() = _forecastList
 
-    private val _eventsList by lazy { MutableLiveData<List<Event>>() }
-    val eventsList: LiveData<List<Event>> get() = _eventsList
+    /**
+     * Event Live Data
+     */
+
+    private val _eventProgress by lazy { MutableLiveData<Boolean>() }
+    val eventProgress: LiveData<Boolean> get() = _eventProgress
+
+    private val _eventsList by lazy { MutableLiveData<List<EventEntity>>() }
+    val eventsList: LiveData<List<EventEntity>> get() = _eventsList
 
     private val _errorMessage by lazy { MutableLiveData<String>() }
     val homeErrorMessage: LiveData<String> get() = _errorMessage
@@ -72,21 +80,27 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
     }
 
     fun getEventsFromDB() {
+        Log.d(TAG, "++++++++++++ getEventsFromDB ++++++++++++++++")
         val today = today()
         getEventEntitiesFromDB(today)
     }
 
     private fun getEventEntitiesFromDB(day: String) {
+        Log.d(TAG, "================= getEventEntitiesFromDB ========================")
         _eventProgress.value = true
         viewModelScope.launch {
             try {
-                val today = today()
-                dbRepo.getEvents(today)
+                Log.d(TAG, "* * * * * * Today = $day * * * * * *")
+                dbRepo.getEvents(day)
                     .flowOn(Dispatchers.IO)
-                    .collect {
-                        val events: MutableList<EventEntity> = mutableListOf()
-                        val eventsList = events.sortedBy { it.dateId }
-                            .map { it.toEventObject() }
+                    .collect {  dbList ->
+                        val events: MutableList<EventEntity> = dbList.toMutableList()
+                        val eventsList = events
+                            .sortedBy { it.eventTime }
+                        eventsList.forEach {
+                            Log.d(TAG, "================= Title: ${it.title} ========================")
+                        }
+
                         _eventsList.value = eventsList
                         _eventProgress.value = false
                     }
