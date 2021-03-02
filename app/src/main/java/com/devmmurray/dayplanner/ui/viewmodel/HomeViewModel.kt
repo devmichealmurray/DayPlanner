@@ -1,7 +1,6 @@
 package com.devmmurray.dayplanner.ui.viewmodel
 
 import android.app.Application
-import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
@@ -23,7 +22,7 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
     // Binding adapter used to bind photo url and load in RV
     companion object {
         @JvmStatic
-        @BindingAdapter(value =["imageUrl"])
+        @BindingAdapter(value = ["imageUrl"])
         fun bindImageUrl(view: ImageView, icon: String) {
             val url = "https://openweathermap.org/img/wn/$icon@2x.png"
             Picasso.get().load(url).into(view)
@@ -54,7 +53,9 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
     val homeErrorMessage: LiveData<String> get() = _errorMessage
 
 
-
+    /**
+     *  Database Functions
+     */
 
     fun getWeatherFromDB() {
         getWeatherEntitiesFromDB()
@@ -80,27 +81,20 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
     }
 
     fun getEventsFromDB() {
-        Log.d(TAG, "++++++++++++ getEventsFromDB ++++++++++++++++")
         val today = today()
         getEventEntitiesFromDB(today)
     }
 
     private fun getEventEntitiesFromDB(day: String) {
-        Log.d(TAG, "================= getEventEntitiesFromDB ========================")
         _eventProgress.value = true
         viewModelScope.launch {
             try {
-                Log.d(TAG, "* * * * * * Today = $day * * * * * *")
                 dbRepo.getEvents(day)
                     .flowOn(Dispatchers.IO)
-                    .collect {  dbList ->
+                    .collect { dbList ->
                         val events: MutableList<EventEntity> = dbList.toMutableList()
                         val eventsList = events
                             .sortedBy { it.eventTime }
-                        eventsList.forEach {
-                            Log.d(TAG, "================= Title: ${it.title} ========================")
-                        }
-
                         _eventsList.value = eventsList
                         _eventProgress.value = false
                     }
@@ -108,7 +102,7 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
                 _errorMessage.value = e.message.toString()
                 _eventProgress.value = false
             }
-         }
+        }
     }
 
     private fun today() = TimeStampProcessing.todaysDate()

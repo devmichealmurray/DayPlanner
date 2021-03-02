@@ -6,6 +6,7 @@
         <variable
             name="event"
             type="com.devmmurray.dayplanner.data.model.local.Event" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
+        android:clickable="true"
         android:background="@drawable/card_background"
         android:padding="8dp">
 
@@ -64,7 +66,7 @@
             android:gravity="end"
             android:text="@{event.eventTime}"
             android:textColor="@color/gray"
-            android:textSize="10sp"
+            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

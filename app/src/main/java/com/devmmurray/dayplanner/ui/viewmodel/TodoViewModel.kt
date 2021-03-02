@@ -31,7 +31,8 @@ class TodoViewModel(application: Application) : SplashActivityViewModel(applicat
                 dbRepo.getToDoTasks()
                     .flowOn(Dispatchers.IO)
                     .collect {
-                        _todoTaskList.value = it
+                        val tasks: MutableList<TodoTaskEntity> = it.toMutableList()
+                        _todoTaskList.value = tasks.asReversed()
                     }
             } catch (e: Exception) {
                 _todoErrorMessage.value = e.message.toString()

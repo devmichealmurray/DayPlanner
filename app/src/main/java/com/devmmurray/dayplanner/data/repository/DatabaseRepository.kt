@@ -43,6 +43,9 @@ class DatabaseRepository(
     fun getEvents(dateId: String) =
         eventDataSource.getEvents(dateId)
 
+    fun getEventById(id: Long) =
+        eventDataSource.getEventById(id)
+
     suspend fun deleteEvent(id: Long) =
         eventDataSource.deleteEvent(id)
 

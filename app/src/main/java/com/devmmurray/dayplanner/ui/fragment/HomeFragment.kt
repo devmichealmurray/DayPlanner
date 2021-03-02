@@ -16,6 +16,8 @@ import com.devmmurray.dayplanner.databinding.FragmentHomeBinding
 import com.devmmurray.dayplanner.ui.adapter.DayPlannerRecyclerView
 import com.devmmurray.dayplanner.ui.viewmodel.HomeViewModel
 import com.devmmurray.dayplanner.util.ListFlags
+import com.devmmurray.dayplanner.util.time.TimeFlags
+import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import org.jetbrains.anko.support.v4.alert
 
 private const val TAG = "Home Fragment"
@@ -32,6 +34,7 @@ class HomeFragment : Fragment() {
     ): View {
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false)
 
+
         homeViewModel.apply {
             getWeatherFromDB()
             getEventsFromDB()
@@ -41,6 +44,9 @@ class HomeFragment : Fragment() {
             eventsList.observe(viewLifecycleOwner, eventListObserver)
             homeErrorMessage.observe(viewLifecycleOwner, errorObserver)
         }
+
+        homeBinding.todaysDate.text = TimeStampProcessing
+            .transformSystemTime(System.currentTimeMillis(), TimeFlags.FULL)
 
         homeBinding.addEvent.setOnClickListener {
             Navigation.findNavController(homeBinding.addEvent)

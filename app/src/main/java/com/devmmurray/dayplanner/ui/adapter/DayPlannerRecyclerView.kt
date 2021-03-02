@@ -4,6 +4,7 @@ import android.app.Application
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
 import com.devmmurray.dayplanner.BR
 import com.devmmurray.dayplanner.data.model.local.Event
@@ -12,6 +13,7 @@ import com.devmmurray.dayplanner.data.model.local.TodoTask
 import com.devmmurray.dayplanner.databinding.EventItemBinding
 import com.devmmurray.dayplanner.databinding.HourlyForecastItemBinding
 import com.devmmurray.dayplanner.databinding.TodoItemBinding
+import com.devmmurray.dayplanner.ui.fragment.HomeFragmentDirections
 import com.devmmurray.dayplanner.ui.viewmodel.TodoViewModel
 import com.devmmurray.dayplanner.util.ListFlags
 
@@ -30,13 +32,22 @@ class RVHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(b
 
     fun bindEvents(event: Event) {
         binding.setVariable(BR.event, event)
+        val directions = event.id?.let {
+            HomeFragmentDirections
+                .actionNavigationHomeToEventFragment(it)
+        }
+        binding.root.setOnClickListener { view ->
+            if (directions != null) {
+                Navigation.findNavController(view)
+                    .navigate(directions)
+            }
+        }
         binding.executePendingBindings()
     }
 }
 
 class DayPlannerRecyclerView(private val list: List<Any>, private val flag: ListFlags) :
     RecyclerView.Adapter<RVHolder>() {
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RVHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -66,7 +77,6 @@ class DayPlannerRecyclerView(private val list: List<Any>, private val flag: List
                 holder.bindEvents(list[position] as Event)
             }
         }
-
     }
 
     override fun getItemCount() = list.count()

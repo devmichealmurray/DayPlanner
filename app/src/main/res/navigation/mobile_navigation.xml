@@ -9,7 +9,11 @@
         android:id="@+id/navigation_home"
         android:name="com.devmmurray.dayplanner.ui.fragment.HomeFragment"
         android:label="@string/menu_item_home"
-        tools:layout="@layout/fragment_home" >
+        tools:layout="@layout/fragment_home">
+        <argument
+            android:name="event_id"
+            android:defaultValue="0L"
+            app:argType="long" />
         <action
             android:id="@+id/action_navigation_home_to_addEventFragment"
             app:destination="@id/addEventFragment"
@@ -17,6 +21,9 @@
             app:exitAnim="@anim/slide_out_up"
             app:popEnterAnim="@anim/slide_in_down"
             app:popExitAnim="@anim/slide_out_up" />
+        <action
+            android:id="@+id/action_navigation_home_to_eventFragment"
+            app:destination="@id/eventFragment" />
     </fragment>
 
     <fragment
@@ -34,31 +41,31 @@
         android:id="@+id/addEventFragment"
         android:name="com.devmmurray.dayplanner.ui.fragment.AddEventFragment"
         android:label="fragment_add_event"
-        tools:layout="@layout/fragment_add_event" >
+        tools:layout="@layout/fragment_add_event">
         <argument
             android:name="title"
-            app:argType="string"
-            android:defaultValue=""/>
+            android:defaultValue=""
+            app:argType="string" />
         <argument
             android:name="location"
-            app:argType="string"
-            android:defaultValue=""/>
+            android:defaultValue=""
+            app:argType="string" />
         <argument
             android:name="address"
-            app:argType="string"
-            android:defaultValue=""/>
+            android:defaultValue=""
+            app:argType="string" />
         <argument
             android:name="notes"
-            app:argType="string"
-            android:defaultValue=""/>
+            android:defaultValue=""
+            app:argType="string" />
         <argument
             android:name="datePickerTime"
-            app:argType="long"
-            android:defaultValue="0L"/>
+            android:defaultValue="0L"
+            app:argType="long" />
         <argument
             android:name="dateId"
-            app:argType="string"
-            android:defaultValue=""/>
+            android:defaultValue=""
+            app:argType="string" />
         <action
             android:id="@+id/action_addEventFragment_to_datePickerFragment"
             app:destination="@id/datePickerFragment"
@@ -73,33 +80,43 @@
         android:id="@+id/datePickerFragment"
         android:name="com.devmmurray.dayplanner.ui.fragment.DatePickerFragment"
         android:label="fragment_date_picker"
-        tools:layout="@layout/fragment_date_picker" >
+        tools:layout="@layout/fragment_date_picker">
         <argument
             android:name="title"
-            app:argType="string"
-            android:defaultValue=""/>
+            android:defaultValue=""
+            app:argType="string" />
         <argument
             android:name="location"
-            app:argType="string"
-            android:defaultValue=""/>
+            android:defaultValue=""
+            app:argType="string" />
         <argument
             android:name="address"
-            app:argType="string"
-            android:defaultValue=""/>
+            android:defaultValue=""
+            app:argType="string" />
         <argument
             android:name="notes"
-            app:argType="string"
-            android:defaultValue=""/>
+            android:defaultValue=""
+            app:argType="string" />
         <argument
             android:name="datePickerTime"
-            app:argType="long"
-            android:defaultValue="0L"/>
+            android:defaultValue="0L"
+            app:argType="long" />
         <argument
             android:name="dateId"
-            app:argType="string"
-            android:defaultValue=""/>
+            android:defaultValue=""
+            app:argType="string" />
         <action
             android:id="@+id/action_datePickerFragment_to_addEventFragment"
             app:destination="@id/addEventFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventFragment"
+        android:name="com.devmmurray.dayplanner.ui.fragment.EventFragment"
+        android:label="fragment_event"
+        tools:layout="@layout/fragment_event">
+        <argument
+            android:name="event_id"
+            android:defaultValue="0L"
+            app:argType="long" />
     </fragment>
 </navigation>
