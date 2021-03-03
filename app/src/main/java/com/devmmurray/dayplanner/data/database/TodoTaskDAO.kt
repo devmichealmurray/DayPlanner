@@ -13,7 +13,7 @@ interface TodoTaskDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addTodoTask(task: TodoTaskEntity)
 
-    @Query("SELECT * FROM todo_tasks ORDER BY date_added ASC")
+    @Query("SELECT * FROM todo_tasks")
     fun getTodoTasks(): Flow<List<TodoTaskEntity>>
 
     @Query("DELETE FROM todo_tasks WHERE uid = :id")

@@ -1,7 +1,6 @@
 package com.devmmurray.dayplanner.ui.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -45,7 +44,6 @@ class TodoViewModel(application: Application) : SplashActivityViewModel(applicat
     }
 
     fun removeTask(id: Long) {
-        Log.d(TAG, "* * * * *  REMOVE TASK CALLED from VM with $id * * * * *")
         viewModelScope.launch {
             dbRepo.deleteToDoTask(id)
         }

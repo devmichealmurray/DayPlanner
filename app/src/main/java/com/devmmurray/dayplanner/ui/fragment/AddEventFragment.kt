@@ -15,6 +15,7 @@ import com.devmmurray.dayplanner.databinding.FragmentAddEventBinding
 import com.devmmurray.dayplanner.ui.viewmodel.AddEventViewModel
 import com.devmmurray.dayplanner.util.time.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
+import java.util.*
 
 private const val TAG = "AddEventFragment"
 
@@ -70,11 +71,11 @@ class AddEventFragment : Fragment() {
 
         addEventBinding.saveAction.setOnClickListener {
             val dateId = args.dateId
-            val title = addEventBinding.eventTitle.text.toString()
+            val title = addEventBinding.eventTitle.text.toString().capitalize(Locale.ROOT)
             val date = args.datePickerTime
-            val locationName = addEventBinding.eventLocationName.text.toString()
+            val locationName = addEventBinding.eventLocationName.text.toString().capitalize(Locale.ROOT)
             val locationAddress = addEventBinding.eventLocationAddress.text.toString()
-            val notes = addEventBinding.eventNotes.text.toString()
+            val notes = addEventBinding.eventNotes.text.toString().capitalize(Locale.ROOT)
 
             addEventViewModel.prepareEvent(dateId, title, date, locationName, locationAddress, notes)
 
