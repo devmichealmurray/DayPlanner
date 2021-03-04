@@ -19,14 +19,14 @@ object JsonProcessing {
                 hourlyForecastWeather = HourlyForecastWeatherEntity(
                     hourlyId = hourly.hourlyId,
                     mainForecast = hourly.mainForecast,
-                    forecastDescription = hourly.forecastDescription,
+                    forecastDescription = hourly.forecastDescription?.capitalize(),
                     forecastIcon = hourly.forecastIcon
                 )
                 val hourlyForecast = HourlyForecastEntity(
                     time = it.time?.let { utcTime ->
                         TimeStampProcessing.transformUTCTime(utcTime, TimeFlags.HOUR)
                     },
-                    hourlyTemp = it.hourlyTemp?.toInt(),
+                    hourlyTemp = it.hourlyTemp?.toInt().toString() + "\u00B0",
                     hourlyFeelsLike = it.hourlyFeelsLike?.toInt(),
                     hourlyWeather = hourlyForecastWeather
                 )

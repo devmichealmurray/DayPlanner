@@ -43,6 +43,10 @@
         android:label="fragment_add_event"
         tools:layout="@layout/fragment_add_event">
         <argument
+            android:name="event_id"
+            android:defaultValue="0L"
+            app:argType="long" />
+        <argument
             android:name="title"
             android:defaultValue=""
             app:argType="string" />
@@ -81,6 +85,10 @@
         android:name="com.devmmurray.dayplanner.ui.fragment.DatePickerFragment"
         android:label="fragment_date_picker"
         tools:layout="@layout/fragment_date_picker">
+        <argument
+            android:name="event_id"
+            android:defaultValue="0L"
+            app:argType="long" />
         <argument
             android:name="title"
             android:defaultValue=""

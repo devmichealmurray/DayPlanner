@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.devmmurray.dayplanner.data.model.entity.EventEntity
 import com.devmmurray.dayplanner.data.model.entity.HourlyForecastEntity
+import com.devmmurray.dayplanner.data.model.local.CityStateLocation
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +26,9 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
         @BindingAdapter(value = ["imageUrl"])
         fun bindImageUrl(view: ImageView, icon: String) {
             val url = "https://openweathermap.org/img/wn/$icon@2x.png"
-            Picasso.get().load(url).into(view)
+            Picasso.get()
+                .load(url)
+                .into(view)
         }
     }
 
@@ -48,6 +51,9 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
 
     private val _eventsList by lazy { MutableLiveData<List<EventEntity>>() }
     val eventsList: LiveData<List<EventEntity>> get() = _eventsList
+
+    private val _cityState by lazy { MutableLiveData<CityStateLocation>() }
+    val cityState: LiveData<CityStateLocation> get() = _cityState
 
     private val _errorMessage by lazy { MutableLiveData<String>() }
     val homeErrorMessage: LiveData<String> get() = _errorMessage
@@ -106,6 +112,17 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
     }
 
     private fun today() = TimeStampProcessing.todaysDate()
+
+    fun getCityState() {
+        viewModelScope.launch {
+            try {
+                val cityState = dbRepo.getCityState()
+                _cityState.value = cityState.toCityStateObject()
+            } catch (e: Exception) {
+                _errorMessage.value = e.message.toString()
+            }
+        }
+    }
 
 }
 

@@ -1,6 +1,7 @@
 package com.devmmurray.dayplanner.ui.activity
 
 import android.os.Bundle
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
@@ -15,9 +16,17 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        supportActionBar?.hide()
+
+        supportActionBar?.apply {
+            displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+            setDisplayShowCustomEnabled(true)
+            setCustomView(R.layout.support_action_bar)
+            elevation = 4F
+        }
+
         setUpNavigation()
     }
+
 
     private fun setUpNavigation() {
         val navView: BottomNavigationView = findViewById(R.id.nav_view)

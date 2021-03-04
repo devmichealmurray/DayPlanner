@@ -14,7 +14,7 @@ class HourlyForecastEntity(
     @ColumnInfo(name = "time")
     val time: String?,
     @ColumnInfo(name = "temp")
-    val hourlyTemp: Int?,
+    val hourlyTemp: String?,
     @ColumnInfo(name = "feels")
     val hourlyFeelsLike: Int?,
     @Embedded

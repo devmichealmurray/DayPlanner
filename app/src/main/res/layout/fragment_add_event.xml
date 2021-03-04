@@ -1,20 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-<data>
-    <variable
-        name="viewModel"
-        type="com.devmmurray.dayplanner.ui.viewmodel.AddEventViewModel" />
-</data>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.devmmurray.dayplanner.ui.viewmodel.AddEventViewModel" />
+        <variable
+            name="event"
+            type="com.devmmurray.dayplanner.data.model.local.Event" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/teal_200">
+        android:background="@drawable/card_background"
+        android:backgroundTint="@color/teal_200">
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/add_event_textView"
             style="@style/HeaderText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,20 +26,17 @@
             android:gravity="start"
             android:paddingStart="12dp"
             android:text="Add New Event"
-            app:layout_constraintBottom_toTopOf="@id/new_event_card"
+            app:layout_constraintBottom_toTopOf="@id/event_details_card"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/new_event_card"
+            android:id="@+id/event_details_card"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="100dp"
             android:background="@drawable/card_background"
-            android:padding="12dp"
-            tools:context=".ui.fragment.AddEventFragment"
-            tools:layout_editor_absoluteY="100dp">
-
+            android:padding="12dp">
 
             <EditText
                 android:id="@+id/event_title"
@@ -44,6 +45,7 @@
                 android:layout_marginTop="24dp"
                 android:ems="10"
                 android:hint="Event Title"
+                android:text="@{event.title}"
                 android:inputType="text"
                 android:textSize="28sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -56,12 +58,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:padding="8dp"
-                android:text="Event Date"
+                android:hint="Event Date"
                 android:textSize="16sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/event_date_picker"
+                app:layout_constraintBottom_toTopOf="@id/event_date_textView"
                 app:layout_constraintEnd_toStartOf="@+id/event_date_picker"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/event_location_name"/>
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/event_date_picker"
@@ -69,12 +71,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
                 android:clickable="true"
-                android:padding="8dp"
                 android:gravity="end"
-                android:text="Mon, March 1 00:00 PM"
+                android:padding="8dp"
+                android:hint="Mon, March 1 4:30 PM"
                 android:textSize="16sp"
-                app:layout_constraintStart_toEndOf="@id/event_date_textView"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/event_date_textView"
                 app:layout_constraintTop_toBottomOf="@+id/event_title" />
 
             <EditText
@@ -85,6 +87,7 @@
                 android:drawableStart="@drawable/ic_location"
                 android:ems="10"
                 android:hint="Location Name"
+                android:text="@{event.locationName}"
                 android:inputType="textPostalAddress"
                 android:padding="8dp"
                 android:textSize="20sp"
@@ -100,6 +103,7 @@
                 android:drawableStart="@drawable/ic_location"
                 android:ems="10"
                 android:hint="Location Address"
+                android:text="@{event.address}"
                 android:inputType="textPostalAddress"
                 android:padding="8dp"
                 android:textSize="20sp"
@@ -116,6 +120,7 @@
                 android:ems="10"
                 android:gravity="start|top"
                 android:hint="Event Notes"
+                android:text="@{event.notes}"
                 android:inputType="textMultiLine"
                 android:padding="8dp"
                 android:textSize="18sp"
@@ -123,36 +128,38 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/event_location_address" />
 
-            <TextView
-                android:id="@+id/cancel_button"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:gravity="center"
-                android:padding="8dp"
-                android:layout_marginTop="12dp"
-                android:text="Cancel"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/save_action"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/event_notes" />
-
-            <TextView
-                android:id="@+id/save_action"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:gravity="center"
-                android:padding="8dp"
-                android:layout_marginTop="12dp"
-                android:text="Save"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/cancel_button"
-                app:layout_constraintTop_toBottomOf="@+id/event_notes" />
-
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/cancel_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="60dp"
+            android:clickable="true"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Cancel"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/save_action"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/save_action"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="60dp"
+            android:clickable="true"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Save"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/cancel_button" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

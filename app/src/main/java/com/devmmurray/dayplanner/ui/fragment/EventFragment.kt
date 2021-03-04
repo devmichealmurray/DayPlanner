@@ -6,16 +6,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.devmmurray.dayplanner.BR
+import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.data.model.local.Event
 import com.devmmurray.dayplanner.databinding.FragmentEventBinding
 import com.devmmurray.dayplanner.ui.viewmodel.EventViewModel
+import org.jetbrains.anko.backgroundColor
 
-class EventFragment : DialogFragment() {
+class EventFragment : Fragment() {
 
     private val eventViewModel: EventViewModel by viewModels()
     private lateinit var eventBinding: FragmentEventBinding
@@ -39,25 +41,20 @@ class EventFragment : DialogFragment() {
             bindEvent(event)
         })
 
-        eventBinding.address.setOnClickListener {  }
         eventBinding.deleteEvent.setOnClickListener { deleteEvent(id) }
-        eventBinding.updateEvent.setOnClickListener {  }
+        eventBinding.updateEvent.setOnClickListener { modifyEvent(id) }
 
     }
 
     private fun bindEvent(event: Event) {
         eventBinding.setVariable(BR.event, event)
-        eventBinding.location.setOnClickListener { event.address?.let { it1 -> mapsIntent(it1) } }
+        eventBinding.eventLocationAddress.setOnClickListener { event.address?.let { it1 -> mapsIntent(it1) } }
         eventBinding.shareEvent.setOnClickListener {
             shareEvent(
                 event.title, event.locationName, event.address, event.eventTime
             ) }
     }
 
-    private fun deleteEvent(id: Long) {
-        eventViewModel.deleteEvent(id)
-        Navigation.findNavController(eventBinding.root).popBackStack()
-    }
 
     private fun mapsIntent(address: String) {
         val gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(address))
@@ -77,6 +74,19 @@ class EventFragment : DialogFragment() {
         }
         val shareIntent = Intent.createChooser(sendIntent, null)
         context?.startActivity(shareIntent)
+    }
+
+    private fun deleteEvent(id: Long) {
+        eventViewModel.deleteEvent(id)
+        Navigation.findNavController(eventBinding.root).popBackStack()
+    }
+
+    private fun modifyEvent(id: Long) {
+        eventBinding.saveButton.visibility = View.VISIBLE
+        eventBinding.eventTitle.backgroundColor = R.color.white
+        eventBinding.eventLocationName.backgroundColor = R.color.white
+        eventBinding.eventLocationAddress.backgroundColor = R.color.white
+        eventBinding.eventNotes.backgroundColor = R.color.white
     }
 
 }

@@ -7,58 +7,78 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/layout_background"
+        android:background="@color/gray"
         tools:context=".ui.fragment.HomeFragment">
 
-        <TextView
-            android:id="@+id/todays_outlook"
-            style="@style/HeaderText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/today_s_outlook"
-            app:layout_constraintEnd_toStartOf="@id/todays_date"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/todays_date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
-            style="@style/TinyText"
-            app:layout_constraintStart_toEndOf="@id/todays_outlook"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/hourly_forecast_recycler"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/forecast_card"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/todays_outlook" />
-
-        <ProgressBar
-            android:id="@+id/forecast_progress_bar"
-            style="?android:attr/progressBarStyle"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="visible"
-            app:layout_constraintBottom_toTopOf="@id/todays_events"
+            app:layout_constraintBottom_toTopOf="@+id/todays_events"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/todays_outlook" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/todays_outlook"
+                    style="@style/HeaderText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/today_s_outlook"
+                    app:layout_constraintEnd_toStartOf="@id/city_state"
+                    app:layout_constraintBottom_toTopOf="@id/hourly_forecast_recycler"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/city_state"
+                    style="@style/SmallTextTeal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="8dp"
+                    android:gravity="end"
+                    android:hint="Fort Worth, Texas"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/todays_outlook"
+                    app:layout_constraintBottom_toTopOf="@id/hourly_forecast_recycler"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/hourly_forecast_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="2dp"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/todays_outlook" />
+
+                <ProgressBar
+                    android:id="@+id/forecast_progress_bar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/todays_outlook" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/todays_events"
             style="@style/HeaderText"
             android:layout_width="0dp"
@@ -68,7 +88,7 @@
             android:text="@string/today_s_events"
             app:layout_constraintEnd_toStartOf="@id/add_event"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/hourly_forecast_recycler" />
+            app:layout_constraintTop_toBottomOf="@id/forecast_card" />
 
         <ImageButton
             android:id="@+id/add_event"
@@ -79,15 +99,15 @@
             app:layout_constraintBottom_toTopOf="@id/todays_events_recycler"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/todays_events"
-            app:layout_constraintTop_toBottomOf="@id/hourly_forecast_recycler" />
+            app:layout_constraintTop_toBottomOf="@id/forecast_card" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/todays_events_recycler"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="60dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/todays_events" />
@@ -102,7 +122,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/todays_events" />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/no_events_textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

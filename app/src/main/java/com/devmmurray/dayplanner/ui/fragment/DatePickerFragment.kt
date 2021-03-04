@@ -46,12 +46,14 @@ class DatePickerFragment : Fragment() {
             val dateId = "$month-$day-$year"
             val dateInMillis = TimeStampProcessing.transformDateStringToMillis(dateString)
 
+            val id = args.eventId
             val title = args.title
             val location = args.location
             val address = args.address
             val notes = args.notes
             val directions = DatePickerFragmentDirections
                 .actionDatePickerFragmentToAddEventFragment(
+                    id,
                     title,
                     location,
                     address,

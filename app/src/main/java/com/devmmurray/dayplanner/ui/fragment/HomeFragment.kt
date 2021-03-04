@@ -12,12 +12,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.data.model.entity.EventEntity
 import com.devmmurray.dayplanner.data.model.entity.HourlyForecastEntity
+import com.devmmurray.dayplanner.data.model.local.CityStateLocation
 import com.devmmurray.dayplanner.databinding.FragmentHomeBinding
 import com.devmmurray.dayplanner.ui.adapter.DayPlannerRecyclerView
 import com.devmmurray.dayplanner.ui.viewmodel.HomeViewModel
 import com.devmmurray.dayplanner.util.ListFlags
-import com.devmmurray.dayplanner.util.time.TimeFlags
-import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import org.jetbrains.anko.support.v4.alert
 
 private const val TAG = "Home Fragment"
@@ -34,26 +33,36 @@ class HomeFragment : Fragment() {
     ): View {
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false)
 
-
         homeViewModel.apply {
             getWeatherFromDB()
             getEventsFromDB()
+            getCityState()
             weatherProgress.observe(viewLifecycleOwner, weatherProgressObserver)
             eventProgress.observe(viewLifecycleOwner, eventProgressObserver)
             forecastList.observe(viewLifecycleOwner, weatherListObserver)
             eventsList.observe(viewLifecycleOwner, eventListObserver)
             homeErrorMessage.observe(viewLifecycleOwner, errorObserver)
+            cityState.observe(viewLifecycleOwner, cityStateObserver)
         }
-
-        homeBinding.todaysDate.text = TimeStampProcessing
-            .transformSystemTime(System.currentTimeMillis(), TimeFlags.FULL)
 
         homeBinding.addEvent.setOnClickListener {
             Navigation.findNavController(homeBinding.addEvent)
                 .navigate(R.id.action_navigation_home_to_addEventFragment)
         }
 
+
+
         return homeBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+    }
+
+    private val cityStateObserver = Observer<CityStateLocation> {
+        homeBinding.cityState.text = "${it.city}, ${it.state}"
     }
 
 
@@ -67,7 +76,6 @@ class HomeFragment : Fragment() {
             homeBinding.forecastProgressBar.visibility = View.INVISIBLE
         }
     }
-
 
     private val weatherListObserver = Observer<List<HourlyForecastEntity>> { list ->
         val forecastList = list.map { it.toHourlyForecastObject() }
@@ -116,6 +124,5 @@ class HomeFragment : Fragment() {
             }
         }.show()
     }
-
 
 }

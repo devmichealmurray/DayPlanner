@@ -1,21 +1,25 @@
 package com.devmmurray.dayplanner.ui.viewmodel
 
 import android.app.Application
+import android.location.Geocoder
 import android.location.Location
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.devmmurray.dayplanner.data.database.RoomDatabaseClient
+import com.devmmurray.dayplanner.data.model.entity.CityStateEntity
 import com.devmmurray.dayplanner.data.model.entity.HourlyForecastEntity
 import com.devmmurray.dayplanner.data.repository.ApiRepository
 import com.devmmurray.dayplanner.data.repository.DatabaseRepository
 import com.devmmurray.dayplanner.util.JsonProcessing
 import kotlinx.coroutines.launch
+import java.util.*
 
 private const val TAG = "MainActivityViewModel"
 
 open class SplashActivityViewModel(application: Application) : AndroidViewModel(application) {
+    val context = application
 
     /**
      *  Set Up of Database
@@ -30,8 +34,10 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
             .getDbInstance(application).todoTaskDAO()
         val eventDAO = RoomDatabaseClient
             .getDbInstance(application).eventDAO()
+        val cityStateDAO = RoomDatabaseClient
+            .getDbInstance(application).cityStateDAO()
 
-        dbRepo = DatabaseRepository(hourlyForecastDAO, todoTaskDAO, eventDAO)
+        dbRepo = DatabaseRepository(hourlyForecastDAO, todoTaskDAO, eventDAO, cityStateDAO)
 
     }
 
@@ -42,8 +48,8 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
     private val _errorMessage: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val errorMessage: LiveData<String> get() = _errorMessage
 
-    private val _databaseReady: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
-    val databaseReady: LiveData<Boolean> get() = _databaseReady
+    private val _databaseNotReady: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    val databaseNotReady: LiveData<Boolean> get() = _databaseNotReady
 
 
     /**
@@ -52,6 +58,7 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
     fun addLocation(location: Location?) {
         if (location?.latitude != null) {
             getWeatherFromOpenWeather(location.latitude, location.longitude)
+            getCityState(location)
         } else {
             _errorMessage.value = "Could Not Access Location"
         }
@@ -72,7 +79,7 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
                 _errorMessage.value = e.message.toString()
             }
         }
-        _databaseReady.value = false
+        _databaseNotReady.value = false
     }
 
     /**
@@ -91,6 +98,23 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
        }
     }
 
+  private fun getCityState(location: Location) {
+      try {
+          val geoCoder = Geocoder(context, Locale.getDefault())
+          val addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
+          if (!addresses.isNullOrEmpty()) {
+              val city = addresses[0].locality
+              val state = addresses[0].adminArea
+              val cityStateLocation =
+                  CityStateEntity(city = city, state = state)
+              viewModelScope.launch {
+                  dbRepo.addCityState(cityStateLocation)
+              }
+          }
+      } catch (e: Exception) {
+          _errorMessage.value = e.message.toString()
+      }
 
 
+    }
 }

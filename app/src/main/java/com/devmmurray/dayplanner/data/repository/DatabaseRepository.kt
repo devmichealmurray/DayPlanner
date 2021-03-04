@@ -1,8 +1,10 @@
 package com.devmmurray.dayplanner.data.repository
 
+import com.devmmurray.dayplanner.data.database.CityStateDAO
 import com.devmmurray.dayplanner.data.database.EventDAO
 import com.devmmurray.dayplanner.data.database.HourlyForecastDAO
 import com.devmmurray.dayplanner.data.database.TodoTaskDAO
+import com.devmmurray.dayplanner.data.model.entity.CityStateEntity
 import com.devmmurray.dayplanner.data.model.entity.EventEntity
 import com.devmmurray.dayplanner.data.model.entity.HourlyForecastEntity
 import com.devmmurray.dayplanner.data.model.entity.TodoTaskEntity
@@ -11,7 +13,8 @@ import com.devmmurray.dayplanner.data.model.entity.TodoTaskEntity
 class DatabaseRepository(
     private val hourlyForecastDataSource: HourlyForecastDAO,
     private val todoTaskDataSource: TodoTaskDAO,
-    private val eventDataSource: EventDAO
+    private val eventDataSource: EventDAO,
+    private val cityStateDataSource: CityStateDAO
 ) {
 
     // Weather
@@ -40,6 +43,9 @@ class DatabaseRepository(
     suspend fun addEvent(event: EventEntity) =
         eventDataSource.addEvent(event)
 
+    suspend fun updateEvent(event: EventEntity) =
+        eventDataSource.updateEvent(event)
+
     fun getEvents(dateId: String) =
         eventDataSource.getEvents(dateId)
 
@@ -48,5 +54,13 @@ class DatabaseRepository(
 
     suspend fun deleteEvent(id: Long) =
         eventDataSource.deleteEvent(id)
+
+    // City State Location
+
+    suspend fun addCityState(cityState: CityStateEntity) =
+        cityStateDataSource.addCityState(cityState)
+
+    suspend fun getCityState() =
+        cityStateDataSource.getCityState()
 
 }

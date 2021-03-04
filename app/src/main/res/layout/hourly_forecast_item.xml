@@ -7,35 +7,37 @@
         <variable
             name="homeViewModel"
             type="com.devmmurray.dayplanner.ui.viewmodel.HomeViewModel" />
+
         <variable
             name="forecastObject"
-            type="com.devmmurray.dayplanner.data.model.local.HourlyForecasts"/>
+            type="com.devmmurray.dayplanner.data.model.local.HourlyForecasts" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/card_background"
-
-        android:padding="8dp">
+        android:layout_width="100dp"
+        android:layout_height="130dp"
+        android:layout_margin="4dp"
+        android:background="@drawable/card_background">
 
         <TextView
             android:id="@+id/hour"
+            style="@style/LargeTextWhite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="1dp"
+            android:layout_marginEnd="1dp"
+            android:background="@color/yellow_dark"
+            android:gravity="center"
+            android:hint="12 PM"
             android:text="@{forecastObject.time.toString()}"
-            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/hourlyImage"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="2dp"
             android:layout_marginEnd="8dp"
@@ -46,44 +48,46 @@
 
         <TextView
             android:id="@+id/hourlyTemp"
+            style="@style/LargeTextBlack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
+            android:hint="71"
             android:text="@{forecastObject.hourlyTemp.toString()}"
-            android:textColor="@color/black"
-            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/hourlyImage" />
 
         <ImageView
             android:id="@+id/humidity_droplet"
-            android:layout_width="12dp"
-            android:layout_height="12dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="3dp"
-            android:layout_marginEnd="8dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="4dp"
             android:src="@drawable/ic_water_droplet"
-            app:layout_constraintEnd_toEndOf="@id/hourlyDescription"
-            app:layout_constraintHorizontal_bias="0.10"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/hourlyTemp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/hourlyDescription"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/hourlyDescription"
-            android:layout_width="wrap_content"
+            style="@style/SmallTextBlack"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="4dp"
             android:layout_marginBottom="4dp"
+            android:padding="2dp"
+            android:hint="Overcast"
             android:text="@{forecastObject.hourlyWeather.forecastDescription.toString()}"
-            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/humidity_droplet"
-            app:layout_constraintTop_toBottomOf="@id/hourlyTemp" />
+            app:layout_constraintStart_toEndOf="@id/humidity_droplet" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

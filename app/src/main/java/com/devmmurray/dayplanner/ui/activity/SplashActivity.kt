@@ -15,6 +15,7 @@ import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.ui.viewmodel.SplashActivityViewModel
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.intentFor
+import java.util.*
 
 private const val REQ_CODE_PERMISSION = 123
 
@@ -28,21 +29,19 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         checkLocationPermissions()
-        splashViewModel.addLocation(location)
         splashViewModel.deleteOldWeatherData()
-
+        splashViewModel.addLocation(location)
 
         splashViewModel.apply {
             errorMessage.observe(this@SplashActivity, errorObserver)
-            databaseReady.observe(this@SplashActivity, databaseObserver)
+            databaseNotReady.observe(this@SplashActivity, databaseObserver)
         }
     }
+
 
     /**
      *  Live Data Observers
      */
-
-
 
     private val errorObserver = Observer<String> { errorMessage ->
         alert {
@@ -60,6 +59,7 @@ class SplashActivity : AppCompatActivity() {
             startActivity(intentFor<MainActivity>())
         }
     }
+
 
     /**
      *  Permission Request for Location Services
@@ -110,4 +110,5 @@ class SplashActivity : AppCompatActivity() {
             location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
         }
     }
+
 }

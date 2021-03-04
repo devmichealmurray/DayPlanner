@@ -24,7 +24,7 @@ object TimeStampProcessing {
     fun transformDateStringToMillis(timeString: String): Long {
         val sdf = SimpleDateFormat("d-M-yyyy HH:mm")
         val convertDate = sdf.parse(timeString)
-        return convertDate.time
+        return convertDate!!.time
     }
 
     fun todaysDate(): String {
@@ -38,7 +38,7 @@ object TimeStampProcessing {
         return when (flag) {
             TimeFlags.FULL -> SimpleDateFormat("E, MMMM d h:mm a")
             TimeFlags.DAY -> SimpleDateFormat("EEEE")
-            TimeFlags.HOUR -> SimpleDateFormat("hh a")
+            TimeFlags.HOUR -> SimpleDateFormat("h a")
         }
     }
 
