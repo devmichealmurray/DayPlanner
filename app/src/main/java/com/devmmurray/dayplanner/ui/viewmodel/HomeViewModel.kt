@@ -1,6 +1,7 @@
 package com.devmmurray.dayplanner.ui.viewmodel
 
 import android.app.Application
+import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
@@ -9,6 +10,8 @@ import androidx.lifecycle.viewModelScope
 import com.devmmurray.dayplanner.data.model.entity.EventEntity
 import com.devmmurray.dayplanner.data.model.entity.HourlyForecastEntity
 import com.devmmurray.dayplanner.data.model.local.CityStateLocation
+import com.devmmurray.dayplanner.data.model.local.CurrentWeather
+import com.devmmurray.dayplanner.util.time.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
@@ -42,6 +45,9 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
     private val _forecastList by lazy { MutableLiveData<List<HourlyForecastEntity>>() }
     val forecastList: LiveData<List<HourlyForecastEntity>> get() = _forecastList
 
+    private val _currentWeather by lazy { MutableLiveData<CurrentWeather>() }
+    val currentWeather: LiveData<CurrentWeather> get() = _currentWeather
+
     /**
      * Event Live Data
      */
@@ -64,10 +70,11 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
      */
 
     fun getWeatherFromDB() {
-        getWeatherEntitiesFromDB()
+        getHourlyForecastsFromDB()
+        getCurrentWeatherFromDB()
     }
 
-    private fun getWeatherEntitiesFromDB() {
+    private fun getHourlyForecastsFromDB() {
         viewModelScope.launch {
             _weatherProgress.value = true
             try {
@@ -81,9 +88,28 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
                 _errorMessage.value = e.message.toString()
                 _weatherProgress.value = false
             }
-
         }
 
+    }
+
+    private fun getCurrentWeatherFromDB() {
+        viewModelScope.launch {
+            try {
+                dbRepo.getCurrentWeather()
+                    .flowOn(Dispatchers.IO)
+                    .collect {
+                        _currentWeather.value = it.toCurrentWeatherObject()
+
+
+                        val test = it.toCurrentWeatherObject()
+                        Log.d(TAG, "========== Wind Speed: ${test.windSpeed} ==============")
+                        Log.d(TAG, "========== Humidity: ${test.humidity} ==============")
+                        Log.d(TAG, "========== Main Description: ${test.currentWeatherDescription?.mainDescription} ===============")
+                    }
+            } catch (e: Exception) {
+                _errorMessage.value = e.message.toString()
+            }
+        }
     }
 
     fun getEventsFromDB() {
@@ -111,7 +137,7 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
         }
     }
 
-    private fun today() = TimeStampProcessing.todaysDate()
+    private fun today() = TimeStampProcessing.todaysDate(TimeFlags.DATE_ID)
 
     fun getCityState() {
         viewModelScope.launch {

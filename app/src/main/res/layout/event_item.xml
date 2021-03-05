@@ -13,34 +13,49 @@
         android:id="@+id/event_recycler_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
+        android:layout_marginBottom="2dp"
+        android:background="@color/white"
         android:clickable="true"
-        android:background="@drawable/card_background"
-        android:padding="8dp">
+        android:paddingStart="22dp"
+        android:paddingEnd="22dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp">
 
         <TextView
-            android:id="@+id/event_title"
+            android:id="@+id/event_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:text="@{event.title}"
-            android:textColor="@color/black"
-            android:textSize="26sp"
-            app:layout_constraintBottom_toTopOf="@id/event_location_name"
+            android:hint="Fri, March 5 4:30 PM"
+            android:text="@{event.eventTime}"
+            android:textColor="@color/yellow_dark"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@id/event_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/event_title"
+            style="@style/EventHeaderText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="This Is The Event Title"
+            android:text="@{event.title}"
+            app:layout_constraintBottom_toTopOf="@id/event_location_name"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/event_time" />
+
+        <TextView
             android:id="@+id/event_location_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
             android:gravity="start"
+            android:hint="This is the Location Name"
             android:text="@{event.locationName}"
             android:textColor="@color/gray"
             android:textSize="18sp"
-            android:textStyle="italic"
             app:layout_constraintBottom_toTopOf="@id/event_notes"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -52,25 +67,16 @@
             android:layout_height="wrap_content"
             android:gravity="start"
             android:maxLines="2"
+            android:hint="These Are The Notes For This Event"
             android:text="@{event.notes}"
             android:textColor="@color/gray"
             android:textSize="14sp"
+            android:textStyle="italic"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/event_location_name" />
 
-        <TextView
-            android:id="@+id/event_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="end"
-            android:text="@{event.eventTime}"
-            android:textColor="@color/gray"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/event_notes" />
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

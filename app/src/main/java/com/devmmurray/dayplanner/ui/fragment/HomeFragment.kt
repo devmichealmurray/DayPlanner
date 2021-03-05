@@ -1,6 +1,7 @@
 package com.devmmurray.dayplanner.ui.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,14 +10,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.devmmurray.dayplanner.BR
 import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.data.model.entity.EventEntity
 import com.devmmurray.dayplanner.data.model.entity.HourlyForecastEntity
 import com.devmmurray.dayplanner.data.model.local.CityStateLocation
+import com.devmmurray.dayplanner.data.model.local.CurrentWeather
 import com.devmmurray.dayplanner.databinding.FragmentHomeBinding
 import com.devmmurray.dayplanner.ui.adapter.DayPlannerRecyclerView
 import com.devmmurray.dayplanner.ui.viewmodel.HomeViewModel
 import com.devmmurray.dayplanner.util.ListFlags
+import com.devmmurray.dayplanner.util.time.TimeFlags
+import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import org.jetbrains.anko.support.v4.alert
 
 private const val TAG = "Home Fragment"
@@ -43,20 +48,43 @@ class HomeFragment : Fragment() {
             eventsList.observe(viewLifecycleOwner, eventListObserver)
             homeErrorMessage.observe(viewLifecycleOwner, errorObserver)
             cityState.observe(viewLifecycleOwner, cityStateObserver)
+            currentWeather.observe(viewLifecycleOwner, currentWeatherObserver)
         }
-
-        homeBinding.addEvent.setOnClickListener {
-            Navigation.findNavController(homeBinding.addEvent)
-                .navigate(R.id.action_navigation_home_to_addEventFragment)
-        }
-
-
 
         return homeBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        homeBinding.apply {
+            addEventButton.setOnClickListener {
+                Navigation.findNavController(homeBinding.addEventButton)
+                    .navigate(R.id.action_navigation_home_to_addEventFragment)
+            }
+
+            todaysDate.text = TimeStampProcessing.todaysDate(TimeFlags.EVENT)
+
+            more.setOnClickListener {
+                homeBinding.apply {
+                    Log.d(TAG, "============ More Button Pressed ==============")
+                    currentWeatherCard.visibility = View.VISIBLE
+                    more.visibility = View.INVISIBLE
+                    less.visibility = View.VISIBLE
+                }
+
+                less.setOnClickListener {
+                    homeBinding.apply {
+                        Log.d(TAG, "============ Less Button Pressed ==============")
+                        currentWeatherCard.visibility = View.GONE
+                        less.visibility = View.INVISIBLE
+                        more.visibility = View.VISIBLE
+                    }
+                }
+
+
+            }
+        }
 
 
     }
@@ -86,6 +114,12 @@ class HomeFragment : Fragment() {
                 adapter = DayPlannerRecyclerView(forecastList, ListFlags.FORECASTS)
             }
         }
+    }
+
+    private val currentWeatherObserver = Observer<CurrentWeather> {
+        homeBinding.setVariable(BR.currentWeather, it)
+        homeBinding.setVariable(BR.weatherDescription, it.currentWeatherDescription)
+
     }
 
 

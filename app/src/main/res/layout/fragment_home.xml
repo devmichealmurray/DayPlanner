@@ -3,136 +3,376 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+        <variable
+            name="currentWeather"
+            type="com.devmmurray.dayplanner.data.model.local.CurrentWeather" />
+
+        <variable
+            name="weatherDescription"
+            type="com.devmmurray.dayplanner.data.model.local.CurrentWeatherDescription" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/gray"
-        tools:context=".ui.fragment.HomeFragment">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/forecast_card"
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/todays_events"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:background="@color/gray"
+            tools:context=".ui.fragment.HomeFragment">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/forecast_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/todays_outlook"
+                        style="@style/HeaderText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginBottom="4dp"
+                        android:text="@string/today_s_outlook"
+                        app:layout_constraintBottom_toTopOf="@id/hourly_forecast_recycler"
+                        app:layout_constraintEnd_toStartOf="@id/city_state"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/city_state"
+                        style="@style/SmallTextTeal"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginEnd="8dp"
+                        android:gravity="end"
+                        android:hint="Fort Worth, Texas"
+                        app:layout_constraintBottom_toTopOf="@id/hourly_forecast_recycler"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/todays_outlook"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/hourly_forecast_recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="2dp"
+                        android:paddingBottom="4dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <ProgressBar
+                        android:id="@+id/forecast_progress_bar"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="visible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/todays_outlook" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/weather_n_buttons_container"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/forecast_card">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/todays_outlook"
-                    style="@style/HeaderText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginBottom="4dp"
-                    android:text="@string/today_s_outlook"
-                    app:layout_constraintEnd_toStartOf="@id/city_state"
-                    app:layout_constraintBottom_toTopOf="@id/hourly_forecast_recycler"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/city_state"
-                    style="@style/SmallTextTeal"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="8dp"
-                    android:gravity="end"
-                    android:hint="Fort Worth, Texas"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/todays_outlook"
-                    app:layout_constraintBottom_toTopOf="@id/hourly_forecast_recycler"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/hourly_forecast_recycler"
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/current_weather_card"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="2dp"
-                    android:visibility="invisible"
+                    android:layout_height="wrap_content"
+                    android:elevation="4dp"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/todays_outlook" />
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <ProgressBar
-                    android:id="@+id/forecast_progress_bar"
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/current_weather_constraint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/current_time"
+                            style="@style/LargeTextWhite"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/yellow_dark"
+                            android:hint="Fri, March 5 10:36 AM"
+                            android:padding="4dp"
+                            android:text="@{currentWeather.time}"
+                            android:textAlignment="center"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/sunrise"
+                            style="@style/CurrentWeatherText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="6 AM"
+                            android:text="@{currentWeather.sunrise}"
+                            app:layout_constraintTop_toBottomOf="@id/current_time" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/sunset"
+                            style="@style/CurrentWeatherText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="7 PM"
+                            android:text="@{currentWeather.sunset}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/sunrise" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/temp"
+                            style="@style/CurrentWeatherText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="70"
+                            android:text="@{currentWeather.temp}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/sunset" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/feels"
+                            style="@style/CurrentWeatherText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="55"
+                            android:text="@{currentWeather.feels}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/temp" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/humidity"
+                            style="@style/CurrentWeatherText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="42%"
+                            android:text="@{currentWeather.humidity}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/feels" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/wind_speed"
+                            style="@style/CurrentWeatherText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="9.22"
+                            android:text="@{currentWeather.windSpeed.toString()}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/humidity" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/current_weather_main_description"
+                            style="@style/CurrentWeatherText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Clouds"
+                            android:text="@{weatherDescription.mainDescription}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/humidity" />
+
+                        <com.google.android.material.textview.MaterialTextView
+                            android:id="@+id/current_weather_description"
+                            style="@style/CurrentWeatherText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Few Clouds"
+                            android:text="@{weatherDescription.description}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/current_weather_main_description" />
+
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/more_less_button_card"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/todays_outlook" />
+                    app:layout_constraintTop_toBottomOf="@id/current_weather_card">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/more"
+                            style="@style/SubHeaderText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="8dp"
+                            android:clickable="true"
+                            android:padding="4dp"
+                            android:text="More"
+                            android:textAlignment="center"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/less"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/less"
+                            style="@style/SubHeaderText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="8dp"
+                            android:clickable="true"
+                            android:padding="4dp"
+                            android:text="Less"
+                            android:textAlignment="center"
+                            android:visibility="invisible"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/more"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </com.google.android.material.card.MaterialCardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </com.google.android.material.card.MaterialCardView>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/todays_events"
-            style="@style/HeaderText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/today_s_events"
-            app:layout_constraintEnd_toStartOf="@id/add_event"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/forecast_card" />
-
-        <ImageButton
-            android:id="@+id/add_event"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:src="@drawable/ic_baseline_add_24"
-            app:layout_constraintBottom_toTopOf="@id/todays_events_recycler"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/todays_events"
-            app:layout_constraintTop_toBottomOf="@id/forecast_card" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/todays_events_recycler"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="60dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/todays_events" />
-
-        <ProgressBar
-            android:id="@+id/event_recycler_progress_bar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="40dp"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/todays_events" />
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/no_events_textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="20dp"
-            android:text="No Events Currently Scheduled"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/todays_events" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/events_header_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_marginBottom="2dp"
+                android:background="@color/white"
+                app:layout_constraintBottom_toTopOf="@id/events_recycler_constraint"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/weather_n_buttons_container">
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/todays_events"
+                    style="@style/HeaderText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/today_s_events"
+                    app:layout_constraintEnd_toStartOf="@id/todays_date"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/todays_date"
+                    style="@style/SmallTextTeal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="Friday, March 5"
+                    android:padding="4dp"
+                    android:layout_margin="4dp"
+                    app:layout_constraintBottom_toTopOf="@id/add_event_button"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/todays_events"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/add_event_button"
+                    style="@style/SubHeaderText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:text="Add New Event"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/todays_events"
+                    app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/events_recycler_constraint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/events_header_container">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/todays_events_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="60dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ProgressBar
+                    android:id="@+id/event_recycler_progress_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="40dp"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/no_events_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:text="No Events Currently Scheduled"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 </layout>

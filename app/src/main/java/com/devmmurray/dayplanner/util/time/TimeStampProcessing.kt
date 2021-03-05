@@ -27,21 +27,23 @@ object TimeStampProcessing {
         return convertDate!!.time
     }
 
-    fun todaysDate(): String {
+    fun todaysDate(flag: TimeFlags): String {
         val time = System.currentTimeMillis()
-        val sdf = SimpleDateFormat("M-d-yyyy")
+        val sdf = stringFormatter(flag)
         return sdf.format(time)
     }
 
     private fun stringFormatter(flag: TimeFlags): SimpleDateFormat {
 
         return when (flag) {
-            TimeFlags.FULL -> SimpleDateFormat("E, MMMM d h:mm a")
+            TimeFlags.FULL -> SimpleDateFormat("E, MMMM d, h:mm a")
             TimeFlags.DAY -> SimpleDateFormat("EEEE")
             TimeFlags.HOUR -> SimpleDateFormat("h a")
+            TimeFlags.EVENT -> SimpleDateFormat("EEEE, MMMM d")
+            TimeFlags.DATE_ID -> SimpleDateFormat("M-d-yyyy")
+
         }
     }
-
 
 
 }

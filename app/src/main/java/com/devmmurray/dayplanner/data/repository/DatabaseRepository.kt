@@ -1,23 +1,18 @@
 package com.devmmurray.dayplanner.data.repository
 
-import com.devmmurray.dayplanner.data.database.CityStateDAO
-import com.devmmurray.dayplanner.data.database.EventDAO
-import com.devmmurray.dayplanner.data.database.HourlyForecastDAO
-import com.devmmurray.dayplanner.data.database.TodoTaskDAO
-import com.devmmurray.dayplanner.data.model.entity.CityStateEntity
-import com.devmmurray.dayplanner.data.model.entity.EventEntity
-import com.devmmurray.dayplanner.data.model.entity.HourlyForecastEntity
-import com.devmmurray.dayplanner.data.model.entity.TodoTaskEntity
+import com.devmmurray.dayplanner.data.database.*
+import com.devmmurray.dayplanner.data.model.entity.*
 
 
 class DatabaseRepository(
     private val hourlyForecastDataSource: HourlyForecastDAO,
+    private val currentWeatherDataSource: CurrentWeatherDAO,
     private val todoTaskDataSource: TodoTaskDAO,
     private val eventDataSource: EventDAO,
     private val cityStateDataSource: CityStateDAO
 ) {
 
-    // Weather
+    // Hourly Weather
     suspend fun addHourlyForecasts(forecast: HourlyForecastEntity) =
         hourlyForecastDataSource.addHourlyForecasts(forecast)
 
@@ -26,6 +21,16 @@ class DatabaseRepository(
 
     suspend fun deleteOldHourlyForecasts() =
         hourlyForecastDataSource.deleteOldHourlyForecasts()
+
+    // Current Weather
+    suspend fun addCurrentWeather(weather: CurrentWeatherEntity) =
+        currentWeatherDataSource.addCurrentWeather(weather)
+
+    fun getCurrentWeather() =
+        currentWeatherDataSource.getCurrentWeather()
+
+    suspend fun deleteOldWeather() =
+        currentWeatherDataSource.deleteOldWeather()
 
 
     // To Do Tasks
