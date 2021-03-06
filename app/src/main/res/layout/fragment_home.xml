@@ -16,13 +16,14 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/light_gray">
 
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/gray"
+            android:background="@color/light_gray"
             tools:context=".ui.fragment.HomeFragment">
 
             <com.google.android.material.card.MaterialCardView
@@ -97,8 +98,8 @@
                 android:id="@+id/weather_n_buttons_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginBottom="1dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/forecast_card">
@@ -239,15 +240,13 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/more"
-                            style="@style/SubHeaderText"
+                            style="@style/PrimaryButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginTop="8dp"
                             android:layout_marginBottom="8dp"
-                            android:clickable="true"
                             android:padding="4dp"
                             android:text="More"
-                            android:textAlignment="center"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/less"
@@ -256,15 +255,13 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/less"
-                            style="@style/SubHeaderText"
+                            style="@style/PrimaryButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginTop="8dp"
                             android:layout_marginBottom="8dp"
-                            android:clickable="true"
                             android:padding="4dp"
                             android:text="Less"
-                            android:textAlignment="center"
                             android:visibility="invisible"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@id/more"
@@ -281,7 +278,7 @@
                 android:id="@+id/events_header_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="1dp"
                 android:layout_marginBottom="2dp"
                 android:background="@color/white"
                 app:layout_constraintBottom_toTopOf="@id/events_recycler_constraint"
@@ -308,9 +305,9 @@
                     style="@style/SmallTextTeal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
                     android:hint="Friday, March 5"
                     android:padding="4dp"
-                    android:layout_margin="4dp"
                     app:layout_constraintBottom_toTopOf="@id/add_event_button"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/todays_events"
@@ -318,15 +315,15 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/add_event_button"
-                    style="@style/SubHeaderText"
+                    style="@style/PrimaryButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
                     android:text="Add New Event"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/todays_events"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/todays_events" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -344,7 +341,8 @@
                     android:id="@+id/todays_events_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="60dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -362,6 +360,7 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/no_events_textView"
+                    style="@style/SmallTextBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"

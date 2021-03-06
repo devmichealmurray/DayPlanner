@@ -1,7 +1,6 @@
 package com.devmmurray.dayplanner.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,36 +57,13 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         homeBinding.apply {
-            addEventButton.setOnClickListener {
-                Navigation.findNavController(homeBinding.addEventButton)
-                    .navigate(R.id.action_navigation_home_to_addEventFragment)
-            }
-
+            addEventButton.setOnClickListener { addEventNavigation() }
+            more.setOnClickListener { moreButtonFunction() }
+            less.setOnClickListener { lessButtonFunction() }
             todaysDate.text = TimeStampProcessing.todaysDate(TimeFlags.EVENT)
-
-            more.setOnClickListener {
-                homeBinding.apply {
-                    Log.d(TAG, "============ More Button Pressed ==============")
-                    currentWeatherCard.visibility = View.VISIBLE
-                    more.visibility = View.INVISIBLE
-                    less.visibility = View.VISIBLE
-                }
-
-                less.setOnClickListener {
-                    homeBinding.apply {
-                        Log.d(TAG, "============ Less Button Pressed ==============")
-                        currentWeatherCard.visibility = View.GONE
-                        less.visibility = View.INVISIBLE
-                        more.visibility = View.VISIBLE
-                    }
-                }
-
-
-            }
         }
-
-
     }
+
 
     private val cityStateObserver = Observer<CityStateLocation> {
         homeBinding.cityState.text = "${it.city}, ${it.state}"
@@ -157,6 +133,32 @@ class HomeFragment : Fragment() {
                 dialog.dismiss()
             }
         }.show()
+    }
+
+    /**
+     * Click Listener Functionality
+     * Move to Binding
+     */
+
+    private fun addEventNavigation() {
+        Navigation.findNavController(homeBinding.addEventButton)
+            .navigate(R.id.action_navigation_home_to_addEventFragment)
+    }
+
+    private fun moreButtonFunction() {
+        homeBinding.apply {
+            currentWeatherCard.visibility = View.VISIBLE
+            more.visibility = View.INVISIBLE
+            less.visibility = View.VISIBLE
+        }
+    }
+
+    private fun lessButtonFunction() {
+        homeBinding.apply {
+            currentWeatherCard.visibility = View.GONE
+            less.visibility = View.INVISIBLE
+            more.visibility = View.VISIBLE
+        }
     }
 
 }

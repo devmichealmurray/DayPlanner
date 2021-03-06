@@ -27,6 +27,12 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+    <style name = "SmallHeaderText">
+        <item name="fontFamily">@font/swansea_bold</item>
+        <item name="android:textColor">@color/yellow_dark</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name = "LargeText">
         <item name="fontFamily">@font/swansea_q3pd</item>
         <item name="android:gravity">start</item>
@@ -45,12 +51,6 @@
         <item name="android:gravity">start</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name = "SmallText">
-        <item name="fontFamily">@font/swansea_q3pd</item>
-        <item name="android:gravity">start</item>
-        <item name="android:textSize">14sp</item>
     </style>
 
     <style name = "SmallTextBlack">
@@ -94,7 +94,15 @@
         <item name="fontFamily">@font/pacifico_reg</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">28sp</item>
-        <item name="android:textColor">@color/teal_200</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="PrimaryButton">
+        <item name="android:textColor">@color/yellow_dark</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="fontFamily">@font/swansea_q3pd</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
 </resources>

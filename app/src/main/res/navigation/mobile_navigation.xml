@@ -42,6 +42,10 @@
         android:name="com.devmmurray.dayplanner.ui.fragment.AddEventFragment"
         android:label="fragment_add_event"
         tools:layout="@layout/fragment_add_event">
+        <argument
+            android:name="event_id"
+            android:defaultValue="0L"
+            app:argType="long" />
         <action
             android:id="@+id/action_addEventFragment_to_navigation_home"
             app:destination="@id/navigation_home" />
@@ -56,5 +60,8 @@
             android:name="event_id"
             android:defaultValue="0L"
             app:argType="long" />
+        <action
+            android:id="@+id/action_eventFragment_to_addEventFragment"
+            app:destination="@id/addEventFragment" />
     </dialog>
 </navigation>

@@ -4,72 +4,107 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="todoFragment"
             type="com.devmmurray.dayplanner.ui.fragment.TodoFragment" />
     </data>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.fragment.TodoFragment">
 
-        <TextView
-            android:id="@+id/todo_header_text"
-            style="@style/HeaderText"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:fontFamily="@font/typewriter"
-            android:text="@string/to_do_list"
-            android:textSize="34sp"
-            app:layout_constraintBottom_toTopOf="@id/add_task_edittext"
+            android:layout_height="150dp"
+            android:background="@drawable/todo_list_img"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/add_task_edittext"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:background="@drawable/card_background"
-            android:drawableEnd="@drawable/ic_baseline_add_24"
-            android:hint="@string/add_new_item"
-            android:padding="8dp"
-            app:layout_constraintEnd_toStartOf="@id/return_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/todo_header_text" />
-
-        <ImageView
-            android:id="@+id/return_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:clickable="true"
-            android:src="@drawable/ic_baseline_arrow_forward_24"
-            app:layout_constraintBottom_toTopOf="@id/todo_recycler"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/add_task_edittext"
-            app:layout_constraintTop_toBottomOf="@id/todo_header_text" />
+            app:layout_constraintTop_toTopOf="parent">
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/todo_recycler"
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="58dp"
-            android:visibility="invisible"
+            android:layout_height="match_parent"
+            android:layout_marginTop="145dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_task_edittext" />
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+
+                <TextView
+                    android:id="@+id/todo_header_text"
+                    style="@style/HeaderText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:fontFamily="@font/typewriter"
+                    android:text="@string/to_do_list"
+                    android:textSize="34sp"
+                    app:layout_constraintBottom_toTopOf="@id/add_task_edittext"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/add_task_edittext"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:background="@drawable/add_todo_edittext_background"
+                    android:drawableEnd="@drawable/ic_baseline_add_24"
+                    android:hint="@string/add_new_item"
+                    android:padding="12dp"
+                    app:layout_constraintEnd_toStartOf="@id/return_button"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/todo_header_text" />
+
+                <ImageView
+                    android:id="@+id/return_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:clickable="true"
+                    android:src="@drawable/ic_baseline_arrow_forward_24"
+                    app:layout_constraintBottom_toTopOf="@+id/todo_recycler"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/add_task_edittext"
+                    app:layout_constraintTop_toBottomOf="@id/todo_header_text" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/todo_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/add_task_edittext"
+                    app:layout_constraintVertical_bias="0.0" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

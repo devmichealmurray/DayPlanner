@@ -17,20 +17,41 @@ class AddEventViewModel(application: Application) : SplashActivityViewModel(appl
     private val _returnEvent by lazy { MutableLiveData<EventEntity>() }
     val returnEvent: LiveData<EventEntity> get() = _returnEvent
 
+    private val _errorMessage by lazy { MutableLiveData<String>() }
+    val addEventErrorMessage: LiveData<String> get() = _errorMessage
+
+    fun eventChecker(id: Long) {
+        if (id > 0L) {
+            getEventById(id)
+        }
+    }
+
     fun prepareEvent(
-        dateId: String, title: String, date: Long, locationName: String,
+        uid: Long, dateId: String, title: String, date: Long, locationName: String,
         address: String, notes: String
     ) {
-        val event = EventEntity(
-            dateId = dateId,
-            title = title,
-            eventTime = date,
-            locationName = locationName,
-            address = address,
-            notes = notes,
-        )
-        saveEventToDB(event)
-
+        if (uid > 0L) {
+            val event = EventEntity(
+                uid = uid,
+                dateId = dateId,
+                title = title,
+                eventTime = date,
+                locationName = locationName,
+                address = address,
+                notes = notes,
+            )
+            updateEvent(event)
+        } else {
+            val event = EventEntity(
+                dateId = dateId,
+                title = title,
+                eventTime = date,
+                locationName = locationName,
+                address = address,
+                notes = notes,
+            )
+            saveEventToDB(event)
+        }
     }
 
     private fun saveEventToDB(event: EventEntity) {
@@ -38,11 +59,7 @@ class AddEventViewModel(application: Application) : SplashActivityViewModel(appl
             try {
                 dbRepo.addEvent(event)
             } catch (e: Exception) {
-                /**
-                 *
-                 * Do Something Here
-                 *
-                 */
+                _errorMessage.value = e.message.toString()
             }
         }
     }
@@ -52,30 +69,19 @@ class AddEventViewModel(application: Application) : SplashActivityViewModel(appl
             try {
                 dbRepo.updateEvent(event)
             } catch (e: Exception) {
-                /**
-                 *
-                 * Do Something Here
-                 *
-                 */
+                _errorMessage.value = e.message.toString()
             }
         }
     }
 
-    fun getEventById(id: Long) {
+    private fun getEventById(id: Long) {
         viewModelScope.launch {
             try {
                 dbRepo.getEventById(id)
                     .flowOn(Dispatchers.IO)
                     .collect { _returnEvent.value = it }
-
             } catch (e: Exception) {
-
-                /**
-                 *
-                 * Do Something with the error
-                 *
-                 */
-
+                _errorMessage.value = e.message.toString()
             }
         }
     }

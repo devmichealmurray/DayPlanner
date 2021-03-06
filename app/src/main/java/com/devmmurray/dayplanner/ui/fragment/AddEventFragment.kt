@@ -12,13 +12,18 @@ import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import com.devmmurray.dayplanner.R
+import com.devmmurray.dayplanner.data.model.entity.EventEntity
 import com.devmmurray.dayplanner.databinding.FragmentAddEventBinding
 import com.devmmurray.dayplanner.ui.viewmodel.AddEventViewModel
 import com.devmmurray.dayplanner.util.time.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
+import org.jetbrains.anko.support.v4.alert
 import java.util.*
+
 
 private const val TAG = "AddEventFragment"
 
@@ -29,6 +34,7 @@ class AddEventFragment :
 
     private lateinit var addEventBinding: FragmentAddEventBinding
     private val addEventViewModel: AddEventViewModel by viewModels()
+    private val args: AddEventFragmentArgs by navArgs()
 
     var savedDay = 0
     var savedMonth = 0
@@ -41,19 +47,63 @@ class AddEventFragment :
     ): View {
         addEventBinding = FragmentAddEventBinding.inflate(inflater, container, false)
 
+        addEventViewModel.apply {
+            eventChecker(args.eventId)
+            returnEvent.observe(viewLifecycleOwner, returnEventObserver)
+            addEventErrorMessage.observe(viewLifecycleOwner, errorMessageObserver)
+        }
+
         return addEventBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //  Button ClickListeners
         addEventBinding.apply {
             eventDatePicker.setOnClickListener { navigateToDatePicker() }
             cancelButton.setOnClickListener { cancelButtonNavigation() }
             saveAction.setOnClickListener { saveActionNavigation() }
         }
     }
+
+
+
+    /**
+     *  Observers
+     */
+
+    private val errorMessageObserver = Observer<String> { errorMessage ->
+        alert {
+            title = getString(R.string.error_alert_dialog)
+            message = errorMessage
+            isCancelable = false
+            positiveButton(getString(R.string.error_alert_okay)) { dialog ->
+                dialog.dismiss()
+            }
+        }.show()
+    }
+
+    private val returnEventObserver = Observer<EventEntity> { event ->
+        addEventBinding.apply {
+            addEventTextView.text = "Update Event"
+            saveAction.text = "Update"
+            eventTitle.setText(event.title)
+            eventDatePicker.text = event.eventTime?.let { eventTime ->
+                TimeStampProcessing.transformSystemTime(
+                    eventTime, TimeFlags.FULL
+                )
+            }
+            event.eventTime?.let { savedMillis = it }
+            eventLocationName.setText(event.locationName)
+            eventLocationAddress.setText(event.address)
+            eventNotes.setText(event.notes)
+        }
+    }
+
+
+    /**
+     * Date & Time Picker Functionality
+     */
 
     private fun navigateToDatePicker() {
         hideKeyboard()
@@ -63,7 +113,6 @@ class AddEventFragment :
         val day = calendar.get(Calendar.DAY_OF_MONTH)
 
         context?.let { DatePickerDialog(it, this, year, month, day).show() }
-
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
@@ -91,13 +140,27 @@ class AddEventFragment :
         setDatePickerTime(dateMillis)
     }
 
+    private fun setDatePickerTime(millis: Long) {
+        addEventBinding.eventDatePicker.text =
+            millis.let { TimeStampProcessing.transformSystemTime(it, TimeFlags.FULL) }
+    }
+
+
+    /**
+     * Button Functionality
+     */
+
     private fun cancelButtonNavigation() {
         Navigation.findNavController(addEventBinding.cancelButton)
             .navigate(R.id.action_addEventFragment_to_navigation_home)
     }
 
     private fun saveActionNavigation() {
-        val dateId = "$savedMonth-$savedDay-$savedYear"
+        val dateId = if (savedYear == 0) {
+            TimeStampProcessing.transformSystemTime(savedMillis, TimeFlags.DATE_ID)
+        } else {
+            "$savedMonth-$savedDay-$savedYear"
+        }
         val title = addEventBinding.eventTitle.text.toString().capitalize(Locale.ROOT)
         val date = savedMillis
         val locationName =
@@ -105,18 +168,12 @@ class AddEventFragment :
         val locationAddress = addEventBinding.eventLocationAddress.text.toString()
         val notes = addEventBinding.eventNotes.text.toString().capitalize(Locale.ROOT)
 
-            addEventViewModel.prepareEvent(
-                dateId, title, date, locationName, locationAddress, notes
-            )
+        addEventViewModel.prepareEvent(
+            args.eventId, dateId, title, date, locationName, locationAddress, notes
+        )
 
         Navigation.findNavController(addEventBinding.saveAction)
             .navigate(R.id.action_addEventFragment_to_navigation_home)
-    }
-
-
-    private fun setDatePickerTime(millis: Long) {
-        addEventBinding.eventDatePicker.text =
-            millis.let { TimeStampProcessing.transformSystemTime(it, TimeFlags.FULL) }
     }
 
     private fun hideKeyboard() {

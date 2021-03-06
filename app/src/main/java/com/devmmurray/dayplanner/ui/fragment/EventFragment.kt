@@ -40,7 +40,7 @@ class EventFragment : DialogFragment() {
         })
 
         eventBinding.deleteEvent.setOnClickListener { deleteEvent(id) }
-        eventBinding.updateEvent.setOnClickListener { modifyEvent(id) }
+        eventBinding.updateEvent.setOnClickListener { updateEvent(id) }
 
     }
 
@@ -48,10 +48,8 @@ class EventFragment : DialogFragment() {
         eventBinding.setVariable(BR.event, event)
 
         eventBinding.apply {
-
             directionsButton
                 .setOnClickListener { event.address?.let { it1 -> mapsIntent(it1) } }
-
             shareEvent.setOnClickListener {
                 shareEvent(
                     event.title, event.locationName, event.address, event.eventTime
@@ -59,7 +57,6 @@ class EventFragment : DialogFragment() {
             }
         }
     }
-
 
     private fun mapsIntent(address: String) {
         val gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(address))
@@ -83,11 +80,14 @@ class EventFragment : DialogFragment() {
 
     private fun deleteEvent(id: Long) {
         eventViewModel.deleteEvent(id)
-        Navigation.findNavController(eventBinding.root).popBackStack()
+        dismiss()
     }
 
-    private fun modifyEvent(id: Long) {
-
+    private fun updateEvent(id: Long) {
+        val directions = EventFragmentDirections.actionEventFragmentToAddEventFragment(id)
+        parentFragment?.view?.let {
+            Navigation.findNavController(it).navigate(directions)
+        }
     }
 
 }

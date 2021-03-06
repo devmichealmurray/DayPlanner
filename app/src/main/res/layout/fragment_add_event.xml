@@ -15,7 +15,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/add_event_textView"
@@ -35,7 +36,10 @@
             android:id="@+id/event_details_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:paddingBottom="40dp"
+            android:background="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_event_textView">
@@ -133,7 +137,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/cancel_button"
-                style="@style/SubHeaderText"
+                style="@style/PrimaryButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -150,7 +154,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/save_action"
-                style="@style/SubHeaderText"
+                style="@style/PrimaryButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
