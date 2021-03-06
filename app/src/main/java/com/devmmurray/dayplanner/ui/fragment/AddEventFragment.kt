@@ -1,18 +1,19 @@
 package com.devmmurray.dayplanner.ui.fragment
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import androidx.fragment.app.Fragment
+import android.widget.DatePicker
+import android.widget.TimePicker
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
-import androidx.navigation.fragment.navArgs
-import com.devmmurray.dayplanner.BR
 import com.devmmurray.dayplanner.R
-import com.devmmurray.dayplanner.data.model.local.Event
 import com.devmmurray.dayplanner.databinding.FragmentAddEventBinding
 import com.devmmurray.dayplanner.ui.viewmodel.AddEventViewModel
 import com.devmmurray.dayplanner.util.time.TimeFlags
@@ -21,25 +22,24 @@ import java.util.*
 
 private const val TAG = "AddEventFragment"
 
-class AddEventFragment : Fragment() {
+class AddEventFragment :
+    DialogFragment(),
+    DatePickerDialog.OnDateSetListener,
+    TimePickerDialog.OnTimeSetListener {
 
     private lateinit var addEventBinding: FragmentAddEventBinding
     private val addEventViewModel: AddEventViewModel by viewModels()
-    private val args: AddEventFragmentArgs by navArgs()
+
+    var savedDay = 0
+    var savedMonth = 0
+    var savedYear = 0
+    var savedMillis: Long = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         addEventBinding = FragmentAddEventBinding.inflate(inflater, container, false)
-
-        setDatePickerTime()
-        getEvent(args.eventId)
-
-        addEventViewModel.returnEvent.observe(viewLifecycleOwner, {
-            val event = it.toEventObject()
-            bindEvent(event)
-        })
 
         return addEventBinding.root
     }
@@ -55,45 +55,40 @@ class AddEventFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        bindOnResume()
-    }
-
-    private fun getEvent(id: Long) {
-        if (id > 0L) addEventViewModel.getEventById(id)
-    }
-
-
-    private fun bindEvent(event: Event) {
-        addEventBinding.setVariable(BR.event, event)
-//        eventBinding.eventLocationAddress.setOnClickListener { event.address?.let { it1 -> mapsIntent(it1) } }
-//        eventBinding.shareEvent.setOnClickListener {
-//            shareEvent(
-//                event.title, event.locationName, event.address, event.eventTime
-//            ) }
-//        addEventBinding.addEventTextView.text = "Event"
-//        addEventBinding.saveAction.text = "Update"
-    }
-
     private fun navigateToDatePicker() {
         hideKeyboard()
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
 
-        val title = addEventBinding.eventTitle.text.toString()
-        val location = addEventBinding.eventLocationName.text.toString()
-        val address = addEventBinding.eventLocationAddress.text.toString()
-        val notes = addEventBinding.eventNotes.text.toString()
+        context?.let { DatePickerDialog(it, this, year, month, day).show() }
 
-        // Using safe args to persist any info that was previously entered
-        val directions = AddEventFragmentDirections
-            .actionAddEventFragmentToDatePickerFragment(
-                title = title,
-                location = location,
-                address = address,
-                notes = notes
-            )
-        Navigation.findNavController(addEventBinding.eventDatePicker)
-            .navigate(directions)
+    }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        savedDay = dayOfMonth
+        savedMonth = month + 1
+        savedYear = year
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        TimePickerDialog(context, this, hour, minute, true).show()
+    }
+
+    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, savedYear)
+        calendar.set(Calendar.MONTH, savedMonth)
+        calendar.set(Calendar.DAY_OF_MONTH, savedDay)
+        calendar.set(Calendar.HOUR, hourOfDay)
+        calendar.set(Calendar.MINUTE, minute)
+
+        val dateMillis = TimeStampProcessing
+            .transformDateStringToMillis("$savedDay-$savedMonth-$savedYear $hourOfDay:$minute")
+        savedMillis = dateMillis
+        setDatePickerTime(dateMillis)
     }
 
     private fun cancelButtonNavigation() {
@@ -102,42 +97,26 @@ class AddEventFragment : Fragment() {
     }
 
     private fun saveActionNavigation() {
-        val eventId = args.eventId
-        val dateId = args.dateId
+        val dateId = "$savedMonth-$savedDay-$savedYear"
         val title = addEventBinding.eventTitle.text.toString().capitalize(Locale.ROOT)
-        val date = args.datePickerTime
+        val date = savedMillis
         val locationName =
             addEventBinding.eventLocationName.text.toString().capitalize(Locale.ROOT)
         val locationAddress = addEventBinding.eventLocationAddress.text.toString()
         val notes = addEventBinding.eventNotes.text.toString().capitalize(Locale.ROOT)
 
             addEventViewModel.prepareEvent(
-                eventId, dateId, title, date, locationName, locationAddress, notes
+                dateId, title, date, locationName, locationAddress, notes
             )
 
-        Navigation.findNavController(addEventBinding.cancelButton)
+        Navigation.findNavController(addEventBinding.saveAction)
             .navigate(R.id.action_addEventFragment_to_navigation_home)
     }
 
-    private fun bindOnResume() {
-        val event = Event(
-            id = args.eventId,
-            dateId = args.dateId,
-            title = args.title,
-            locationName = args.location,
-            address = args.address,
-            eventTime = args.datePickerTime.let {
-                TimeStampProcessing.transformSystemTime(it, TimeFlags.FULL)
-            },
-            notes = args.notes
-        )
-        bindEvent(event)
-    }
 
-    private fun setDatePickerTime() {
-        val date: Long = System.currentTimeMillis()
+    private fun setDatePickerTime(millis: Long) {
         addEventBinding.eventDatePicker.text =
-            date.let { TimeStampProcessing.transformSystemTime(it, TimeFlags.FULL) }
+            millis.let { TimeStampProcessing.transformSystemTime(it, TimeFlags.FULL) }
     }
 
     private fun hideKeyboard() {
@@ -145,6 +124,7 @@ class AddEventFragment : Fragment() {
             context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view?.windowToken, 0)
     }
+
 
 }
 

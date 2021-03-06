@@ -18,37 +18,19 @@ class AddEventViewModel(application: Application) : SplashActivityViewModel(appl
     val returnEvent: LiveData<EventEntity> get() = _returnEvent
 
     fun prepareEvent(
-        eventId: Long,
-        dateId: String,
-        title: String,
-        date: Long,
-        locationName: String,
-        address: String,
-        notes: String
+        dateId: String, title: String, date: Long, locationName: String,
+        address: String, notes: String
     ) {
+        val event = EventEntity(
+            dateId = dateId,
+            title = title,
+            eventTime = date,
+            locationName = locationName,
+            address = address,
+            notes = notes,
+        )
+        saveEventToDB(event)
 
-        if (eventId > 0L) {
-            val event = EventEntity(
-                uid = eventId,
-                dateId = dateId,
-                title = title,
-                eventTime = date,
-                locationName = locationName,
-                address = address,
-                notes = notes,
-            )
-            updateEvent(event)
-        } else {
-            val event = EventEntity(
-                dateId = dateId,
-                title = title,
-                eventTime = date,
-                locationName = locationName,
-                address = address,
-                notes = notes,
-            )
-            saveEventToDB(event)
-        }
     }
 
     private fun saveEventToDB(event: EventEntity) {

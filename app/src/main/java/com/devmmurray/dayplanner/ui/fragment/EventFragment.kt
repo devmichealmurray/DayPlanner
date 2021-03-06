@@ -6,18 +6,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.devmmurray.dayplanner.BR
-import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.data.model.local.Event
 import com.devmmurray.dayplanner.databinding.FragmentEventBinding
 import com.devmmurray.dayplanner.ui.viewmodel.EventViewModel
-import org.jetbrains.anko.backgroundColor
 
-class EventFragment : Fragment() {
+class EventFragment : DialogFragment() {
 
     private val eventViewModel: EventViewModel by viewModels()
     private lateinit var eventBinding: FragmentEventBinding
@@ -48,11 +46,18 @@ class EventFragment : Fragment() {
 
     private fun bindEvent(event: Event) {
         eventBinding.setVariable(BR.event, event)
-        eventBinding.eventLocationAddress.setOnClickListener { event.address?.let { it1 -> mapsIntent(it1) } }
-        eventBinding.shareEvent.setOnClickListener {
-            shareEvent(
-                event.title, event.locationName, event.address, event.eventTime
-            ) }
+
+        eventBinding.apply {
+
+            directionsButton
+                .setOnClickListener { event.address?.let { it1 -> mapsIntent(it1) } }
+
+            shareEvent.setOnClickListener {
+                shareEvent(
+                    event.title, event.locationName, event.address, event.eventTime
+                )
+            }
+        }
     }
 
 
@@ -82,11 +87,7 @@ class EventFragment : Fragment() {
     }
 
     private fun modifyEvent(id: Long) {
-        eventBinding.saveButton.visibility = View.VISIBLE
-        eventBinding.eventTitle.backgroundColor = R.color.white
-        eventBinding.eventLocationName.backgroundColor = R.color.white
-        eventBinding.eventLocationAddress.backgroundColor = R.color.white
-        eventBinding.eventNotes.backgroundColor = R.color.white
+
     }
 
 }

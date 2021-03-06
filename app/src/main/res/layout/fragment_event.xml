@@ -138,6 +138,7 @@
 
         <Button
             android:id="@+id/delete_event"
+            style="@style/SubHeaderText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="75dp"
@@ -151,11 +152,12 @@
 
         <Button
             android:id="@+id/update_event"
+            style="@style/SubHeaderText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
             android:layout_marginBottom="60dp"
-            android:text="Modify"
+            android:text="Update"
             app:layout_constraintBaseline_toBaselineOf="@+id/share_event"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/share_event"
@@ -163,6 +165,7 @@
 
         <Button
             android:id="@+id/share_event"
+            style="@style/SubHeaderText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
@@ -173,13 +176,13 @@
             app:layout_constraintStart_toEndOf="@+id/update_event" />
 
         <Button
-            android:id="@+id/save_button"
+            android:id="@+id/directions_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="24dp"
             android:backgroundTint="@color/teal_200"
-            android:text="Save Changes"
-            android:visibility="invisible"
+            android:text="Directions"
+            android:visibility="visible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toTopOf="@id/share_event"
             app:layout_constraintEnd_toEndOf="parent" />

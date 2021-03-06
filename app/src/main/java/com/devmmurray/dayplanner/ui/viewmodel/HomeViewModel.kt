@@ -1,7 +1,6 @@
 package com.devmmurray.dayplanner.ui.viewmodel
 
 import android.app.Application
-import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
@@ -99,12 +98,6 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
                     .flowOn(Dispatchers.IO)
                     .collect {
                         _currentWeather.value = it.toCurrentWeatherObject()
-
-
-                        val test = it.toCurrentWeatherObject()
-                        Log.d(TAG, "========== Wind Speed: ${test.windSpeed} ==============")
-                        Log.d(TAG, "========== Humidity: ${test.humidity} ==============")
-                        Log.d(TAG, "========== Main Description: ${test.currentWeatherDescription?.mainDescription} ===============")
                     }
             } catch (e: Exception) {
                 _errorMessage.value = e.message.toString()

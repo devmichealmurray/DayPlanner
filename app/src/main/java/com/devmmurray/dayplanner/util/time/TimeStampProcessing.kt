@@ -22,7 +22,7 @@ object TimeStampProcessing {
 
     @SuppressLint("SimpleDateFormat")
     fun transformDateStringToMillis(timeString: String): Long {
-        val sdf = SimpleDateFormat("d-M-yyyy HH:mm")
+        val sdf = SimpleDateFormat("d-M-yyyy h:mm")
         val convertDate = sdf.parse(timeString)
         return convertDate!!.time
     }

@@ -34,7 +34,7 @@ class RVHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(b
         binding.setVariable(BR.event, event)
         val directions = event.id?.let {
             HomeFragmentDirections
-                .actionNavigationHomeToAddEventFragment(it)
+                .actionNavigationHomeToEventFragment(it)
         }
         binding.root.setOnClickListener { view ->
             if (directions != null) {
