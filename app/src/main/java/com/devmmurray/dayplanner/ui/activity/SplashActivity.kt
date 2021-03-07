@@ -30,8 +30,8 @@ class SplashActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         checkLocationPermissions()
-        splashViewModel.deleteOldWeatherData()
-        splashViewModel.addLocation(location)
+        splashViewModel.deleteOldData()
+        splashViewModel.getNewData(location)
 
         splashViewModel.apply {
             errorMessage.observe(this@SplashActivity, errorObserver)

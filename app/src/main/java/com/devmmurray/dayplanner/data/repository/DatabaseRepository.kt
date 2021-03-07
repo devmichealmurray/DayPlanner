@@ -1,6 +1,6 @@
 package com.devmmurray.dayplanner.data.repository
 
-import com.devmmurray.dayplanner.data.database.*
+import com.devmmurray.dayplanner.data.database.dao.*
 import com.devmmurray.dayplanner.data.model.entity.*
 
 
@@ -9,7 +9,8 @@ class DatabaseRepository(
     private val currentWeatherDataSource: CurrentWeatherDAO,
     private val todoTaskDataSource: TodoTaskDAO,
     private val eventDataSource: EventDAO,
-    private val cityStateDataSource: CityStateDAO
+    private val cityStateDataSource: CityStateDAO,
+    private val newsDataSource: NewsDAO
 ) {
 
     // Hourly Weather
@@ -60,6 +61,17 @@ class DatabaseRepository(
     suspend fun deleteEvent(id: Long) =
         eventDataSource.deleteEvent(id)
 
+    // News
+
+    suspend fun addNewsArticle(article: NewsEntity) =
+        newsDataSource.addNewsArticle(article)
+
+    fun getNewsArticles() =
+        newsDataSource.getNewsArticles()
+
+    suspend fun deleteOldNews() =
+        newsDataSource.deleteOldNewsArticles()
+
     // City State Location
 
     suspend fun addCityState(cityState: CityStateEntity) =
@@ -67,5 +79,8 @@ class DatabaseRepository(
 
     suspend fun getCityState() =
         cityStateDataSource.getCityState()
+
+    suspend fun deleteCityInfo() =
+        cityStateDataSource.deleteCityInfo()
 
 }

@@ -3,7 +3,6 @@ package com.devmmurray.dayplanner.ui.viewmodel
 import android.app.Application
 import android.location.Geocoder
 import android.location.Location
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,13 +11,16 @@ import com.devmmurray.dayplanner.data.database.RoomDatabaseClient
 import com.devmmurray.dayplanner.data.model.entity.CityStateEntity
 import com.devmmurray.dayplanner.data.model.entity.CurrentWeatherEntity
 import com.devmmurray.dayplanner.data.model.entity.HourlyForecastEntity
+import com.devmmurray.dayplanner.data.model.entity.NewsEntity
 import com.devmmurray.dayplanner.data.repository.ApiRepository
 import com.devmmurray.dayplanner.data.repository.DatabaseRepository
 import com.devmmurray.dayplanner.util.JsonProcessing
+import com.devmmurray.dayplanner.util.time.TimeFlags
+import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import kotlinx.coroutines.launch
 import java.util.*
 
-private const val TAG = "MainActivityViewModel"
+private const val TAG = "SplashActivityViewModel"
 
 open class SplashActivityViewModel(application: Application) : AndroidViewModel(application) {
     val context = application
@@ -41,11 +43,21 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
             .getDbInstance(application).eventDAO()
         val cityStateDAO = RoomDatabaseClient
             .getDbInstance(application).cityStateDAO()
+        val newsDAO = RoomDatabaseClient
+            .getDbInstance(application).newsDAO()
 
         dbRepo =
-            DatabaseRepository(hourlyForecastDAO, currentWeatherDAO, todoTaskDAO, eventDAO, cityStateDAO)
-
+            DatabaseRepository(
+                hourlyForecastDAO,
+                currentWeatherDAO,
+                todoTaskDAO,
+                eventDAO,
+                cityStateDAO,
+                newsDAO
+            )
     }
+
+
 
     /**
      * Live Data
@@ -58,13 +70,17 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
     val databaseNotReady: LiveData<Boolean> get() = _databaseNotReady
 
 
+
     /**
-     * Networking calls to retrieve weather data
+     * Networking calls to retrieve weather, city location, and news data
      */
-    fun addLocation(location: Location?) {
+
+    fun getNewData(location: Location?) {
         if (location?.latitude != null) {
+            val searchDate = TimeStampProcessing.todaysDate(TimeFlags.NEWS_SEARCH_DATE)
             getWeatherFromOpenWeather(location.latitude, location.longitude)
             getCityState(location)
+            getGuardianNews(searchDate)
         } else {
             _errorMessage.value = "Could Not Access Location"
         }
@@ -82,7 +98,6 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
                     val currentWeather = JsonProcessing.parseForCurrentWeather(result)
                     addCurrentWeatherToDB(currentWeather)
                     _databaseNotReady.value = false
-
                 } else {
                     _errorMessage.value = result.errorBody().toString()
                 }
@@ -93,28 +108,74 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
 
     }
 
+    private fun getGuardianNews(fromDate: String) {
+        viewModelScope.launch {
+            try {
+                val result = ApiRepository.getNews(fromDate)
+                if (result.isSuccessful) {
+                    val news = JsonProcessing.parseNewsArticles(result)
+                    news.forEach {
+                        addNewsArticle(it)
+                    }
+                } else {
+                    _errorMessage.value = result.errorBody().toString()
+                }
+            } catch (e: Exception) {
+                _errorMessage.value = e.message.toString()
+            }
+        }
+    }
+
+
+
     /**
      *  Database Functions
      */
 
-    fun deleteOldWeatherData() {
-        Log.d(TAG, "++++++++++ Delete Old Weather Called ++++++++++++")
+
+    fun deleteOldData() {
+        deleteOldWeatherData()
+        deleteOldNews()
+        deleteCityInfo()
+    }
+
+
+    private fun deleteOldWeatherData() {
         viewModelScope.launch {
             dbRepo.deleteOldHourlyForecasts()
             dbRepo.deleteOldWeather()
         }
     }
 
+
+    private fun deleteOldNews() {
+        viewModelScope.launch {
+            dbRepo.deleteOldNews()
+        }
+    }
+
+    private fun deleteCityInfo() {
+        viewModelScope.launch {
+            dbRepo.deleteCityInfo()
+        }
+    }
+
+
     private fun addForecastsToDB(forecast: HourlyForecastEntity) {
         viewModelScope.launch {
-            Log.d(TAG, "++++++++++ Add Forecasts Called ++++++++++++")
             dbRepo.addHourlyForecasts(forecast)
         }
     }
+
     private fun addCurrentWeatherToDB(weather: CurrentWeatherEntity) {
-        Log.d(TAG, "++++++++++ Add Current Weather Called ++++++++++++")
         viewModelScope.launch {
             dbRepo.addCurrentWeather(weather)
+        }
+    }
+
+    private fun addNewsArticle(article: NewsEntity) {
+        viewModelScope.launch {
+            dbRepo.addNewsArticle(article)
         }
     }
 
@@ -134,7 +195,5 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
         } catch (e: Exception) {
             _errorMessage.value = e.message.toString()
         }
-
-
     }
 }

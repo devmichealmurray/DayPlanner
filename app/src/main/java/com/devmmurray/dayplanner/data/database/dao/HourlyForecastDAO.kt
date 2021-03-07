@@ -1,4 +1,4 @@
-package com.devmmurray.dayplanner.data.database
+package com.devmmurray.dayplanner.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert

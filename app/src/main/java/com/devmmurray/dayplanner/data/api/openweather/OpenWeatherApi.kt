@@ -1,6 +1,6 @@
-package com.devmmurray.dayplanner.data.api
+package com.devmmurray.dayplanner.data.api.openweather
 
-import com.devmmurray.dayplanner.data.model.dto.WeatherDTO
+import com.devmmurray.dayplanner.data.model.dto.weather.WeatherDTO
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

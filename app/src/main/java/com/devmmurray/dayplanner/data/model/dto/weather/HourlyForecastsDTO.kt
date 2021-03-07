@@ -1,4 +1,4 @@
-package com.devmmurray.dayplanner.data.model.dto
+package com.devmmurray.dayplanner.data.model.dto.weather
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass

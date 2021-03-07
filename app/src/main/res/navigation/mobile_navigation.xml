@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_home">
         <argument
             android:name="event_id"
-            android:defaultValue="0L"
+            android:defaultValue="-1L"
             app:argType="long" />
         <action
             android:id="@+id/action_navigation_home_to_addEventFragment"
@@ -33,10 +33,10 @@
         tools:layout="@layout/fragment_todo" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="com.devmmurray.dayplanner.ui.fragment.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_news"
+        android:name="com.devmmurray.dayplanner.ui.fragment.NewsFragment"
+        android:label="@string/title_news"
+        tools:layout="@layout/fragment_news" />
     <fragment
         android:id="@+id/addEventFragment"
         android:name="com.devmmurray.dayplanner.ui.fragment.AddEventFragment"
@@ -44,7 +44,7 @@
         tools:layout="@layout/fragment_add_event">
         <argument
             android:name="event_id"
-            android:defaultValue="0L"
+            android:defaultValue="-1L"
             app:argType="long" />
         <action
             android:id="@+id/action_addEventFragment_to_navigation_home"
@@ -58,7 +58,7 @@
         tools:layout="@layout/fragment_event">
         <argument
             android:name="event_id"
-            android:defaultValue="0L"
+            android:defaultValue="-1L"
             app:argType="long" />
         <action
             android:id="@+id/action_eventFragment_to_addEventFragment"

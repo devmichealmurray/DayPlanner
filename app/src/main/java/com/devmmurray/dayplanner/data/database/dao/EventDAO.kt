@@ -1,4 +1,4 @@
-package com.devmmurray.dayplanner.data.database
+package com.devmmurray.dayplanner.data.database.dao
 
 import androidx.room.*
 import com.devmmurray.dayplanner.data.model.entity.EventEntity

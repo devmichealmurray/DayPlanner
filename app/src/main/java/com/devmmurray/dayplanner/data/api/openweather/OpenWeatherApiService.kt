@@ -1,4 +1,4 @@
-package com.devmmurray.dayplanner.data.api
+package com.devmmurray.dayplanner.data.api.openweather
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -9,8 +9,8 @@ private const val BASE_URL = "https://api.openweathermap.org/"
 object OpenWeatherApiService {
 
     private val okHttp = OkHttpClient.Builder()
-        .connectTimeout(5, TimeUnit.MINUTES)
-        .readTimeout(5, TimeUnit.MINUTES)
+        .connectTimeout(1, TimeUnit.MINUTES)
+        .readTimeout(1, TimeUnit.MINUTES)
         .build()
 
     private val retrofit = Retrofit.Builder()

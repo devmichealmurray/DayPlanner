@@ -1,10 +1,8 @@
 package com.devmmurray.dayplanner.util
 
-import com.devmmurray.dayplanner.data.model.dto.WeatherDTO
-import com.devmmurray.dayplanner.data.model.entity.CurrentWeatherDescriptionEntity
-import com.devmmurray.dayplanner.data.model.entity.CurrentWeatherEntity
-import com.devmmurray.dayplanner.data.model.entity.HourlyForecastEntity
-import com.devmmurray.dayplanner.data.model.entity.HourlyForecastWeatherEntity
+import com.devmmurray.dayplanner.data.model.dto.news.NewsDTO
+import com.devmmurray.dayplanner.data.model.dto.weather.WeatherDTO
+import com.devmmurray.dayplanner.data.model.entity.*
 import com.devmmurray.dayplanner.util.time.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import retrofit2.Response
@@ -34,7 +32,8 @@ object JsonProcessing {
                 TimeStampProcessing.transformUTCTime(it, TimeFlags.HOUR)
             },
             sunset = "Sunset:  " + currentResponse?.sunset?.let {
-                TimeStampProcessing.transformUTCTime(it, TimeFlags.HOUR) },
+                TimeStampProcessing.transformUTCTime(it, TimeFlags.HOUR)
+            },
             temp = "Current Temperature:  " + currentResponse?.temp?.toInt().toString() + "\u00B0",
             feels = "Feels Like:  " + currentResponse?.feels?.toInt().toString() + "\u00B0",
             humidity = "Current Humidity:  " + currentResponse?.humidity.toString() + "%",
@@ -71,6 +70,23 @@ object JsonProcessing {
         }
 
         return hourlyForecastList
+    }
+
+    fun parseNewsArticles(result: Response<NewsDTO>): ArrayList<NewsEntity> {
+
+        val articleList = ArrayList<NewsEntity>()
+
+        result.body()?.response?.results?.forEach {
+            val article = NewsEntity(
+                sectionName = it.sectionName,
+                pubDate = it.pubDate,
+                title = it.newsTitle,
+                url = it.url,
+                pillarName = it.pillarName
+            )
+            articleList.add(article)
+        }
+        return articleList
     }
 
 }

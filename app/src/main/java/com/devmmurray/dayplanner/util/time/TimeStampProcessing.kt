@@ -41,6 +41,7 @@ object TimeStampProcessing {
             TimeFlags.HOUR -> SimpleDateFormat("h a")
             TimeFlags.EVENT -> SimpleDateFormat("EEEE, MMMM d")
             TimeFlags.DATE_ID -> SimpleDateFormat("M-d-yyyy")
+            TimeFlags.NEWS_SEARCH_DATE -> SimpleDateFormat("yyyy-MM-dd")
 
         }
     }
