@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+        <variable
+            name="event"
+            type="com.devmmurray.dayplanner.data.model.local.Event" />
+    </data>
+    <merge xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/event_details_card"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="100dp"
+            android:background="@drawable/card_background"
+            android:padding="12dp"
+            tools:context=".ui.fragment.AddEventFragment"
+            tools:layout_editor_absoluteY="100dp">
+
+            <EditText
+                android:id="@+id/event_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:ems="10"
+                android:hint="Event Title"
+                android:text="@{event.title}"
+                android:inputType="text"
+                android:textSize="28sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/event_date_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:padding="8dp"
+                android:hint="Event Date"
+                android:text="@{event.eventTime}"
+                android:textSize="16sp"
+                app:layout_constraintBaseline_toBaselineOf="@+id/event_date_picker"
+                app:layout_constraintBottom_toTopOf="@id/event_date_textView"
+                app:layout_constraintEnd_toStartOf="@+id/event_date_picker"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <TextView
+                android:id="@+id/event_date_picker"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:clickable="true"
+                android:gravity="end"
+                android:padding="8dp"
+                android:hint="Mon, March 1 4:30 PM"
+
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/event_date_textView"
+                app:layout_constraintTop_toBottomOf="@+id/event_title" />
+
+            <EditText
+                android:id="@+id/event_location_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:drawableStart="@drawable/ic_location"
+                android:ems="10"
+                android:hint="Location Name"
+                android:text="@{event.locationName}"
+                android:inputType="textPostalAddress"
+                android:padding="8dp"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/event_date_picker" />
+
+            <EditText
+                android:id="@+id/event_location_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:drawableStart="@drawable/ic_location"
+                android:ems="10"
+                android:hint="Location Address"
+                android:text="@{event.address}"
+                android:inputType="textPostalAddress"
+                android:padding="8dp"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/event_location_name" />
+
+            <EditText
+                android:id="@+id/event_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:drawableStart="@drawable/ic_notes"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="Event Notes"
+                android:text="@{event.notes}"
+                android:inputType="textMultiLine"
+                android:padding="8dp"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/event_location_address" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </merge>
+</layout>
