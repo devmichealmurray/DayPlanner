@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.devmmurray.dayplanner.data.model.local.NewsArticle
+import com.devmmurray.dayplanner.util.ExtensionFunctions.pubDate
 
 
 @Entity(tableName = "news_articles")
@@ -22,6 +23,6 @@ class NewsEntity(
     val pillarName: String?
 ) {
     fun toNewsArticle() = NewsArticle(
-        uid, sectionName, pubDate, title, url, pillarName
+        uid, sectionName, pubDate?.pubDate(), title, url, pillarName
     )
 }

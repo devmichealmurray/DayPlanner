@@ -46,6 +46,6 @@ class CurrentWeatherDescriptionEntity(
     val currentIcon: String?
 ) {
     fun toWeatherDescriptionObject() = CurrentWeatherDescription(
-        currentId, mainDescription, description, currentIcon
+        currentId, "$mainDescription: $description", description, currentIcon
     )
 }

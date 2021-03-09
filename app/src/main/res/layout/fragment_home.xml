@@ -209,16 +209,6 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/humidity" />
 
-                        <com.google.android.material.textview.MaterialTextView
-                            android:id="@+id/current_weather_description"
-                            style="@style/CurrentWeatherText"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:hint="Few Clouds"
-                            android:text="@{weatherDescription.description}"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/current_weather_main_description" />
 
                     </LinearLayout>
 
