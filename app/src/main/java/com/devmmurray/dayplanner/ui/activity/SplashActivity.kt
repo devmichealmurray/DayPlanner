@@ -1,15 +1,17 @@
 package com.devmmurray.dayplanner.ui.activity
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.ui.viewmodel.SplashActivityViewModel
@@ -29,14 +31,17 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
         supportActionBar?.hide()
 
-        checkLocationPermissions()
-        splashViewModel.deleteOldData()
-        splashViewModel.getNewData(location)
+        checkLocationPermission()
 
         splashViewModel.apply {
             errorMessage.observe(this@SplashActivity, errorObserver)
             databaseNotReady.observe(this@SplashActivity, databaseObserver)
         }
+    }
+
+    private fun startApp() {
+        splashViewModel.deleteOldData()
+        splashViewModel.getNewData(location)
     }
 
 
@@ -66,6 +71,53 @@ class SplashActivity : AppCompatActivity() {
      *  Permission Request for Location Services
      */
 
+    private fun checkLocationPermission() {
+        val locationManager =
+            this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (ContextCompat.checkSelfPermission(
+                this, android.Manifest.permission.ACCESS_FINE_LOCATION
+            )
+            == PackageManager.PERMISSION_GRANTED
+        ) {
+            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            startApp()
+        } else {
+            requestLocationPermission()
+        }
+    }
+
+    private fun requestLocationPermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        ) {
+            AlertDialog.Builder(this)
+                .setTitle("Permission Needed")
+                .setMessage("Location Permission Needed For Local Weather, Local Time, and Driving Directions")
+                .setPositiveButton("Okay") { _, _ ->
+                    ActivityCompat.requestPermissions(
+                        this,
+                        arrayOf(
+                            android.Manifest.permission.ACCESS_FINE_LOCATION
+                        ),
+                        REQ_CODE_PERMISSION
+                    )
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.dismiss()
+                }.create().show()
+        } else {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    android.Manifest.permission.ACCESS_FINE_LOCATION
+                ),
+                REQ_CODE_PERMISSION
+            )
+        }
+    }
+
     @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -75,41 +127,28 @@ class SplashActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         val locationManager =
             this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
         when (requestCode) {
             REQ_CODE_PERMISSION -> {
                 if ((grantResults.isNotEmpty()
                             && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 ) {
                     location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                    startApp()
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Permission DENIED: Cannot Start Application",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
-                return
             }
-        }
 
+        }
+        return
     }
 
-    private fun checkLocationPermissions() {
-        val locationManager =
-            this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ),
-                REQ_CODE_PERMISSION
-            )
-        } else {
-            location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-        }
-    }
 
 }
+
+
