@@ -21,7 +21,7 @@
             tools:layout_editor_absoluteY="100dp">
 
             <EditText
-                android:id="@+id/event_title"
+                android:id="@+id/news_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
@@ -61,10 +61,10 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/event_date_textView"
-                app:layout_constraintTop_toBottomOf="@+id/event_title" />
+                app:layout_constraintTop_toBottomOf="@+id/news_title" />
 
             <EditText
-                android:id="@+id/event_location_name"
+                android:id="@+id/section_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
@@ -93,10 +93,10 @@
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/event_location_name" />
+                app:layout_constraintTop_toBottomOf="@+id/section_name" />
 
             <EditText
-                android:id="@+id/event_notes"
+                android:id="@+id/pillar_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"

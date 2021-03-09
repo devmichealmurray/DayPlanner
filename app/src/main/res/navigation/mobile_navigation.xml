@@ -32,11 +32,7 @@
         android:label="@string/menu_item_todo"
         tools:layout="@layout/fragment_todo" />
 
-    <fragment
-        android:id="@+id/navigation_news"
-        android:name="com.devmmurray.dayplanner.ui.fragment.NewsFragment"
-        android:label="@string/title_news"
-        tools:layout="@layout/fragment_news" />
+
     <fragment
         android:id="@+id/addEventFragment"
         android:name="com.devmmurray.dayplanner.ui.fragment.AddEventFragment"
@@ -50,7 +46,6 @@
             android:id="@+id/action_addEventFragment_to_navigation_home"
             app:destination="@id/navigation_home" />
     </fragment>
-
     <dialog
         android:id="@+id/eventFragment"
         android:name="com.devmmurray.dayplanner.ui.fragment.EventFragment"
@@ -64,4 +59,30 @@
             android:id="@+id/action_eventFragment_to_addEventFragment"
             app:destination="@id/addEventFragment" />
     </dialog>
+
+
+    <fragment
+        android:id="@+id/navigation_news"
+        android:name="com.devmmurray.dayplanner.ui.fragment.NewsFragment"
+        android:label="@string/title_news"
+        tools:layout="@layout/fragment_news" >
+        <argument
+            android:name="search_term"
+            android:defaultValue=""
+            app:argType="string" />
+        <action
+            android:id="@+id/action_navigation_news_to_searchResultsFragment"
+            app:destination="@id/searchResultsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchResultsFragment"
+        android:name="com.devmmurray.dayplanner.ui.fragment.SearchResultsFragment"
+        android:label="SearchResultsFragment" >
+        <argument
+            android:name="search_term"
+            android:defaultValue=""
+            app:argType="string" />
+    </fragment>
+
+
 </navigation>

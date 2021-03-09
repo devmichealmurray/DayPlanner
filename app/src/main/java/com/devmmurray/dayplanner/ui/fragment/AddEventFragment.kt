@@ -2,12 +2,11 @@ package com.devmmurray.dayplanner.ui.fragment
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
+import android.view.WindowManager
 import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.fragment.app.DialogFragment
@@ -19,6 +18,7 @@ import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.data.model.entity.EventEntity
 import com.devmmurray.dayplanner.databinding.FragmentAddEventBinding
 import com.devmmurray.dayplanner.ui.viewmodel.AddEventViewModel
+import com.devmmurray.dayplanner.util.Utils
 import com.devmmurray.dayplanner.util.time.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import org.jetbrains.anko.support.v4.alert
@@ -45,6 +45,7 @@ class AddEventFragment :
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         addEventBinding = FragmentAddEventBinding.inflate(inflater, container, false)
 
         addEventViewModel.apply {
@@ -106,7 +107,13 @@ class AddEventFragment :
      */
 
     private fun navigateToDatePicker() {
-        hideKeyboard()
+        context?.let { context ->
+            view.let { view ->
+                if (view != null) {
+                    Utils.hideKeyboard(context, view)
+                }
+            }
+        }
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -176,11 +183,6 @@ class AddEventFragment :
             .navigate(R.id.action_addEventFragment_to_navigation_home)
     }
 
-    private fun hideKeyboard() {
-        val imm =
-            context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view?.windowToken, 0)
-    }
 
 
 }

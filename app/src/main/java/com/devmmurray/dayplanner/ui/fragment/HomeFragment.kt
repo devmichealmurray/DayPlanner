@@ -66,7 +66,7 @@ class HomeFragment : Fragment() {
 
 
     private val cityStateObserver = Observer<CityStateLocation> {
-        homeBinding.cityState.text = "${it.city}, ${it.state}"
+        "${it.city}, ${it.state}".also { homeBinding.cityState.text = it }
     }
 
 

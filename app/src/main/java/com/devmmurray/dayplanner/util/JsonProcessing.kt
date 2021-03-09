@@ -46,7 +46,7 @@ object JsonProcessing {
 
     fun parseForHourlyForecast(result: Response<WeatherDTO>): ArrayList<HourlyForecastEntity> {
         val hourlyForecastList = ArrayList<HourlyForecastEntity>()
-        var hourlyForecastWeather: HourlyForecastWeatherEntity? = null
+        var hourlyForecastWeather: HourlyForecastWeatherEntity?
 
         result.body()?.hourlyForecasts?.forEach {
             it.hourlyWeather?.forEach { hourly ->

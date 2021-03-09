@@ -6,7 +6,6 @@
         <variable
             name="event"
             type="com.devmmurray.dayplanner.data.model.local.Event" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

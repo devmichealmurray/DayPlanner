@@ -148,7 +148,7 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
     }
 
 
-    private fun deleteOldNews() {
+    fun deleteOldNews() {
         viewModelScope.launch {
             dbRepo.deleteOldNews()
         }

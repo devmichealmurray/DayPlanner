@@ -87,18 +87,29 @@
                     app:layout_constraintStart_toEndOf="@id/add_task_edittext"
                     app:layout_constraintTop_toBottomOf="@id/todo_header_text" />
 
+                <TextView
+                    android:id="@+id/no_tasks"
+                    style="@style/SmallTextBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="No Tasks Scheduled"
+                    android:visibility="visible"
+                    android:layout_marginTop="45dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/add_task_edittext" />
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/todo_recycler"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     android:layout_marginTop="8dp"
+                    android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/add_task_edittext"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toBottomOf="@id/add_task_edittext" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

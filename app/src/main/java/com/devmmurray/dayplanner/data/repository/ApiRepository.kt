@@ -6,7 +6,8 @@ import com.devmmurray.dayplanner.data.model.dto.news.NewsDTO
 import com.devmmurray.dayplanner.data.model.dto.weather.WeatherDTO
 import retrofit2.Response
 
-private const val API_KEY = "6f2f1d47ba30bfd187ed7ec88224312c"
+private const val WEATHER_API_KEY = "6f2f1d47ba30bfd187ed7ec88224312c"
+private const val NEWS_API_KEY = "ed41fb6c-28a3-4bd2-989c-ebc34d98f916"
 
 object ApiRepository {
 
@@ -18,17 +19,27 @@ object ApiRepository {
             lat = lat,
             lon = lon,
             units = units,
-            apiKey = "6f2f1d47ba30bfd187ed7ec88224312c"
+            apiKey = WEATHER_API_KEY
         )
     }
 
     suspend fun getNews(
-        fromDate: String,
+        fromDate: String
     ): Response<NewsDTO> {
         return GuardianApiService.apiClient.guardianCall(
             pageSize = "24",
             date = fromDate,
-            apiKey = "ed41fb6c-28a3-4bd2-989c-ebc34d98f916"
+            apiKey = NEWS_API_KEY
+        )
+    }
+
+    suspend fun searchGuardian(
+        searchTerms: String
+    ) : Response<NewsDTO> {
+        return GuardianApiService.apiClient.guardianSearchCall(
+            pageSize = "24",
+            searchTerms = searchTerms,
+            apiKey = NEWS_API_KEY
         )
     }
 }
