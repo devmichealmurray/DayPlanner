@@ -18,6 +18,7 @@ import com.devmmurray.dayplanner.util.JsonProcessing
 import com.devmmurray.dayplanner.util.time.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import kotlinx.coroutines.launch
+import java.io.IOException
 import java.util.*
 
 private const val TAG = "SplashActivityViewModel"
@@ -66,8 +67,14 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
     private val _errorMessage: MutableLiveData<String> by lazy { MutableLiveData<String>() }
     val errorMessage: LiveData<String> get() = _errorMessage
 
+    private val _ioException: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
+    val ioException: LiveData<Boolean> get() = _ioException
+
     private val _databaseNotReady: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val databaseNotReady: LiveData<Boolean> get() = _databaseNotReady
+
+    val _toastMessage by lazy { MutableLiveData<String>() }
+    val toastMessage: LiveData<String> get() = _toastMessage
 
 
 
@@ -120,6 +127,8 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
                 } else {
                     _errorMessage.value = result.errorBody().toString()
                 }
+            } catch (e: IOException) {
+                _ioException.value = true
             } catch (e: Exception) {
                 _errorMessage.value = e.message.toString()
             }
@@ -132,13 +141,11 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
      *  Database Functions
      */
 
-
     fun deleteOldData() {
         deleteOldWeatherData()
         deleteOldNews()
         deleteCityInfo()
     }
-
 
     private fun deleteOldWeatherData() {
         viewModelScope.launch {
@@ -146,7 +153,6 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
             dbRepo.deleteOldWeather()
         }
     }
-
 
     fun deleteOldNews() {
         viewModelScope.launch {
@@ -159,7 +165,6 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
             dbRepo.deleteCityInfo()
         }
     }
-
 
     private fun addForecastsToDB(forecast: HourlyForecastEntity) {
         viewModelScope.launch {

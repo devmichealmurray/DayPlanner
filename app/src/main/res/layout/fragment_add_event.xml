@@ -20,11 +20,11 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/add_event_textView"
-            style="@style/WhiteHeaderText"
+            style="@style/TealHeaderText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
-            android:background="@color/teal_200"
+            android:background="@color/white"
             android:paddingTop="20dp"
             android:paddingBottom="8dp"
             android:text="Add New Event"

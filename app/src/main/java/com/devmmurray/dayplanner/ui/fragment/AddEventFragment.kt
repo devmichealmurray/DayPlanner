@@ -27,10 +27,7 @@ import java.util.*
 
 private const val TAG = "AddEventFragment"
 
-class AddEventFragment :
-    DialogFragment(),
-    DatePickerDialog.OnDateSetListener,
-    TimePickerDialog.OnTimeSetListener {
+class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     private lateinit var addEventBinding: FragmentAddEventBinding
     private val addEventViewModel: AddEventViewModel by viewModels()
@@ -48,12 +45,6 @@ class AddEventFragment :
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         addEventBinding = FragmentAddEventBinding.inflate(inflater, container, false)
 
-        addEventViewModel.apply {
-            eventChecker(args.eventId)
-            returnEvent.observe(viewLifecycleOwner, returnEventObserver)
-            addEventErrorMessage.observe(viewLifecycleOwner, errorMessageObserver)
-        }
-
         return addEventBinding.root
     }
 
@@ -61,12 +52,21 @@ class AddEventFragment :
         super.onViewCreated(view, savedInstanceState)
 
         addEventBinding.apply {
-            eventDatePicker.setOnClickListener { navigateToDatePicker() }
+            eventDatePicker.apply {
+                text = TimeStampProcessing.todaysDate(TimeFlags.FULL)
+                setOnClickListener { navigateToDatePicker() }
+            }
             cancelButton.setOnClickListener { cancelButtonNavigation() }
             saveAction.setOnClickListener { saveActionNavigation() }
         }
-    }
 
+        addEventViewModel.apply {
+            eventChecker(args.eventId)
+            returnEvent.observe(viewLifecycleOwner, returnEventObserver)
+            addEventErrorMessage.observe(viewLifecycleOwner, errorMessageObserver)
+        }
+
+    }
 
 
     /**
@@ -182,7 +182,6 @@ class AddEventFragment :
         Navigation.findNavController(addEventBinding.saveAction)
             .navigate(R.id.action_addEventFragment_to_navigation_home)
     }
-
 
 
 }

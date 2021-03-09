@@ -55,6 +55,9 @@ class DatabaseRepository(
     fun getEvents(dateId: String) =
         eventDataSource.getEvents(dateId)
 
+    fun getAllEvents() =
+        eventDataSource.getAllEvents()
+
     fun getEventById(id: Long) =
         eventDataSource.getEventById(id)
 

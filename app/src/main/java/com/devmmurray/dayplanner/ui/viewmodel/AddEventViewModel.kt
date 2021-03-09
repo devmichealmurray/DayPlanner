@@ -58,6 +58,7 @@ class AddEventViewModel(application: Application) : SplashActivityViewModel(appl
         viewModelScope.launch {
             try {
                 dbRepo.addEvent(event)
+                _toastMessage.value = "Event ${event.title} Saved!"
             } catch (e: Exception) {
                 _errorMessage.value = e.message.toString()
             }
@@ -68,6 +69,7 @@ class AddEventViewModel(application: Application) : SplashActivityViewModel(appl
         viewModelScope.launch {
             try {
                 dbRepo.updateEvent(event)
+                _toastMessage.value = "Event ${event.title} Updated"
             } catch (e: Exception) {
                 _errorMessage.value = e.message.toString()
             }

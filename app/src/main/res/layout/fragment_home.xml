@@ -295,23 +295,30 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:text="@string/today_s_events"
-                    app:layout_constraintEnd_toStartOf="@id/todays_date"
+                    app:layout_constraintEnd_toStartOf="@id/switch_events_to_all"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/todays_date"
-                    style="@style/SmallTextTeal"
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switch_events_to_all"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="4dp"
-                    android:hint="Friday, March 5"
-                    android:padding="4dp"
-                    app:layout_constraintBottom_toTopOf="@id/add_event_button"
-                    app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintBottom_toTopOf="@id/add_event_button"
+                    app:layout_constraintEnd_toStartOf="@id/all_events_textView"
                     app:layout_constraintStart_toEndOf="@id/todays_events"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/all_events_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="8dp"
+                    android:text="All Events"
+                    app:layout_constraintStart_toEndOf="@id/switch_events_to_all"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/add_event_button"/>
+
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/add_event_button"

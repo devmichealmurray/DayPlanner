@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -19,8 +20,6 @@ import com.devmmurray.dayplanner.databinding.FragmentHomeBinding
 import com.devmmurray.dayplanner.ui.adapter.DayPlannerRecyclerView
 import com.devmmurray.dayplanner.ui.viewmodel.HomeViewModel
 import com.devmmurray.dayplanner.util.ListFlags
-import com.devmmurray.dayplanner.util.time.TimeFlags
-import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import org.jetbrains.anko.support.v4.alert
 
 private const val TAG = "Home Fragment"
@@ -36,6 +35,11 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false)
+        return homeBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         homeViewModel.apply {
             getWeatherFromDB()
@@ -48,25 +52,24 @@ class HomeFragment : Fragment() {
             homeErrorMessage.observe(viewLifecycleOwner, errorObserver)
             cityState.observe(viewLifecycleOwner, cityStateObserver)
             currentWeather.observe(viewLifecycleOwner, currentWeatherObserver)
+            toastMessage.observe(viewLifecycleOwner, {
+                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+            })
         }
-
-        return homeBinding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         homeBinding.apply {
             addEventButton.setOnClickListener { addEventNavigation() }
             more.setOnClickListener { moreButtonFunction() }
             less.setOnClickListener { lessButtonFunction() }
-            todaysDate.text = TimeStampProcessing.todaysDate(TimeFlags.EVENT)
+            switchEventsToAll.setOnCheckedChangeListener { _, isChecked ->
+                homeBinding.todaysEvents.text = if (isChecked) "All Events" else "Todays Events"
+                homeViewModel.changeEventsList(isChecked)
+            }
         }
     }
 
-
-    private val cityStateObserver = Observer<CityStateLocation> {
-        "${it.city}, ${it.state}".also { homeBinding.cityState.text = it }
+    private val cityStateObserver = Observer<CityStateLocation> { location ->
+        "${location.city}, ${location.state}".also { homeBinding.cityState.text = it }
     }
 
 

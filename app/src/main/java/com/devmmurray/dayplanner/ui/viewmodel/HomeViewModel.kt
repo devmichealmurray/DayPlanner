@@ -34,10 +34,6 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
         }
     }
 
-    /**
-     * Weather Live Data
-     */
-
     private val _weatherProgress by lazy { MutableLiveData<Boolean>() }
     val weatherProgress: LiveData<Boolean> get() = _weatherProgress
 
@@ -46,10 +42,6 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
 
     private val _currentWeather by lazy { MutableLiveData<CurrentWeather>() }
     val currentWeather: LiveData<CurrentWeather> get() = _currentWeather
-
-    /**
-     * Event Live Data
-     */
 
     private val _eventProgress by lazy { MutableLiveData<Boolean>() }
     val eventProgress: LiveData<Boolean> get() = _eventProgress
@@ -64,9 +56,35 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
     val homeErrorMessage: LiveData<String> get() = _errorMessage
 
 
+    private fun today() = TimeStampProcessing.todaysDate(TimeFlags.DATE_ID)
+
     /**
      *  Database Functions
      */
+
+    fun changeEventsList(isChecked: Boolean) {
+        if (isChecked) {
+            _eventProgress.value = true
+            viewModelScope.launch {
+                try {
+                    dbRepo.getAllEvents()
+                        .flowOn(Dispatchers.IO)
+                        .collect { dbList ->
+                            val events: MutableList<EventEntity> = dbList.toMutableList()
+                            val eventsList = events
+                                .sortedBy { it.eventTime }
+                            _eventsList.value = eventsList
+                            _eventProgress.value = false
+                        }
+                } catch (e: Exception) {
+                    _errorMessage.value = e.message.toString()
+                    _eventProgress.value = false
+                }
+            }
+        } else {
+            getEventsFromDB()
+        }
+    }
 
     fun getWeatherFromDB() {
         getHourlyForecastsFromDB()
@@ -129,8 +147,6 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
             }
         }
     }
-
-    private fun today() = TimeStampProcessing.todaysDate(TimeFlags.DATE_ID)
 
     fun getCityState() {
         viewModelScope.launch {

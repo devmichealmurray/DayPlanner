@@ -1,20 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.activity.SplashActivity">
 
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/splash_logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Day Planner"
+        android:layout_marginTop="125dp"
+        android:textColor="@color/teal_200"
+        android:fontFamily="@font/pacifico_reg"
+        android:textSize="60sp"
+        android:gravity="center"
+        app:layout_constraintBottom_toTopOf="@id/splash_quote"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-<ProgressBar
-    android:layout_height="wrap_content"
-    android:layout_width="wrap_content"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintBottom_toBottomOf="parent"
-    />
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/splash_quote"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/swansea_q3pd"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        android:gravity="center"
+        android:padding="22dp"
+        android:text="Plan your work for today and every day, \n \n then work your plan ~ Margret Thatcher"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/splash_logo" />
+
+
+    <ProgressBar
+        android:id="@+id/splash_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/splash_quote" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

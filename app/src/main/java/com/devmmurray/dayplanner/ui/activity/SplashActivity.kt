@@ -2,10 +2,13 @@ package com.devmmurray.dayplanner.ui.activity
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -35,6 +38,7 @@ class SplashActivity : AppCompatActivity() {
 
         splashViewModel.apply {
             errorMessage.observe(this@SplashActivity, errorObserver)
+            ioException.observe(this@SplashActivity, ioExceptionObserver)
             databaseNotReady.observe(this@SplashActivity, databaseObserver)
         }
     }
@@ -58,6 +62,21 @@ class SplashActivity : AppCompatActivity() {
                 dialog.dismiss()
             }
         }.show()
+    }
+
+    private val ioExceptionObserver = Observer<Boolean> {
+        if (it) {
+            AlertDialog.Builder(this)
+                .setTitle("Internet Connection")
+                .setMessage("UH OH!\nNo Network Connection Found.\nWould you like to adjust your wifi settings?")
+                .setPositiveButton("Yes!") { _: DialogInterface, _: Int ->
+                    startActivity(Intent(Settings.ACTION_WIFI_SETTINGS))
+                }
+                .setNegativeButton("No") { dialog: DialogInterface, _: Int ->
+                    dialog.cancel()
+                }
+                .show()
+        }
     }
 
     private val databaseObserver = Observer<Boolean> {
