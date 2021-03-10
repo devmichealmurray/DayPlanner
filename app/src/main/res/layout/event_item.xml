@@ -3,83 +3,81 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="event"
             type="com.devmmurray.dayplanner.data.model.local.Event" />
+
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/event_recycler_item"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:background="@color/white"
-        android:clickable="true"
-        android:paddingStart="28dp"
-        android:paddingEnd="22dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp">
-
-        <TextView
-            android:id="@+id/event_time"
-            style="@style/SmallHeaderText"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/event_recycler_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="start"
-            android:hint="Fri, March 5 4:30 PM"
-            android:text="@{event.eventTime}"
-            app:layout_constraintBottom_toTopOf="@id/event_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginBottom="2dp"
+            android:clickable="true"
+            android:paddingStart="28dp"
+            android:paddingTop="24dp"
+            android:paddingEnd="22dp"
+            android:paddingBottom="26dp">
 
-        <TextView
-            android:id="@+id/event_title"
-            style="@style/EventHeaderText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="This Is The Event Title"
-            android:text="@{event.title}"
-            android:layout_marginBottom="4dp"
-            app:layout_constraintBottom_toTopOf="@id/event_location_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/event_time" />
+            <TextView
+                android:id="@+id/event_time"
+                style="@style/SmallHeaderText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:hint="Fri, March 5 4:30 PM"
+                android:text="@{event.eventTime}"
+                app:layout_constraintBottom_toTopOf="@id/event_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/event_location_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:hint="This is the Location Name"
-            android:text="@{event.locationName}"
-            android:textColor="@color/gray"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@id/event_notes"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/event_title" />
+            <TextView
+                android:id="@+id/event_title"
+                style="@style/EventHeaderText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:hint="This Is The Event Title"
+                android:text="@{event.title}"
+                app:layout_constraintBottom_toTopOf="@id/event_location_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/event_time" />
 
-        <TextView
-            android:id="@+id/event_notes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="start"
-            android:maxLines="2"
-            android:hint="These Are The Notes For This Event"
-            android:text="@{event.notes}"
-            android:textColor="@color/gray"
-            android:textSize="14sp"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:textStyle="italic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/event_location_name" />
+            <TextView
+                android:id="@+id/event_location_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:hint="This is the Location Name"
+                android:text="@{event.locationName}"
+                android:textColor="@color/gray"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@id/event_notes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/event_title" />
+
+            <TextView
+                android:id="@+id/event_notes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:gravity="start"
+                android:hint="These Are The Notes For This Event"
+                android:maxLines="2"
+                android:text="@{event.notes}"
+                android:textColor="@color/gray"
+                android:textSize="14sp"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/event_location_name" />
 
 
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -130,7 +130,7 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
         val hour = calendar.get(Calendar.HOUR)
         val minute = calendar.get(Calendar.MINUTE)
 
-        TimePickerDialog(context, this, hour, minute, true).show()
+        TimePickerDialog(context, this, hour, minute, false).show()
     }
 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {

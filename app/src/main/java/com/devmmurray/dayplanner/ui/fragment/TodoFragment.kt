@@ -15,6 +15,7 @@ import com.devmmurray.dayplanner.ui.adapter.DayPlannerRecyclerView
 import com.devmmurray.dayplanner.ui.viewmodel.TodoViewModel
 import com.devmmurray.dayplanner.util.ListFlags
 import com.devmmurray.dayplanner.util.Utils
+import com.google.android.material.transition.MaterialElevationScale
 import org.jetbrains.anko.support.v4.alert
 
 private const val TAG = "To Do Fragment"
@@ -23,6 +24,17 @@ class TodoFragment : Fragment() {
 
     private val todoViewModel: TodoViewModel by viewModels()
     private lateinit var toDoBinding: FragmentTodoBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        enterTransition = MaterialElevationScale(true).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
+        exitTransition = MaterialElevationScale(false).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

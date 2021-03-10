@@ -16,6 +16,7 @@ import com.devmmurray.dayplanner.ui.adapter.DayPlannerRecyclerView
 import com.devmmurray.dayplanner.ui.viewmodel.NewsViewModel
 import com.devmmurray.dayplanner.util.ListFlags
 import com.devmmurray.dayplanner.util.Utils
+import com.google.android.material.transition.MaterialElevationScale
 import org.jetbrains.anko.support.v4.alert
 
 class NewsFragment : Fragment() {
@@ -23,6 +24,16 @@ class NewsFragment : Fragment() {
     private val newsViewModel: NewsViewModel by viewModels()
     private lateinit var newsBinding: FragmentNewsBinding
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        enterTransition = MaterialElevationScale(true).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
+        exitTransition = MaterialElevationScale(false).apply {
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

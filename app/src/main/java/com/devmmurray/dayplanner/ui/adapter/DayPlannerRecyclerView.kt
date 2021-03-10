@@ -32,6 +32,7 @@ class RVHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(b
 
     fun bindEvents(event: Event) {
         binding.setVariable(BR.event, event)
+
         val directions = event.id?.let {
             HomeFragmentDirections
                 .actionNavigationHomeToEventFragment(it)
