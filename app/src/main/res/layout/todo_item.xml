@@ -44,7 +44,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/todo_item_date"
-            style="@style/TinyText"
+            style="@style/ToDoDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"

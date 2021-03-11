@@ -26,6 +26,7 @@ import org.jetbrains.anko.intentFor
 import java.util.*
 
 private const val REQ_CODE_PERMISSION = 123
+private const val TAG = "Splash Activity"
 
 class SplashActivity : AppCompatActivity() {
 
@@ -38,27 +39,19 @@ class SplashActivity : AppCompatActivity() {
         supportActionBar?.hide()
 
         checkLocationPermission()
+        setAlarm()
 
         splashViewModel.apply {
             errorMessage.observe(this@SplashActivity, errorObserver)
             ioException.observe(this@SplashActivity, ioExceptionObserver)
             databaseNotReady.observe(this@SplashActivity, databaseObserver)
         }
-
-        val calendar: Calendar = Calendar.getInstance().apply {
-            timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 17)
-            set(Calendar.MINUTE, 10)
-        }
-
-        setAlarm(calendar)
     }
 
     private fun startApp() {
         splashViewModel.deleteOldData()
         splashViewModel.getNewData(location)
     }
-
 
 
     /**
@@ -179,13 +172,28 @@ class SplashActivity : AppCompatActivity() {
         return
     }
 
-    private fun setAlarm(calendar: Calendar) {
 
-        val intent = Intent(this@SplashActivity, AlarmReceiver::class.java)
-        val pending = PendingIntent.getBroadcast(this@SplashActivity, 0, intent, 0)
+    /**
+     *  Setting up alarm for daily notification
+     */
+
+    private fun setAlarm() {
+        val calendar: Calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, 8)
+            set(Calendar.MINUTE, 30)
+        }
+
+        val intent = Intent(this, AlarmReceiver::class.java)
+        intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
+        val pending = PendingIntent.getBroadcast(
+            this,
+            0,
+            intent,
+            PendingIntent.FLAG_UPDATE_CURRENT)
 
         val alarmManager =
-            this@SplashActivity.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+            getSystemService(Context.ALARM_SERVICE) as? AlarmManager
 
         alarmManager?.setRepeating(
             AlarmManager.RTC_WAKEUP,

@@ -75,6 +75,25 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name = "EventItemDate">
+        <item name="fontFamily">@font/swansea_bold</item>
+        <item name="android:textColor">@color/yellow_dark</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name = "EventHeaderText">
+        <item name="fontFamily">@font/anton_regular</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="ToDoDate">
+        <item name="fontFamily">@font/swansea_italic</item>
+        <item name="android:gravity">end</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
 
 
     <!-- Size & Color -->
@@ -83,13 +102,6 @@
         <item name="android:gravity">start</item>
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">16sp</item>
-    </style>
-
-    <style name="TealHeaderText">
-        <item name="fontFamily">@font/anton_regular</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">26sp</item>
-        <item name="android:textColor">@color/teal_200</item>
     </style>
 
     <style name = "SmallTextTeal">
@@ -104,6 +116,20 @@
         <item name="android:gravity">start</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name = "LargeTextBlack">
+        <item name="fontFamily">@font/swansea_q3pd</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="TealHeaderText">
+        <item name="fontFamily">@font/anton_regular</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColor">@color/teal_200</item>
     </style>
 
 

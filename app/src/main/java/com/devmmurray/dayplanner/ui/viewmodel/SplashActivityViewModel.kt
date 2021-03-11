@@ -201,4 +201,6 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
             _errorMessage.value = e.message.toString()
         }
     }
+
+
 }

@@ -23,11 +23,8 @@ class MainActivity : AppCompatActivity() {
             setCustomView(R.layout.support_action_bar)
             elevation = 4F
         }
-
         setUpNavigation()
-
     }
-
 
     private fun setUpNavigation() {
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
