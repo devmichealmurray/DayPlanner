@@ -1,6 +1,8 @@
 package com.devmmurray.dayplanner.ui.activity
 
 import android.annotation.SuppressLint
+import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
@@ -18,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.ui.viewmodel.SplashActivityViewModel
+import com.devmmurray.dayplanner.util.notifications.AlarmReceiver
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.intentFor
 import java.util.*
@@ -41,12 +44,21 @@ class SplashActivity : AppCompatActivity() {
             ioException.observe(this@SplashActivity, ioExceptionObserver)
             databaseNotReady.observe(this@SplashActivity, databaseObserver)
         }
+
+        val calendar: Calendar = Calendar.getInstance().apply {
+            timeInMillis = System.currentTimeMillis()
+            set(Calendar.HOUR_OF_DAY, 17)
+            set(Calendar.MINUTE, 10)
+        }
+
+        setAlarm(calendar)
     }
 
     private fun startApp() {
         splashViewModel.deleteOldData()
         splashViewModel.getNewData(location)
     }
+
 
 
     /**
@@ -167,6 +179,21 @@ class SplashActivity : AppCompatActivity() {
         return
     }
 
+    private fun setAlarm(calendar: Calendar) {
+
+        val intent = Intent(this@SplashActivity, AlarmReceiver::class.java)
+        val pending = PendingIntent.getBroadcast(this@SplashActivity, 0, intent, 0)
+
+        val alarmManager =
+            this@SplashActivity.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
+
+        alarmManager?.setRepeating(
+            AlarmManager.RTC_WAKEUP,
+            calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY,
+            pending
+        )
+    }
 
 }
 

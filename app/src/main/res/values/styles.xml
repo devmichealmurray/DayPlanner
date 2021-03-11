@@ -7,86 +7,39 @@
         <item name="android:textSize">24sp</item>
     </style>
 
-    <style name="WhiteHeaderText">
-        <item name="fontFamily">@font/anton_regular</item>
+
+
+    
+    <style name="ActionBarText">
+        <item name="fontFamily">@font/pacifico_reg</item>
         <item name="android:gravity">center</item>
-        <item name="android:textSize">26sp</item>
+        <item name="android:textSize">28sp</item>
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="TealHeaderText">
-        <item name="fontFamily">@font/anton_regular</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">26sp</item>
-        <item name="android:textColor">@color/teal_200</item>
-    </style>
 
-    <style name = "EventHeaderText">
-        <item name="fontFamily">@font/anton_regular</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:gravity">start</item>
-        <item name="android:textSize">20sp</item>
-    </style>
 
-    <style name = "SubHeaderText">
-        <item name="fontFamily">@font/swansea_bold</item>
+    <!-- Buttons Style -->
+    <style name="CurrentWeatherMoreLessButtons" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="android:textColor">@color/yellow_dark</item>
+        <item name="android:outlineAmbientShadowColor">@color/yellow_dark</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="fontFamily">@font/swansea_q3pd</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="PlannerButtonWhiteGold">
+        <item name="android:textColor">@color/yellow_dark</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="fontFamily">@font/swansea_q3pd</item>
+        <item name="android:gravity">center</item>
         <item name="android:textSize">18sp</item>
     </style>
 
-    <style name = "SmallHeaderText">
-        <item name="fontFamily">@font/swansea_bold</item>
-        <item name="android:textColor">@color/yellow_dark</item>
-        <item name="android:textSize">14sp</item>
-    </style>
 
-    <style name = "LargeText">
-        <item name="fontFamily">@font/swansea_q3pd</item>
-        <item name="android:gravity">start</item>
-        <item name="android:textSize">20sp</item>
-    </style>
 
-    <style name = "LargeTextBlack">
-        <item name="fontFamily">@font/swansea_q3pd</item>
-        <item name="android:gravity">start</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name = "LargeTextWhite">
-        <item name="fontFamily">@font/swansea_q3pd</item>
-        <item name="android:gravity">start</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">20sp</item>
-    </style>
-
-    <style name = "SmallTextBlack">
-        <item name="fontFamily">@font/swansea_q3pd</item>
-        <item name="android:gravity">start</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">16sp</item>
-    </style>
-
-    <style name = "SmallTextWhite">
-        <item name="fontFamily">@font/swansea_q3pd</item>
-        <item name="android:gravity">start</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name = "SmallTextTeal">
-        <item name="fontFamily">@font/swansea_q3pd</item>
-        <item name="android:textColor">@color/teal_200</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="TinyText">
-        <item name="fontFamily">@font/swansea_italic</item>
-        <item name="android:gravity">end</item>
-        <item name="android:textSize">12sp</item>
-    </style>
-
+    <!-- Current Weather Card -->
     <style name="CurrentWeatherText">
         <item name="fontFamily">@font/swansea_q3pd</item>
         <item name="android:textColor">@color/gray</item>
@@ -96,22 +49,58 @@
         <item name="android:layout_marginStart">24dp</item>
         <item name="android:layout_marginEnd">24dp</item>
     </style>
-    
-    <style name="ActionBarText">
-        <item name="fontFamily">@font/pacifico_reg</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">28sp</item>
-        <item name="android:textColor">@color/white</item>
+
+
+    <!-- Fragment Specific -->
+    <style name="EventFragText">
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
-    <style name="PlannerButtonWhiteGold">
+    <style name="EventFragDate" parent="EventFragText">
+        <item name="android:textColor">@color/teal_dark</item>
+    </style>
 
-        <item name="android:textColor">@color/yellow_dark</item>
-        <item name="android:outlineAmbientShadowColor">@color/yellow_dark</item>
-        <item name="android:backgroundTint">@color/white</item>
+    <style name="AddEventText">
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">28sp</item>
+    </style>
+
+    <style name="AddEventDate" parent="AddEventText">
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+
+
+    <!-- Size & Color -->
+    <style name = "SmallTextBlack">
         <item name="fontFamily">@font/swansea_q3pd</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="TealHeaderText">
+        <item name="fontFamily">@font/anton_regular</item>
         <item name="android:gravity">center</item>
+        <item name="android:textSize">26sp</item>
+        <item name="android:textColor">@color/teal_200</item>
+    </style>
+
+    <style name = "SmallTextTeal">
+        <item name="fontFamily">@font/swansea_q3pd</item>
+        <item name="android:textColor">@color/teal_200</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:textSize">14sp</item>
     </style>
+
+    <style name = "LargeTextWhite">
+        <item name="fontFamily">@font/swansea_q3pd</item>
+        <item name="android:gravity">start</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
 
 </resources>

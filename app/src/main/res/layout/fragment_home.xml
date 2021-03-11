@@ -62,7 +62,7 @@
                         android:layout_marginTop="20dp"
                         android:layout_marginEnd="8dp"
                         android:gravity="end"
-                        android:hint="Fort Worth, Texas"
+                        android:hint="@string/fort_worth_texas"
                         app:layout_constraintBottom_toTopOf="@id/hourly_forecast_recycler"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/todays_outlook"
@@ -92,6 +92,8 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.card.MaterialCardView>
+
+
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -126,7 +128,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/yellow_dark"
-                            android:hint="Fri, March 5 10:36 AM"
+                            android:hint="@string/fri_march_5_10_36_am"
                             android:padding="4dp"
                             android:text="@{currentWeather.time}"
                             android:textAlignment="center"
@@ -139,7 +141,7 @@
                             style="@style/CurrentWeatherText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="6 AM"
+                            android:hint="@string/_6_am"
                             android:text="@{currentWeather.sunrise}"
                             app:layout_constraintTop_toBottomOf="@id/current_time" />
 
@@ -148,7 +150,7 @@
                             style="@style/CurrentWeatherText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="7 PM"
+                            android:hint="@string/_7_pm"
                             android:text="@{currentWeather.sunset}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -159,7 +161,7 @@
                             style="@style/CurrentWeatherText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="70"
+                            android:hint="@string/_70"
                             android:text="@{currentWeather.temp}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -170,7 +172,7 @@
                             style="@style/CurrentWeatherText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="55"
+                            android:hint="@string/_55"
                             android:text="@{currentWeather.feels}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -181,7 +183,7 @@
                             style="@style/CurrentWeatherText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="42%"
+                            android:hint="@string/_42"
                             android:text="@{currentWeather.humidity}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -192,7 +194,7 @@
                             style="@style/CurrentWeatherText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="9.22"
+                            android:hint="@string/_9_22"
                             android:text="@{currentWeather.windSpeed.toString()}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -203,7 +205,7 @@
                             style="@style/CurrentWeatherText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="Clouds"
+                            android:hint="@string/clouds"
                             android:text="@{weatherDescription.mainDescription}"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -230,13 +232,13 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/more"
-                            style="@style/PlannerButtonWhiteGold"
+                            style="@style/CurrentWeatherMoreLessButtons"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:layout_marginBottom="8dp"
                             android:padding="4dp"
-                            android:text="More"
+                            android:text="@string/more"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toEndOf="@id/less"
@@ -245,13 +247,13 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/less"
-                            style="@style/PlannerButtonWhiteGold"
+                            style="@style/CurrentWeatherMoreLessButtons"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:layout_marginBottom="8dp"
                             android:padding="4dp"
-                            android:text="Less"
+                            android:text="@string/less"
                             android:visibility="invisible"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toStartOf="@id/more"
@@ -263,6 +265,9 @@
                 </com.google.android.material.card.MaterialCardView>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/events_header_container"
@@ -293,21 +298,23 @@
                     android:id="@+id/switch_events_to_all"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                   app:layout_constraintBottom_toTopOf="@id/add_event_button"
+                    app:layout_constraintBottom_toTopOf="@id/add_event_button"
                     app:layout_constraintEnd_toStartOf="@id/all_events_textView"
                     app:layout_constraintStart_toEndOf="@id/todays_events"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/all_events_textView"
+                    style="@style/SmallTextTeal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingStart="2dp"
                     android:paddingEnd="8dp"
-                    android:text="All Events"
-                    app:layout_constraintStart_toEndOf="@id/switch_events_to_all"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:text="@string/all_events"
+                    app:layout_constraintBottom_toTopOf="@id/add_event_button"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/add_event_button"/>
+                    app:layout_constraintStart_toEndOf="@id/switch_events_to_all"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
                 <com.google.android.material.button.MaterialButton
@@ -316,7 +323,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="4dp"
-                    android:text="Add New Event"
+                    android:text="@string/add_new_event"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -362,7 +369,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="20dp"
-                    android:text="No Events Currently Scheduled"
+                    android:text="@string/no_events_currently_scheduled"
                     android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

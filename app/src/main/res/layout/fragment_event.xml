@@ -13,163 +13,163 @@
             type="com.devmmurray.dayplanner.ui.fragment.EventFragment" />
     </data>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/event_details_card"
-            android:layout_width="400dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/event_details_card"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/event_title"
+            style="@style/HeaderText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="12dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="12dp"
+            android:hint="@string/event_title"
+            android:padding="8dp"
+
+            android:text="@{event.title}"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/event_title"
-                style="@style/HeaderText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:hint="Event Title"
-                android:padding="8dp"
-                android:text="@{event.title}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/event_date_textView"
+            style="@style/EventFragText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:hint="@string/event_date"
+            android:padding="8dp"
+            app:layout_constraintBaseline_toBaselineOf="@+id/event_date_picker"
+            app:layout_constraintBottom_toTopOf="@id/event_date_textView"
+            app:layout_constraintEnd_toStartOf="@+id/event_date_picker"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/event_date_textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:hint="Event Date"
-                android:padding="8dp"
-                android:textSize="20sp"
-                app:layout_constraintBaseline_toBaselineOf="@+id/event_date_picker"
-                app:layout_constraintBottom_toTopOf="@id/event_date_textView"
-                app:layout_constraintEnd_toStartOf="@+id/event_date_picker"
-                app:layout_constraintStart_toStartOf="parent" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/event_date_picker"
+            style="@style/EventFragDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="end"
+            android:hint="@string/mon_march_1_4_30_pm"
+            android:padding="8dp"
+            android:text="@{event.eventTime}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/event_date_textView"
+            app:layout_constraintTop_toBottomOf="@+id/event_title" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/event_date_picker"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:gravity="end"
-                android:hint="Mon, March 1 4:30 PM"
-                android:padding="8dp"
-                android:text="@{event.eventTime}"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/event_date_textView"
-                app:layout_constraintTop_toBottomOf="@+id/event_title" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/event_location_name"
+            style="@style/EventFragText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:drawableStart="@drawable/ic_location"
+            android:hint="@string/location_name"
+            android:padding="8dp"
+            android:text="@{event.locationName}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_date_picker" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/event_location_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:drawableStart="@drawable/ic_location"
-                android:hint="Location Name"
-                android:padding="8dp"
-                android:text="@{event.locationName}"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/event_date_picker" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/event_location_address"
+            style="@style/EventFragText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:drawableStart="@drawable/ic_location"
+            android:hint="@string/location_address"
+            android:padding="8dp"
+            android:text="@{event.address}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_location_name" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/event_location_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@null"
-                android:drawableStart="@drawable/ic_location"
-                android:hint="Location Address"
-                android:padding="8dp"
-                android:text="@{event.address}"
-                android:textSize="20sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/event_location_name" />
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/event_notes"
+            style="@style/EventFragText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:drawableStart="@drawable/ic_notes"
+            android:gravity="start|top"
+            android:hint="@string/event_notes"
+            android:padding="8dp"
+            android:text="@{event.notes}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/event_location_address" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/event_notes"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:drawableStart="@drawable/ic_notes"
-                android:gravity="start|top"
-                android:hint="Event Notes"
-                android:inputType="textMultiLine"
-                android:padding="8dp"
-                android:text="@{event.notes}"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/event_location_address" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/delete_event"
+            style="@style/PlannerButtonWhiteGold"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="2dp"
+            android:padding="4dp"
+            android:text="@string/delete"
+            app:icon="@drawable/ic_delete"
+            app:iconTint="@color/yellow_dark"
+            app:layout_constraintBaseline_toBaselineOf="@+id/update_event"
+            app:layout_constraintEnd_toStartOf="@id/update_event"
+            app:layout_constraintStart_toStartOf="parent" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/delete_event"
-                style="@style/PlannerButtonWhiteGold"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="2dp"
-                android:text="Delete"
-                app:icon="@drawable/ic_delete"
-                app:iconTint="@color/yellow_dark"
-                app:layout_constraintBaseline_toBaselineOf="@+id/update_event"
-                app:layout_constraintEnd_toStartOf="@id/update_event"
-                app:layout_constraintStart_toStartOf="parent" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/update_event"
+            style="@style/PlannerButtonWhiteGold"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="2dp"
+            android:padding="4dp"
+            android:text="@string/update"
+            app:icon="@drawable/ic_update"
+            app:iconTint="@color/yellow_dark"
+            app:layout_constraintBaseline_toBaselineOf="@+id/share_event"
+            app:layout_constraintEnd_toStartOf="@id/share_event"
+            app:layout_constraintStart_toEndOf="@+id/delete_event" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/update_event"
-                style="@style/PlannerButtonWhiteGold"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
-                android:text="Update"
-                app:icon="@drawable/ic_update"
-                app:iconTint="@color/yellow_dark"
-                app:layout_constraintBaseline_toBaselineOf="@+id/share_event"
-                app:layout_constraintEnd_toStartOf="@id/share_event"
-                app:layout_constraintStart_toEndOf="@+id/delete_event" />
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/share_event"
+            style="@style/PlannerButtonWhiteGold"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="2dp"
+            android:padding="4dp"
+            android:text="@string/share"
+            app:icon="@drawable/ic_share"
+            app:iconTint="@color/yellow_dark"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/update_event"
+            app:layout_constraintTop_toBottomOf="@id/event_notes" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/share_event"
-                style="@style/PlannerButtonWhiteGold"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:padding="4dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="2dp"
-                android:layout_marginEnd="2dp"
-                android:text="Share"
-                app:icon="@drawable/ic_share"
-                app:iconTint="@color/yellow_dark"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/event_notes"
-                app:layout_constraintStart_toEndOf="@id/update_event"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/directions_button"
+            style="@style/LargeTextWhite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="@color/yellow_dark"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="@string/directions"
+            app:icon="@drawable/ic_map"
+            app:iconTint="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/update_event" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/directions_button"
-                style="@style/LargeTextWhite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:layout_marginTop="12dp"
-                android:backgroundTint="@color/yellow_dark"
-                android:text="Directions"
-                android:gravity="center"
-                app:icon="@drawable/ic_map"
-                app:iconTint="@color/white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/update_event"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

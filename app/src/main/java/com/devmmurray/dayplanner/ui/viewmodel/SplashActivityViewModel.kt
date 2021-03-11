@@ -73,7 +73,7 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
     private val _databaseNotReady: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val databaseNotReady: LiveData<Boolean> get() = _databaseNotReady
 
-    val _toastMessage by lazy { MutableLiveData<String>() }
+    private val _toastMessage by lazy { MutableLiveData<String>() }
     val toastMessage: LiveData<String> get() = _toastMessage
 
 

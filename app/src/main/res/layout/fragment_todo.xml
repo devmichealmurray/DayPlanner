@@ -56,7 +56,6 @@
                     android:layout_marginEnd="8dp"
                     android:fontFamily="@font/typewriter"
                     android:text="@string/to_do_list"
-                    android:textSize="34sp"
                     app:layout_constraintBottom_toTopOf="@id/add_task_edittext"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -73,26 +72,31 @@
                     android:padding="12dp"
                     app:layout_constraintEnd_toStartOf="@id/return_button"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/todo_header_text" />
+                    app:layout_constraintTop_toBottomOf="@id/todo_header_text"
+                    android:autofillHints="@string/add_new_item"
+                    android:inputType="text"
+                    android:maxLines="1"/>
 
                 <ImageView
                     android:id="@+id/return_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
+                    android:padding="8dp"
                     android:clickable="true"
                     android:src="@drawable/ic_baseline_arrow_forward_24"
                     app:layout_constraintBottom_toTopOf="@+id/todo_recycler"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/add_task_edittext"
-                    app:layout_constraintTop_toBottomOf="@id/todo_header_text" />
+                    app:layout_constraintTop_toBottomOf="@id/todo_header_text"
+                    android:contentDescription="@string/arrow_shaped_return_key" />
 
                 <TextView
                     android:id="@+id/no_tasks"
                     style="@style/SmallTextBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="No Tasks Scheduled"
+                    android:text="@string/no_tasks_scheduled"
                     android:visibility="visible"
                     android:layout_marginTop="45dp"
                     app:layout_constraintEnd_toEndOf="parent"

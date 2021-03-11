@@ -1,27 +1,57 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Day Planner</string>
+
+    <!-- Alert Dialog -->
+    <string name="error_alert_dialog">ERROR!!</string>
+    <string name="error_alert_okay">Okay</string>
+
+    <!-- Menu Items -->
     <string name="menu_item_home">Home</string>
     <string name="menu_item_todo">To Do</string>
     <string name="title_news">News</string>
-    <string name="today_s_outlook">Todays Outlook</string>
-    <string name="today_s_events">Todays Events</string>
-    <string name="error_alert_dialog">ERROR!!</string>
-    <string name="error_alert_okay">Okay</string>
-    <string name="title_activity_splash">SplashActivity</string>
-    <string name="to_do_list">To Do List</string>
-    <string name="to_do_item_title">To Do Item Title</string>
-    <string name="to_do_item_description">To Do Item Description</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="new_task">New Task</string>
-    <string name="title">Title</string>
-    <string name="description">Description</string>
-    <string name="save">Save</string>
-    <string name="address">Address</string>
-    <string name="date_00_00_00">Date 00:00:00</string>
-    <string name="add_new_item">Add New Item</string>
 
-    <!-- Event Fragment -->
-    <string name="event_card_transition_name">event_card_%1$s</string>
-    <string name="event_card_detail_transition_name">event_card_detail</string>
+    <!-- Home Fragment -->
+    <string name="all_events">All Events</string>
+    <string name="today_s_outlook" tools:ignore="Typos">Todays Outlook</string>
+    <string name="fort_worth_texas">Fort Worth, Texas</string>
+    <string name="fri_march_5_10_36_am">Fri, March 5 10:36 AM</string>
+    <string name="_6_am">6 AM</string>
+    <string name="_7_pm">7 PM</string>
+    <string name="_70">70</string>
+    <string name="_55">55</string>
+    <string name="_42">42%</string>
+    <string name="_9_22">9.22</string>
+    <string name="clouds">Clouds</string>
+    <string name="more">More</string>
+    <string name="less">Less</string>
+    <string name="today_s_events" tools:ignore="Typos">Todays Events</string>
+    <string name="add_new_event">Add New Event</string>
+    <string name="no_events_currently_scheduled">No Events Currently Scheduled</string>
+
+    <!-- Event Fragment & Add Event Fragment -->
+    <string name="event_title">Event Title</string>
+    <string name="event_date">Event Date</string>
+    <string name="mon_march_1_4_30_pm">Mon, March 1 4:30 PM</string>
+    <string name="location_name">  Location Name</string>
+    <string name="location_address">  Location Address</string>
+    <string name="event_notes">Event Notes</string>
+    <string name="delete">Delete</string>
+    <string name="update">Update</string>
+    <string name="share">Share</string>
+    <string name="directions">Directions</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+
+    <!-- To Do Fragment -->
+    <string name="to_do_list">To Do List</string>
+    <string name="add_new_item">Add New Item</string>
+    <string name="no_tasks_scheduled">No Tasks Scheduled</string>
+
+    <!-- News Fragment -->
+    <string name="guardian_news">Guardian News</string>
+    <string name="search_guardian_news">Search Guardian News</string>
+
+    <!-- Image Content Description -->
+    <string name="arrow_shaped_return_key">Arrow Shaped Return Key</string>
 
 </resources>

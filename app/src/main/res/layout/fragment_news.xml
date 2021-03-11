@@ -30,7 +30,7 @@
                 android:layout_marginTop="12dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginBottom="4dp"
-                android:text="Guardian News"
+                android:text="@string/guardian_news"
                 app:layout_constraintBottom_toTopOf="@id/search_editText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,10 @@
                 android:layout_margin="4dp"
                 android:background="@drawable/add_todo_edittext_background"
                 android:drawableEnd="@drawable/ic_search"
-                android:hint="@string/add_new_item"
+                android:hint="@string/search_guardian_news"
+                android:autofillHints="@string/search_guardian_news"
+                android:inputType="text"
+                android:maxLines="1"
                 android:padding="12dp"
                 app:layout_constraintEnd_toStartOf="@id/return_button"
                 app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +62,8 @@
                 app:layout_constraintBottom_toTopOf="@+id/search_suggestions_recycler"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/search_editText"
-                app:layout_constraintTop_toBottomOf="@id/news_header" />
+                app:layout_constraintTop_toBottomOf="@id/news_header"
+                android:contentDescription="@string/arrow_shaped_return_key" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/search_suggestions_recycler"

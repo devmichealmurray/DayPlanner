@@ -65,15 +65,17 @@ class TodoFragment : Fragment() {
 
     private val taskListObserver = Observer<List<TodoTaskEntity>> { list ->
         val taskList = list.map { it.toTodoTaskObject() }
-        toDoBinding.noTasks.visibility = View.INVISIBLE
-        toDoBinding.todoRecycler.apply {
-            layoutManager = LinearLayoutManager(
-                context,
-                LinearLayoutManager.VERTICAL,
-                false
-            )
-            adapter = DayPlannerRecyclerView(taskList, ListFlags.TODO_TASK)
-            visibility = View.VISIBLE
+        if (taskList.isNotEmpty()) {
+            toDoBinding.noTasks.visibility = View.INVISIBLE
+            toDoBinding.todoRecycler.apply {
+                layoutManager = LinearLayoutManager(
+                    context,
+                    LinearLayoutManager.VERTICAL,
+                    false
+                )
+                adapter = DayPlannerRecyclerView(taskList, ListFlags.TODO_TASK)
+                visibility = View.VISIBLE
+            }
         }
     }
 
