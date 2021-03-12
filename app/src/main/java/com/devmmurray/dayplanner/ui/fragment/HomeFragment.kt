@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -68,9 +67,6 @@ class HomeFragment : Fragment() {
             homeErrorMessage.observe(viewLifecycleOwner, errorObserver)
             cityState.observe(viewLifecycleOwner, cityStateObserver)
             currentWeather.observe(viewLifecycleOwner, currentWeatherObserver)
-            toastMessage.observe(viewLifecycleOwner, {
-                Toast.makeText(context, it, Toast.LENGTH_LONG).show()
-            })
         }
 
         homeBinding.apply {
