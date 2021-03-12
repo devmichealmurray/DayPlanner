@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.devmmurray.dayplanner.data.database.dao.*
 import com.devmmurray.dayplanner.data.model.entity.*
 
-const val DATABASE_SCHEMA_VERSION = 15
+const val DATABASE_SCHEMA_VERSION = 16
 const val DB_NAME = "day-planner"
 
 @Database(
@@ -22,7 +22,6 @@ const val DB_NAME = "day-planner"
     ],
     exportSchema = false
 )
-
 abstract class RoomDatabaseClient : RoomDatabase() {
 
     abstract fun hourlyForecastsDAO(): HourlyForecastDAO

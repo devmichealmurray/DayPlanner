@@ -67,7 +67,8 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
             _eventProgress.value = true
             viewModelScope.launch {
                 try {
-                    dbRepo.getAllEvents()
+                    eventsUseCases.getAllEvents.invoke()
+//                    dbRepo.getAllEvents()
                         .flowOn(Dispatchers.IO)
                         .collect { dbList ->
                             val events: MutableList<EventEntity> = dbList.toMutableList()
@@ -95,7 +96,8 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
         viewModelScope.launch {
             _weatherProgress.value = true
             try {
-                dbRepo.getHourlyForecasts()
+                hourlyForecastsUseCases.getHourlyForecasts.invoke()
+//                dbRepo.getHourlyForecasts()
                     .flowOn(Dispatchers.IO)
                     .collect {
                         _forecastList.value = it
@@ -112,7 +114,8 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
     private fun getCurrentWeatherFromDB() {
         viewModelScope.launch {
             try {
-                dbRepo.getCurrentWeather()
+                weatherUseCases.getCurrentWeather.invoke()
+//                dbRepo.getCurrentWeather()
                     .flowOn(Dispatchers.IO)
                     .collect {
                         _currentWeather.value = it.toCurrentWeatherObject()
@@ -132,7 +135,8 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
         _eventProgress.value = true
         viewModelScope.launch {
             try {
-                dbRepo.getEvents(day)
+                eventsUseCases.getEvents.invoke(day)
+//                dbRepo.getEvents(day)
                     .flowOn(Dispatchers.IO)
                     .collect { dbList ->
                         val events: MutableList<EventEntity> = dbList.toMutableList()
@@ -151,7 +155,9 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
     fun getCityState() {
         viewModelScope.launch {
             try {
-                val cityState = dbRepo.getCityState()
+                val cityState =
+                    cityUseCases.getCityState.invoke()
+//                    dbRepo.getCityState()
                 _cityState.value = cityState.toCityStateObject()
             } catch (e: Exception) {
                 _errorMessage.value = e.message.toString()

@@ -18,7 +18,8 @@ class EventViewModel(application: Application): SplashActivityViewModel(applicat
     fun getEventById(id: Long) {
         viewModelScope.launch {
             try {
-                dbRepo.getEventById(id)
+                eventsUseCases.getEventById.invoke(id)
+//                dbRepo.getEventById(id)
                     .flowOn(Dispatchers.IO)
                     .collect { _returnEvent.value = it }
 
@@ -37,7 +38,8 @@ class EventViewModel(application: Application): SplashActivityViewModel(applicat
     fun deleteEvent(id: Long) {
         viewModelScope.launch {
             try {
-                dbRepo.deleteEvent(id)
+                eventsUseCases.deleteEvent.invoke(id)
+//                dbRepo.deleteEvent(id)
             } catch (e: Exception) {
                 /**
                  *

@@ -7,19 +7,21 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.devmmurray.dayplanner.data.database.RoomDatabaseClient
+import com.devmmurray.dayplanner.data.di.ApplicationModule
+import com.devmmurray.dayplanner.data.di.DaggerViewModelComponent
 import com.devmmurray.dayplanner.data.model.entity.CityStateEntity
 import com.devmmurray.dayplanner.data.model.entity.CurrentWeatherEntity
 import com.devmmurray.dayplanner.data.model.entity.HourlyForecastEntity
 import com.devmmurray.dayplanner.data.model.entity.NewsEntity
 import com.devmmurray.dayplanner.data.repository.ApiRepository
-import com.devmmurray.dayplanner.data.repository.DatabaseRepository
+import com.devmmurray.dayplanner.data.usecases.*
 import com.devmmurray.dayplanner.util.JsonProcessing
 import com.devmmurray.dayplanner.util.time.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.util.*
+import javax.inject.Inject
 
 private const val TAG = "SplashActivityViewModel"
 
@@ -28,36 +30,58 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
 
     /**
      *  Set Up of Database
-     *  Change to DI with Hilt When Functionality is Complete
      */
-    val dbRepo: DatabaseRepository
+
+    @Inject
+    lateinit var cityUseCases: CityStateUseCases
+
+    @Inject
+    lateinit var weatherUseCases: CurrentWeatherUseCases
+
+    @Inject
+    lateinit var eventsUseCases: EventUseCases
+
+    @Inject
+    lateinit var hourlyForecastsUseCases: HourlyForecastsUseCases
+
+    @Inject
+    lateinit var newsUseCases: NewsUseCases
+
+    @Inject
+    lateinit var todoTasksUseCases: TodoTasksUseCases
+
+//    val dbRepo: DatabaseRepository
 
     init {
 
-        val hourlyForecastDAO = RoomDatabaseClient
-            .getDbInstance(application).hourlyForecastsDAO()
-        val currentWeatherDAO = RoomDatabaseClient
-            .getDbInstance(application).currentWeatherDAO()
-        val todoTaskDAO = RoomDatabaseClient
-            .getDbInstance(application).todoTaskDAO()
-        val eventDAO = RoomDatabaseClient
-            .getDbInstance(application).eventDAO()
-        val cityStateDAO = RoomDatabaseClient
-            .getDbInstance(application).cityStateDAO()
-        val newsDAO = RoomDatabaseClient
-            .getDbInstance(application).newsDAO()
+        DaggerViewModelComponent.builder()
+            .applicationModule(ApplicationModule(application))
+            .build()
+            .inject(this)
 
-        dbRepo =
-            DatabaseRepository(
-                hourlyForecastDAO,
-                currentWeatherDAO,
-                todoTaskDAO,
-                eventDAO,
-                cityStateDAO,
-                newsDAO
-            )
+//        val hourlyForecastDAO = RoomDatabaseClient
+//            .getDbInstance(application).hourlyForecastsDAO()
+//        val currentWeatherDAO = RoomDatabaseClient
+//            .getDbInstance(application).currentWeatherDAO()
+//        val todoTaskDAO = RoomDatabaseClient
+//            .getDbInstance(application).todoTaskDAO()
+//        val eventDAO = RoomDatabaseClient
+//            .getDbInstance(application).eventDAO()
+//        val cityStateDAO = RoomDatabaseClient
+//            .getDbInstance(application).cityStateDAO()
+//        val newsDAO = RoomDatabaseClient
+//            .getDbInstance(application).newsDAO()
+//
+//        dbRepo =
+//            DatabaseRepository(
+//                hourlyForecastDAO,
+//                currentWeatherDAO,
+//                todoTaskDAO,
+//                eventDAO,
+//                cityStateDAO,
+//                newsDAO
+//            )
     }
-
 
 
     /**
@@ -75,7 +99,6 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
 
     private val _toastMessage by lazy { MutableLiveData<String>() }
     val toastMessage: LiveData<String> get() = _toastMessage
-
 
 
     /**
@@ -136,7 +159,6 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
     }
 
 
-
     /**
      *  Database Functions
      */
@@ -149,38 +171,45 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
 
     private fun deleteOldWeatherData() {
         viewModelScope.launch {
-            dbRepo.deleteOldHourlyForecasts()
-            dbRepo.deleteOldWeather()
+            hourlyForecastsUseCases.deleteOldHourlyForecasts.invoke()
+            weatherUseCases.deleteOldWeather.invoke()
+//            dbRepo.deleteOldHourlyForecasts()
+//            dbRepo.deleteOldWeather()
         }
     }
 
     fun deleteOldNews() {
         viewModelScope.launch {
-            dbRepo.deleteOldNews()
+            newsUseCases.deleteOldNews.invoke()
+//            dbRepo.deleteOldNews()
         }
     }
 
     private fun deleteCityInfo() {
         viewModelScope.launch {
-            dbRepo.deleteCityInfo()
+            cityUseCases.deleteCityInfo.invoke()
+//            dbRepo.deleteCityInfo()
         }
     }
 
     private fun addForecastsToDB(forecast: HourlyForecastEntity) {
         viewModelScope.launch {
-            dbRepo.addHourlyForecasts(forecast)
+            hourlyForecastsUseCases.addHourlyForecasts.invoke(forecast)
+//            dbRepo.addHourlyForecasts(forecast)
         }
     }
 
     private fun addCurrentWeatherToDB(weather: CurrentWeatherEntity) {
         viewModelScope.launch {
-            dbRepo.addCurrentWeather(weather)
+            weatherUseCases.addCurrentWeather.invoke(weather)
+//            dbRepo.addCurrentWeather(weather)
         }
     }
 
     private fun addNewsArticle(article: NewsEntity) {
         viewModelScope.launch {
-            dbRepo.addNewsArticle(article)
+            newsUseCases.addNewsArticle.invoke(article)
+//            dbRepo.addNewsArticle(article)
         }
     }
 
@@ -194,7 +223,8 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
                 val cityStateLocation =
                     CityStateEntity(city = city, state = state)
                 viewModelScope.launch {
-                    dbRepo.addCityState(cityStateLocation)
+                    cityUseCases.addCityState.invoke(cityStateLocation)
+//                    dbRepo.addCityState(cityStateLocation)
                 }
             }
         } catch (e: Exception) {

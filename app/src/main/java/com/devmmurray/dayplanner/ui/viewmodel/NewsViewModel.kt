@@ -23,7 +23,8 @@ class NewsViewModel(application: Application) : SplashActivityViewModel(applicat
     fun getCurrentNews() {
         viewModelScope.launch {
             try {
-                dbRepo.getNewsArticles()
+                newsUseCases.getNewsArticle.invoke()
+//                dbRepo.getNewsArticles()
                     .flowOn(Dispatchers.IO)
                     .collect {
                         _newsList.value = it

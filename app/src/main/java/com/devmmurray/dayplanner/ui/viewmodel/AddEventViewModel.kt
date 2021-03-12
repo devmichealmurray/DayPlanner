@@ -40,7 +40,7 @@ class AddEventViewModel(application: Application) : SplashActivityViewModel(appl
                 address = address,
                 notes = notes,
             )
-            updateEvent(event)
+            saveEventToDB(event)
         } else {
             val event = EventEntity(
                 dateId = dateId,
@@ -57,19 +57,8 @@ class AddEventViewModel(application: Application) : SplashActivityViewModel(appl
     private fun saveEventToDB(event: EventEntity) {
         viewModelScope.launch {
             try {
-                dbRepo.addEvent(event)
-//                _toastMessage.value = "Event ${event.title} Saved!"
-            } catch (e: Exception) {
-                _errorMessage.value = e.message.toString()
-            }
-        }
-    }
-
-    private fun updateEvent(event: EventEntity) {
-        viewModelScope.launch {
-            try {
-                dbRepo.updateEvent(event)
-//                _toastMessage.value = "Event ${event.title} Updated"
+                eventsUseCases.addEvent.invoke(event)
+//                dbRepo.addEvent(event)
             } catch (e: Exception) {
                 _errorMessage.value = e.message.toString()
             }
@@ -79,7 +68,8 @@ class AddEventViewModel(application: Application) : SplashActivityViewModel(appl
     private fun getEventById(id: Long) {
         viewModelScope.launch {
             try {
-                dbRepo.getEventById(id)
+                eventsUseCases.getEventById.invoke(id)
+//                dbRepo.getEventById(id)
                     .flowOn(Dispatchers.IO)
                     .collect { _returnEvent.value = it }
             } catch (e: Exception) {

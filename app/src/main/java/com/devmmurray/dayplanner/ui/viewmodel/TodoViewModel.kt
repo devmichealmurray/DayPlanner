@@ -27,7 +27,7 @@ class TodoViewModel(application: Application) : SplashActivityViewModel(applicat
     fun getTasksFromDB() {
         viewModelScope.launch {
             try {
-                dbRepo.getToDoTasks()
+                todoTasksUseCases.getToDoTasks.invoke()
                     .flowOn(Dispatchers.IO)
                     .collect {
                         val tasks: MutableList<TodoTaskEntity> = it.toMutableList()
@@ -45,7 +45,8 @@ class TodoViewModel(application: Application) : SplashActivityViewModel(applicat
 
     fun removeTask(id: Long) {
         viewModelScope.launch {
-            dbRepo.deleteToDoTask(id)
+            todoTasksUseCases.deleteToDoTask.invoke(id)
+//            dbRepo.deleteToDoTask(id)
         }
         refreshToDoFragment()
     }
@@ -66,7 +67,8 @@ class TodoViewModel(application: Application) : SplashActivityViewModel(applicat
     private fun addTaskToDb(task: TodoTaskEntity) {
         viewModelScope.launch {
             try {
-                dbRepo.addTodoTask(task)
+                todoTasksUseCases.addTodoTask.invoke(task)
+//                dbRepo.addTodoTask(task)
             } catch (e: Exception) {
                 _todoErrorMessage.value = e.message.toString()
             }
