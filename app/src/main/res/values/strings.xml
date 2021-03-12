@@ -55,5 +55,9 @@
     <!-- Image Content Description -->
     <string name="arrow_shaped_return_key">Arrow Shaped Return Key</string>
 
+    <!-- Splash Activity -->
+    <string name="thatcher_quote">Plan your work for today and every day, \n \n then work your plan ~ Margret Thatcher</string>
+    <string name="day_planner">Day Planner</string>
+
 
 </resources>

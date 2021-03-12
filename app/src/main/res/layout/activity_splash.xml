@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/splash_activity"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activity.SplashActivity">
@@ -10,7 +11,7 @@
         android:id="@+id/splash_logo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Day Planner"
+        android:text="@string/day_planner"
         android:layout_marginTop="125dp"
         android:textColor="@color/teal_200"
         android:fontFamily="@font/pacifico_reg"
@@ -30,7 +31,7 @@
         android:textStyle="italic"
         android:gravity="center"
         android:padding="22dp"
-        android:text="Plan your work for today and every day, \n \n then work your plan ~ Margret Thatcher"
+        android:text="@string/thatcher_quote"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/splash_logo" />
