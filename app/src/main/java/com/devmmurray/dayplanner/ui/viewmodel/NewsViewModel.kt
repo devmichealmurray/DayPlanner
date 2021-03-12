@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
-class NewsViewModel(application: Application) : SplashActivityViewModel(application) {
+class NewsViewModel(app: Application) : SplashActivityViewModel(app) {
 
     private val _newsList by lazy { MutableLiveData<List<NewsEntity>>() }
     val newsList: LiveData<List<NewsEntity>> get() = _newsList

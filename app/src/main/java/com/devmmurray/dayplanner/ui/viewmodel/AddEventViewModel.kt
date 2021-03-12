@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "AddEventViewModel"
 
-class AddEventViewModel(application: Application) : SplashActivityViewModel(application) {
+class AddEventViewModel(app: Application) : SplashActivityViewModel(app) {
 
     private val _returnEvent by lazy { MutableLiveData<EventEntity>() }
     val returnEvent: LiveData<EventEntity> get() = _returnEvent

@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "SearchResultsViewModel"
 
-class SearchResultsViewModel(application: Application) : SplashActivityViewModel(application) {
+class SearchResultsViewModel(app: Application) : SplashActivityViewModel(app) {
 
     private val _searchErrorMessage by lazy { MutableLiveData<String>() }
     val searchErrorMessage: LiveData<String> get() = _searchErrorMessage

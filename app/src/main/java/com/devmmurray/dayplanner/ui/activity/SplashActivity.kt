@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
@@ -51,14 +52,22 @@ class SplashActivity : AppCompatActivity() {
     private fun startApp() {
         splashViewModel.deleteOldData()
         splashViewModel.getNewData(location)
+        location?.let { getCityState(it) }
     }
+
+    private fun getCityState(location: Location) {
+        val geoCoder = Geocoder(this, Locale.getDefault())
+        val addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
+        splashViewModel.getCityState(addresses)
+    }
+
 
 
     /**
      *  Live Data Observers
      */
 
-    private val errorObserver = Observer<String> { errorMessage ->
+  private val errorObserver = Observer<String> { errorMessage ->
         alert {
             title = getString(R.string.error_alert_dialog)
             message = errorMessage

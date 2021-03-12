@@ -15,7 +15,7 @@ import java.util.*
 
 private const val TAG = "TodoViewModel"
 
-class TodoViewModel(application: Application) : SplashActivityViewModel(application) {
+class TodoViewModel(app: Application) : SplashActivityViewModel(app) {
 
     private val _todoTaskList by lazy { MutableLiveData<List<TodoTaskEntity>>() }
     val todoTaskList: LiveData<List<TodoTaskEntity>> get() = _todoTaskList

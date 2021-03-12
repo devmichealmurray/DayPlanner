@@ -1,7 +1,7 @@
 package com.devmmurray.dayplanner.ui.viewmodel
 
 import android.app.Application
-import android.location.Geocoder
+import android.location.Address
 import android.location.Location
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -20,13 +20,12 @@ import com.devmmurray.dayplanner.util.time.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import kotlinx.coroutines.launch
 import java.io.IOException
-import java.util.*
 import javax.inject.Inject
 
 private const val TAG = "SplashActivityViewModel"
 
-open class SplashActivityViewModel(application: Application) : AndroidViewModel(application) {
-    val context = application
+open class SplashActivityViewModel(app: Application) : AndroidViewModel(app) {
+
 
     /**
      *  Set Up of Database
@@ -34,53 +33,23 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
 
     @Inject
     lateinit var cityUseCases: CityStateUseCases
-
     @Inject
     lateinit var weatherUseCases: CurrentWeatherUseCases
-
     @Inject
     lateinit var eventsUseCases: EventUseCases
-
     @Inject
     lateinit var hourlyForecastsUseCases: HourlyForecastsUseCases
-
     @Inject
     lateinit var newsUseCases: NewsUseCases
-
     @Inject
     lateinit var todoTasksUseCases: TodoTasksUseCases
-
-//    val dbRepo: DatabaseRepository
 
     init {
 
         DaggerViewModelComponent.builder()
-            .applicationModule(ApplicationModule(application))
+            .applicationModule(ApplicationModule(app))
             .build()
             .inject(this)
-
-//        val hourlyForecastDAO = RoomDatabaseClient
-//            .getDbInstance(application).hourlyForecastsDAO()
-//        val currentWeatherDAO = RoomDatabaseClient
-//            .getDbInstance(application).currentWeatherDAO()
-//        val todoTaskDAO = RoomDatabaseClient
-//            .getDbInstance(application).todoTaskDAO()
-//        val eventDAO = RoomDatabaseClient
-//            .getDbInstance(application).eventDAO()
-//        val cityStateDAO = RoomDatabaseClient
-//            .getDbInstance(application).cityStateDAO()
-//        val newsDAO = RoomDatabaseClient
-//            .getDbInstance(application).newsDAO()
-//
-//        dbRepo =
-//            DatabaseRepository(
-//                hourlyForecastDAO,
-//                currentWeatherDAO,
-//                todoTaskDAO,
-//                eventDAO,
-//                cityStateDAO,
-//                newsDAO
-//            )
     }
 
 
@@ -109,7 +78,6 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
         if (location?.latitude != null) {
             val searchDate = TimeStampProcessing.todaysDate(TimeFlags.NEWS_SEARCH_DATE)
             getWeatherFromOpenWeather(location.latitude, location.longitude)
-            getCityState(location)
             getGuardianNews(searchDate)
         } else {
             _errorMessage.value = "Could Not Access Location"
@@ -173,50 +141,41 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
         viewModelScope.launch {
             hourlyForecastsUseCases.deleteOldHourlyForecasts.invoke()
             weatherUseCases.deleteOldWeather.invoke()
-//            dbRepo.deleteOldHourlyForecasts()
-//            dbRepo.deleteOldWeather()
         }
     }
 
     fun deleteOldNews() {
         viewModelScope.launch {
             newsUseCases.deleteOldNews.invoke()
-//            dbRepo.deleteOldNews()
         }
     }
 
     private fun deleteCityInfo() {
         viewModelScope.launch {
             cityUseCases.deleteCityInfo.invoke()
-//            dbRepo.deleteCityInfo()
         }
     }
 
     private fun addForecastsToDB(forecast: HourlyForecastEntity) {
         viewModelScope.launch {
             hourlyForecastsUseCases.addHourlyForecasts.invoke(forecast)
-//            dbRepo.addHourlyForecasts(forecast)
         }
     }
 
     private fun addCurrentWeatherToDB(weather: CurrentWeatherEntity) {
         viewModelScope.launch {
             weatherUseCases.addCurrentWeather.invoke(weather)
-//            dbRepo.addCurrentWeather(weather)
         }
     }
 
     private fun addNewsArticle(article: NewsEntity) {
         viewModelScope.launch {
             newsUseCases.addNewsArticle.invoke(article)
-//            dbRepo.addNewsArticle(article)
         }
     }
 
-    private fun getCityState(location: Location) {
+    fun getCityState(addresses: List<Address>) {
         try {
-            val geoCoder = Geocoder(context, Locale.getDefault())
-            val addresses = geoCoder.getFromLocation(location.latitude, location.longitude, 1)
             if (!addresses.isNullOrEmpty()) {
                 val city = addresses[0].locality
                 val state = addresses[0].adminArea
@@ -224,7 +183,6 @@ open class SplashActivityViewModel(application: Application) : AndroidViewModel(
                     CityStateEntity(city = city, state = state)
                 viewModelScope.launch {
                     cityUseCases.addCityState.invoke(cityStateLocation)
-//                    dbRepo.addCityState(cityStateLocation)
                 }
             }
         } catch (e: Exception) {

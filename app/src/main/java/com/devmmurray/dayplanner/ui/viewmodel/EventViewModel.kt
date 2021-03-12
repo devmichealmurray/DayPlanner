@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
-class EventViewModel(application: Application): SplashActivityViewModel(application) {
+class EventViewModel(app: Application) : SplashActivityViewModel(app) {
 
     private val _returnEvent by lazy { MutableLiveData<EventEntity>() }
     val returnEvent: LiveData<EventEntity> get() = _returnEvent
