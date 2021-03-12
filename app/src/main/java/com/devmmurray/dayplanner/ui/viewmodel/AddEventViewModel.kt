@@ -58,7 +58,6 @@ class AddEventViewModel(app: Application) : SplashActivityViewModel(app) {
         viewModelScope.launch {
             try {
                 eventsUseCases.addEvent.invoke(event)
-//                dbRepo.addEvent(event)
             } catch (e: Exception) {
                 _errorMessage.value = e.message.toString()
             }
@@ -69,7 +68,6 @@ class AddEventViewModel(app: Application) : SplashActivityViewModel(app) {
         viewModelScope.launch {
             try {
                 eventsUseCases.getEventById.invoke(id)
-//                dbRepo.getEventById(id)
                     .flowOn(Dispatchers.IO)
                     .collect { _returnEvent.value = it }
             } catch (e: Exception) {

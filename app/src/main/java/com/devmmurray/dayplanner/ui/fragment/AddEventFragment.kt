@@ -86,8 +86,8 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
 
     private val returnEventObserver = Observer<EventEntity> { event ->
         addEventBinding.apply {
-            addEventTextView.text = "Update Event"
-            saveAction.text = "Update"
+            addEventTextView.text = getString(R.string.update_event)
+            saveAction.text = getString(R.string.update)
             eventTitle.setText(event.title)
             eventDatePicker.text = event.eventTime?.let { eventTime ->
                 TimeStampProcessing.transformSystemTime(

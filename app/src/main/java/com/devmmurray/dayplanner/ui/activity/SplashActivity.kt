@@ -12,7 +12,6 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -169,11 +168,14 @@ class SplashActivity : AppCompatActivity() {
                     location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
                     startApp()
                 } else {
-                    Toast.makeText(
-                        this,
-                        "Permission DENIED: Cannot Start Application",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    alert {
+                        title = getString(R.string.error_alert_dialog)
+                        message = "Permissions DENIED: Cannot Start Day Planner Application"
+                        isCancelable = false
+                        positiveButton(getString(R.string.error_alert_okay)) { dialog ->
+                            dialog.dismiss()
+                        }
+                    }.show()
                 }
             }
 

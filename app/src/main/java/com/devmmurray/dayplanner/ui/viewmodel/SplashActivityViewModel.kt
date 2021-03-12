@@ -66,9 +66,6 @@ open class SplashActivityViewModel(app: Application) : AndroidViewModel(app) {
     private val _databaseNotReady: MutableLiveData<Boolean> by lazy { MutableLiveData<Boolean>() }
     val databaseNotReady: LiveData<Boolean> get() = _databaseNotReady
 
-    private val _toastMessage by lazy { MutableLiveData<String>() }
-    val toastMessage: LiveData<String> get() = _toastMessage
-
 
     /**
      * Networking calls to retrieve weather, city location, and news data

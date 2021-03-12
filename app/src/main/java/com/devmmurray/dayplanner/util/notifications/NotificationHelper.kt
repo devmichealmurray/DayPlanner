@@ -36,7 +36,7 @@ object NotificationHelper {
 
         val notification = context.let {
             NotificationCompat.Builder(it, NOTIFICATION_CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_search)
+                .setSmallIcon(R.drawable.ic_logo)
                 .setContentTitle("Day Planner")
                 .setContentText("Plan Your Day With Day Planner!!")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)

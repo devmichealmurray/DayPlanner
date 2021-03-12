@@ -37,6 +37,7 @@
     <string name="event_notes">Event Notes</string>
     <string name="delete">Delete</string>
     <string name="update">Update</string>
+    <string name="update_event">Update Event</string>
     <string name="share">Share</string>
     <string name="directions">Directions</string>
     <string name="cancel">Cancel</string>
@@ -53,5 +54,6 @@
 
     <!-- Image Content Description -->
     <string name="arrow_shaped_return_key">Arrow Shaped Return Key</string>
+
 
 </resources>
