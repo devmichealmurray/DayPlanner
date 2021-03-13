@@ -21,6 +21,7 @@ import com.devmmurray.dayplanner.ui.viewmodel.AddEventViewModel
 import com.devmmurray.dayplanner.util.Utils
 import com.devmmurray.dayplanner.util.time.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
+import com.google.android.material.transition.MaterialContainerTransform
 import org.jetbrains.anko.support.v4.alert
 import java.util.*
 
@@ -33,10 +34,24 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
     private val addEventViewModel: AddEventViewModel by viewModels()
     private val args: AddEventFragmentArgs by navArgs()
 
-    var savedDay = 0
-    var savedMonth = 0
-    var savedYear = 0
+    var savedDay = -1
+    var savedMonth = -1
+    var savedYear = -1
     var savedMillis: Long = 0
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        enterTransition = MaterialContainerTransform().apply {
+            fadeMode = MaterialContainerTransform.FADE_MODE_IN
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
+
+        exitTransition = MaterialContainerTransform().apply {
+            fadeMode = MaterialContainerTransform.FADE_MODE_OUT
+            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,7 +72,7 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
                 setOnClickListener { navigateToDatePicker() }
             }
             cancelButton.setOnClickListener { cancelButtonNavigation() }
-            saveAction.setOnClickListener { saveActionNavigation() }
+            saveAction.setOnClickListener { saveButton() }
         }
 
         addEventViewModel.apply {
@@ -162,12 +177,23 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
             .navigate(R.id.action_addEventFragment_to_navigation_home)
     }
 
-    private fun saveActionNavigation() {
-        val dateId = if (savedYear == 0) {
-            TimeStampProcessing.transformSystemTime(savedMillis, TimeFlags.DATE_ID)
+    private fun saveButton() {
+        if (savedMillis > 0) {
+            saveActionNavigation()
         } else {
-            "$savedMonth-$savedDay-$savedYear"
+            alert {
+                title = getString(R.string.error_alert_dialog)
+                message = "No Date or Time Selected For This Event"
+                isCancelable = false
+                positiveButton(getString(R.string.error_alert_okay)) { dialog ->
+                    dialog.dismiss()
+                }
+            }.show()
         }
+    }
+
+    private fun saveActionNavigation() {
+        val dateId = "$savedMonth-$savedDay-$savedYear"
         val title = addEventBinding.eventTitle.text.toString().capitalize(Locale.ROOT)
         val date = savedMillis
         val locationName =

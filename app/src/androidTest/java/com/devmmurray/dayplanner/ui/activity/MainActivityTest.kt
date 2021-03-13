@@ -18,7 +18,7 @@ class MainActivityTest {
 
     @Before
     fun setUp() {
-        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
+        ActivityScenario.launch(MainActivity::class.java)
     }
 
     @Test

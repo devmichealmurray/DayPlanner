@@ -1,8 +1,6 @@
 package com.devmmurray.dayplanner.ui.viewmodel
 
 import android.app.Application
-import android.widget.ImageView
-import androidx.databinding.BindingAdapter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -12,7 +10,6 @@ import com.devmmurray.dayplanner.data.model.local.CityStateLocation
 import com.devmmurray.dayplanner.data.model.local.CurrentWeather
 import com.devmmurray.dayplanner.util.time.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
-import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
@@ -21,18 +18,6 @@ import kotlinx.coroutines.launch
 private const val TAG = "Home View Model"
 
 class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
-
-    // Binding adapter used to bind photo url and load in RV
-    companion object {
-        @JvmStatic
-        @BindingAdapter(value = ["imageUrl"])
-        fun bindImageUrl(view: ImageView, icon: String) {
-            val url = "https://openweathermap.org/img/wn/$icon@2x.png"
-            Picasso.get()
-                .load(url)
-                .into(view)
-        }
-    }
 
     private val _weatherProgress by lazy { MutableLiveData<Boolean>() }
     val weatherProgress: LiveData<Boolean> get() = _weatherProgress
@@ -68,7 +53,6 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
             viewModelScope.launch {
                 try {
                     eventsUseCases.getAllEvents.invoke()
-//                    dbRepo.getAllEvents()
                         .flowOn(Dispatchers.IO)
                         .collect { dbList ->
                             val events: MutableList<EventEntity> = dbList.toMutableList()
@@ -97,7 +81,6 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
             _weatherProgress.value = true
             try {
                 hourlyForecastsUseCases.getHourlyForecasts.invoke()
-//                dbRepo.getHourlyForecasts()
                     .flowOn(Dispatchers.IO)
                     .collect {
                         _forecastList.value = it
@@ -115,7 +98,6 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
         viewModelScope.launch {
             try {
                 weatherUseCases.getCurrentWeather.invoke()
-//                dbRepo.getCurrentWeather()
                     .flowOn(Dispatchers.IO)
                     .collect {
                         _currentWeather.value = it.toCurrentWeatherObject()
@@ -136,7 +118,6 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
         viewModelScope.launch {
             try {
                 eventsUseCases.getEvents.invoke(day)
-//                dbRepo.getEvents(day)
                     .flowOn(Dispatchers.IO)
                     .collect { dbList ->
                         val events: MutableList<EventEntity> = dbList.toMutableList()
@@ -157,7 +138,6 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
             try {
                 val cityState =
                     cityUseCases.getCityState.invoke()
-//                    dbRepo.getCityState()
                 _cityState.value = cityState.toCityStateObject()
             } catch (e: Exception) {
                 _errorMessage.value = e.message.toString()
@@ -166,4 +146,3 @@ class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
     }
 
 }
-
