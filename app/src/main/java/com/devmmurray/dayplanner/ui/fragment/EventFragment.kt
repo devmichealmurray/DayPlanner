@@ -8,12 +8,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.devmmurray.dayplanner.BR
+import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.data.model.local.Event
 import com.devmmurray.dayplanner.databinding.FragmentEventBinding
 import com.devmmurray.dayplanner.ui.viewmodel.EventViewModel
+import org.jetbrains.anko.support.v4.alert
 
 class EventFragment : DialogFragment() {
 
@@ -33,14 +36,16 @@ class EventFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val id = args.eventId
-        eventViewModel.getEventById(id)
-        eventViewModel.returnEvent.observe(viewLifecycleOwner, {
-            val event = it.toEventObject()
-            bindEvent(event)
-        })
+        eventViewModel.apply {
+            getEventById(id)
+            eventErrorMessage.observe(viewLifecycleOwner, eventErrorObserver)
+            returnEvent.observe(viewLifecycleOwner, { bindEvent(it) })
+        }
 
-        eventBinding.deleteEvent.setOnClickListener { deleteEvent(id) }
-        eventBinding.updateEvent.setOnClickListener { updateEvent(id) }
+        eventBinding.apply {
+            deleteEvent.setOnClickListener { deleteEvent(id) }
+            updateEvent.setOnClickListener { updateEvent(id) }
+        }
 
     }
 
@@ -88,6 +93,17 @@ class EventFragment : DialogFragment() {
         parentFragment?.view?.let {
             Navigation.findNavController(it).navigate(directions)
         }
+    }
+
+    private val eventErrorObserver = Observer<String> { errorMessage ->
+        alert {
+            title = getString(R.string.error_alert_dialog)
+            message = errorMessage
+            isCancelable = false
+            positiveButton(getString(R.string.error_alert_okay)) { dialog ->
+                dialog.dismiss()
+            }
+        }.show()
     }
 
 }

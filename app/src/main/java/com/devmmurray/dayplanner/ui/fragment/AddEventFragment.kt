@@ -21,7 +21,7 @@ import com.devmmurray.dayplanner.ui.viewmodel.AddEventViewModel
 import com.devmmurray.dayplanner.util.Utils
 import com.devmmurray.dayplanner.util.time.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
-import com.google.android.material.transition.MaterialContainerTransform
+import com.google.android.material.transition.MaterialElevationScale
 import org.jetbrains.anko.support.v4.alert
 import java.util.*
 
@@ -42,13 +42,10 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        enterTransition = MaterialContainerTransform().apply {
-            fadeMode = MaterialContainerTransform.FADE_MODE_IN
+        enterTransition = MaterialElevationScale(true).apply {
             duration = resources.getInteger(R.integer.motion_duration_large).toLong()
         }
-
-        exitTransition = MaterialContainerTransform().apply {
-            fadeMode = MaterialContainerTransform.FADE_MODE_OUT
+        exitTransition = MaterialElevationScale(false).apply {
             duration = resources.getInteger(R.integer.motion_duration_large).toLong()
         }
     }
@@ -80,7 +77,6 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
             returnEvent.observe(viewLifecycleOwner, returnEventObserver)
             addEventErrorMessage.observe(viewLifecycleOwner, errorMessageObserver)
         }
-
     }
 
 

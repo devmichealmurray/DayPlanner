@@ -1,7 +1,6 @@
 package com.devmmurray.dayplanner.ui.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,11 +46,16 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false)
-        return homeBinding.root
+        homeBinding.apply {
+
+            return homeBinding.root
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        homeBinding.setVariable(BR.home, this)
 
         homeViewModel.apply {
             getWeatherFromDB()
@@ -67,19 +71,11 @@ class HomeFragment : Fragment() {
         }
 
         homeBinding.apply {
-            addEventButton.setOnClickListener { addEventNavigation() }
-            more.setOnClickListener { moreButtonFunction() }
-            less.setOnClickListener { lessButtonFunction() }
             switchEventsToAll.setOnCheckedChangeListener { _, isChecked ->
                 eventChangeListener(isChecked)
             }
         }
 
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d(TAG, "=================== On Resume Called ====================")
     }
 
     private val cityStateObserver = Observer<CityStateLocation> { location ->
@@ -157,12 +153,12 @@ class HomeFragment : Fragment() {
      * Move to Binding
      */
 
-    private fun addEventNavigation() {
+    fun addEventNavigation() {
         Navigation.findNavController(homeBinding.addEventButton)
             .navigate(R.id.action_navigation_home_to_addEventFragment)
     }
 
-    private fun moreButtonFunction() {
+    fun moreButtonFunction() {
         homeBinding.apply {
             currentWeatherCard.visibility = View.VISIBLE
             more.visibility = View.INVISIBLE
@@ -170,7 +166,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun lessButtonFunction() {
+    fun lessButtonFunction() {
         homeBinding.apply {
             currentWeatherCard.visibility = View.GONE
             less.visibility = View.INVISIBLE
@@ -179,7 +175,6 @@ class HomeFragment : Fragment() {
     }
 
     private fun eventChangeListener(isChecked: Boolean) {
-        Log.d(TAG, "================= Event Change Listener Called: ${isChecked.toString()} ===============")
         homeBinding.todaysEvents.text = if (isChecked) "All Events" else "Todays Events"
         homeViewModel.changeEventsList(isChecked)
     }

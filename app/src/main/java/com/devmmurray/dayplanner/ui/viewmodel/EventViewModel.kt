@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.devmmurray.dayplanner.data.model.entity.EventEntity
+import com.devmmurray.dayplanner.data.model.local.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
@@ -12,25 +12,23 @@ import kotlinx.coroutines.launch
 
 class EventViewModel(app: Application) : SplashActivityViewModel(app) {
 
-    private val _returnEvent by lazy { MutableLiveData<EventEntity>() }
-    val returnEvent: LiveData<EventEntity> get() = _returnEvent
+    private val _returnEvent by lazy { MutableLiveData<Event>() }
+    val returnEvent: LiveData<Event> get() = _returnEvent
+
+    private val _eventErrorMessage by lazy { MutableLiveData<String>() }
+    val eventErrorMessage: LiveData<String> get() = _eventErrorMessage
 
     fun getEventById(id: Long) {
         viewModelScope.launch {
             try {
                 eventsUseCases.getEventById.invoke(id)
-//                dbRepo.getEventById(id)
                     .flowOn(Dispatchers.IO)
-                    .collect { _returnEvent.value = it }
-
+                    .collect {
+                        val event = it.toEventObject()
+                        _returnEvent.value = event
+                    }
             } catch (e: Exception) {
-
-                /**
-                 *
-                 * Do Something with the error
-                 *
-                 */
-
+                _eventErrorMessage.value = e.message.toString()
             }
         }
     }
@@ -39,13 +37,8 @@ class EventViewModel(app: Application) : SplashActivityViewModel(app) {
         viewModelScope.launch {
             try {
                 eventsUseCases.deleteEvent.invoke(id)
-//                dbRepo.deleteEvent(id)
             } catch (e: Exception) {
-                /**
-                 *
-                 * Do Something with the error
-                 *
-                 */
+                _eventErrorMessage.value = e.message.toString()
             }
         }
     }

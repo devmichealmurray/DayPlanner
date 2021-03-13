@@ -16,11 +16,7 @@
             app:argType="long" />
         <action
             android:id="@+id/action_navigation_home_to_addEventFragment"
-            app:destination="@id/addEventFragment"
-            app:enterAnim="@anim/slide_in_down"
-            app:exitAnim="@anim/slide_out_up"
-            app:popEnterAnim="@anim/slide_in_down"
-            app:popExitAnim="@anim/slide_out_up" />
+            app:destination="@id/addEventFragment" />
         <action
             android:id="@+id/action_navigation_home_to_eventFragment"
             app:destination="@id/eventFragment" />
