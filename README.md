@@ -15,7 +15,7 @@ Dependency Injection with Dagger2, Espresso UI Testing, Navigation and SafeArgs,
 custome launcher icon, Dialogs, Alerts, and DialogFragments, Date & Time Picker Dialogs, Intents for sharing, messaging, and driving directions.
 
 
-I believe this application is an excellent representation of my current skill level, but I will to continue to update it. Some of my future updates will be 
+I believe this application is an excellent representation of my current skill level, but I will continue to update it. Some of my future updates will be 
 merge/include of layouts, improved overall theme and the inclusion of a night theme, switches to adjust between Imperial/Metric and Day/Night Themes, a rotation of 
 randomly chosen quotes for the splash page, dependency injection for the APIs, and more testing.
 
