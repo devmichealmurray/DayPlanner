@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -13,7 +14,6 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.devmmurray.dayplanner.BR
 import com.devmmurray.dayplanner.R
-import com.devmmurray.dayplanner.data.model.local.Event
 import com.devmmurray.dayplanner.databinding.FragmentEventBinding
 import com.devmmurray.dayplanner.ui.viewmodel.EventViewModel
 import com.google.android.material.transition.MaterialElevationScale
@@ -53,13 +53,11 @@ class EventFragment : DialogFragment() {
         val id = args.eventId
         eventViewModel.apply {
             getEventById(id)
-            returnEvent.observe(viewLifecycleOwner, { bindEvent(it) })
+            returnEvent.observe(viewLifecycleOwner, { eventBinding.setVariable(BR.event, it) })
             eventErrorMessage.observe(viewLifecycleOwner, eventErrorObserver)
         }
     }
 
-
-    private fun bindEvent(event: Event) = eventBinding.setVariable(BR.event, event)
 
     private val eventErrorObserver = Observer<String> { errorMessage ->
         alert {
@@ -74,10 +72,24 @@ class EventFragment : DialogFragment() {
 
 
     /**
-     *  Button Functionality -- Delete, Update, Share
+     *  Button Functionality -- Delete, Update, Share, Directions
      */
 
     fun deleteEvent(id: Long) {
+        context?.let { context ->
+            AlertDialog.Builder(context)
+                .setTitle("Delete Event")
+                .setMessage("Are You Sure You Would Like To Delete This Event?")
+                .setPositiveButton("Okay") { _, _ ->
+                    okayToDelete(id)
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.dismiss()
+                }.create().show()
+        }
+    }
+
+    private fun okayToDelete(id: Long) {
         eventViewModel.deleteEvent(id)
         dismiss()
     }

@@ -56,6 +56,9 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         homeBinding.setVariable(BR.home, this)
+        homeBinding.switchEventsToAll.setOnCheckedChangeListener { _, isChecked ->
+            eventChangeListener(isChecked)
+        }
 
         homeViewModel.apply {
             getWeatherFromDB()
@@ -69,10 +72,6 @@ class HomeFragment : Fragment() {
             eventProgress.observe(viewLifecycleOwner, eventProgressObserver)
             homeErrorMessage.observe(viewLifecycleOwner, errorObserver)
         }
-
-        homeBinding.switchEventsToAll.setOnCheckedChangeListener { _, isChecked ->
-                eventChangeListener(isChecked)
-            }
     }
 
 

@@ -53,7 +53,7 @@ class TodoFragment : Fragment() {
 
         todoViewModel.apply {
             getTasksFromDB()
-            todoTaskList.observe(viewLifecycleOwner,taskListObserver)
+            todoTaskList.observe(viewLifecycleOwner, taskListObserver)
             todoErrorMessage.observe(viewLifecycleOwner, errorMessageObserver)
         }
     }
@@ -65,10 +65,12 @@ class TodoFragment : Fragment() {
 
     private val taskListObserver = Observer<List<TodoTask>> { list ->
         if (list.isNotEmpty()) {
-            toDoBinding.noTasks.visibility = View.INVISIBLE
-            toDoBinding.todoRecycler.apply {
-                adapter = DayPlannerRecyclerView(list, ListFlags.TODO_TASK)
-                visibility = View.VISIBLE
+            toDoBinding.apply {
+                noTasks.visibility = View.INVISIBLE
+                todoRecycler.apply {
+                    adapter = DayPlannerRecyclerView(list, ListFlags.TODO_TASK)
+                    visibility = View.VISIBLE
+                }
             }
         } else {
             toDoBinding.apply {
@@ -89,6 +91,7 @@ class TodoFragment : Fragment() {
         }.show()
     }
 
+
     /**
      *  Button Click Functionality -- addTask
      */
@@ -99,9 +102,6 @@ class TodoFragment : Fragment() {
         toDoBinding.addTaskEdittext.clearFocus()
         context?.let { view?.let { it1 -> Utils.hideKeyboard(it, it1) } }
     }
-
-
-
 
 
 }
