@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -11,6 +12,7 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.data.model.entity.NewsEntity
+import com.devmmurray.dayplanner.data.model.local.SuggestionObject
 import com.devmmurray.dayplanner.databinding.FragmentNewsBinding
 import com.devmmurray.dayplanner.ui.adapter.DayPlannerRecyclerView
 import com.devmmurray.dayplanner.ui.viewmodel.NewsViewModel
@@ -20,13 +22,12 @@ import com.google.android.material.transition.MaterialElevationScale
 import org.jetbrains.anko.support.v4.alert
 
 class NewsFragment : Fragment() {
-
     private val newsViewModel: NewsViewModel by viewModels()
     private lateinit var newsBinding: FragmentNewsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        // Motion Transitions
         enterTransition = MaterialElevationScale(true).apply {
             duration = resources.getInteger(R.integer.motion_duration_large).toLong()
         }
@@ -40,7 +41,6 @@ class NewsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         newsBinding = FragmentNewsBinding.inflate(inflater, container, false)
         return newsBinding.root
     }
@@ -48,26 +48,21 @@ class NewsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        newsBinding.setVariable(BR.newsFragment, this)
+
         newsViewModel.apply {
             getCurrentNews()
+            getSuggestions()
             newsList.observe(viewLifecycleOwner, newsListObserver)
+            suggestionList.observe(viewLifecycleOwner, suggestionsObserver)
             newsErrorMessage.observe(viewLifecycleOwner, newsErrorObserver)
         }
-
-        newsBinding.apply {
-            searchSuggestionsRecycler.apply {
-                val suggestionList = newsViewModel.getSuggestionObjects()
-                layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                adapter =
-                    DayPlannerRecyclerView(suggestionList.toList(), ListFlags.SEARCH_SUGGESTION)
-            }
-            returnButton.setOnClickListener {
-                val searchTerm = newsBinding.searchEditText.text.toString()
-                searchAction(searchTerm)
-            }
-        }
-
     }
+
+
+    /**
+     *  Observers
+     */
 
     private val newsListObserver = Observer<List<NewsEntity>> { list ->
         val news = list.map { it.toNewsArticle() }
@@ -75,6 +70,11 @@ class NewsFragment : Fragment() {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = DayPlannerRecyclerView(news, ListFlags.NEWS_ARTICLE)
         }
+    }
+
+    private val suggestionsObserver = Observer<List<SuggestionObject>> { list ->
+        newsBinding.searchSuggestionsRecycler.adapter =
+            DayPlannerRecyclerView(list, ListFlags.SEARCH_SUGGESTION)
     }
 
     private val newsErrorObserver = Observer<String> { errorMessage ->
@@ -88,7 +88,13 @@ class NewsFragment : Fragment() {
         }.show()
     }
 
-    private fun searchAction(searchTerm: String) {
+
+    /**
+     *  Button Functionality -- Search Return Arrow
+     */
+
+    fun searchAction() {
+        val searchTerm = newsBinding.searchEditText.text.toString()
         newsBinding.searchEditText.text.clear()
         newsBinding.searchEditText.clearFocus()
         context?.let { context ->

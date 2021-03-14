@@ -20,11 +20,13 @@ class NewsViewModel(app: Application) : SplashActivityViewModel(app) {
     private val _newsErrorMessage by lazy { MutableLiveData<String>() }
     val newsErrorMessage: LiveData<String> get() = _newsErrorMessage
 
+    private val _suggestionsList by lazy { MutableLiveData<List<SuggestionObject>>() }
+    val suggestionList: LiveData<List<SuggestionObject>> get() = _suggestionsList
+
     fun getCurrentNews() {
         viewModelScope.launch {
             try {
                 newsUseCases.getNewsArticle.invoke()
-//                dbRepo.getNewsArticles()
                     .flowOn(Dispatchers.IO)
                     .collect {
                         _newsList.value = it
@@ -35,15 +37,13 @@ class NewsViewModel(app: Application) : SplashActivityViewModel(app) {
         }
     }
 
-
-    fun getSuggestionObjects(): List<SuggestionObject> {
-        val objectsList = ArrayList<SuggestionObject>()
-        val suggestionList = Suggestions.values().map { it.toString() }
-        suggestionList.forEach {
-            val suggestion = SuggestionObject(it)
-            objectsList.add(suggestion)
+    fun getSuggestions() {
+        val suggestionList = ArrayList<SuggestionObject>()
+        val enumStringValues = Suggestions.values().map { it.toString() }
+        enumStringValues.forEach { string ->
+            SuggestionObject(string).also { suggestionList.add(it) }
         }
-        return objectsList
+        _suggestionsList.value = suggestionList.toList()
     }
 
 }

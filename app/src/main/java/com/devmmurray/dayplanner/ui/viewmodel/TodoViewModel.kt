@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.devmmurray.dayplanner.data.model.entity.TodoTaskEntity
+import com.devmmurray.dayplanner.data.model.local.TodoTask
 import com.devmmurray.dayplanner.util.time.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import kotlinx.coroutines.Dispatchers
@@ -17,8 +18,8 @@ private const val TAG = "TodoViewModel"
 
 class TodoViewModel(app: Application) : SplashActivityViewModel(app) {
 
-    private val _todoTaskList by lazy { MutableLiveData<List<TodoTaskEntity>>() }
-    val todoTaskList: LiveData<List<TodoTaskEntity>> get() = _todoTaskList
+    private val _todoTaskList by lazy { MutableLiveData<List<TodoTask>>() }
+    val todoTaskList: LiveData<List<TodoTask>> get() = _todoTaskList
 
     private val _todoErrorMessage by lazy { MutableLiveData<String>() }
     val todoErrorMessage: LiveData<String> get() = _todoErrorMessage
@@ -29,9 +30,12 @@ class TodoViewModel(app: Application) : SplashActivityViewModel(app) {
             try {
                 todoTasksUseCases.getToDoTasks.invoke()
                     .flowOn(Dispatchers.IO)
-                    .collect {
-                        val tasks: MutableList<TodoTaskEntity> = it.toMutableList()
-                        _todoTaskList.value = tasks.asReversed()
+                    .collect { list ->
+                        val tasks =
+                            list.toMutableList()
+                                .also { it.asReversed() }
+                                .map { it.toTodoTaskObject() }
+                        _todoTaskList.value = tasks
                     }
             } catch (e: Exception) {
                 _todoErrorMessage.value = e.message.toString()
@@ -45,19 +49,28 @@ class TodoViewModel(app: Application) : SplashActivityViewModel(app) {
 
     fun removeTask(id: Long) {
         viewModelScope.launch {
-            todoTasksUseCases.deleteToDoTask.invoke(id)
-//            dbRepo.deleteToDoTask(id)
+            try {
+                todoTasksUseCases.deleteToDoTask.invoke(id)
+                refreshToDoFragment()
+            } catch (e: Exception) {
+                _todoErrorMessage.value = e.message.toString()
+            }
         }
-        refreshToDoFragment()
     }
 
     fun prepareTask(text: String) {
         if (text.isNotEmpty()) {
             val date: Long = System.currentTimeMillis()
-            val taskEntity = TodoTaskEntity(
-                title = text.capitalize(Locale.ROOT),
-                dateAdded = date.let { TimeStampProcessing.transformSystemTime(it, TimeFlags.FULL) }
-            )
+            val taskEntity =
+                TodoTaskEntity(
+                    title = text.capitalize(Locale.ROOT),
+                    dateAdded = date.let {
+                        TimeStampProcessing.transformSystemTime(
+                            it,
+                            TimeFlags.FULL
+                        )
+                    }
+                )
             addTaskToDb(taskEntity)
         } else {
             _todoErrorMessage.value = "You Must Have A Task To Add"
@@ -68,11 +81,11 @@ class TodoViewModel(app: Application) : SplashActivityViewModel(app) {
         viewModelScope.launch {
             try {
                 todoTasksUseCases.addTodoTask.invoke(task)
-//                dbRepo.addTodoTask(task)
+                refreshToDoFragment()
             } catch (e: Exception) {
                 _todoErrorMessage.value = e.message.toString()
             }
-
         }
     }
+
 }

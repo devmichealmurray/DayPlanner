@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.DatePicker
 import android.widget.TimePicker
+import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -42,18 +43,16 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        enterTransition = MaterialElevationScale(true).apply {
-            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
-        }
-        exitTransition = MaterialElevationScale(false).apply {
-            duration = resources.getInteger(R.integer.motion_duration_large).toLong()
-        }
+        // Motion Transitions
+        enterTransition = MaterialElevationScale(true).apply { duration = resources.getInteger(R.integer.motion_duration_large).toLong() }
+        exitTransition = MaterialElevationScale(false).apply { duration = resources.getInteger(R.integer.motion_duration_large).toLong() }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // Keeps EditText Fields Above the Keyboard
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         addEventBinding = FragmentAddEventBinding.inflate(inflater, container, false)
 
@@ -63,13 +62,10 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        addEventBinding.apply {
-            eventDatePicker.apply {
+        addEventBinding.setVariable(BR.addEventFragment, this)
+        addEventBinding.eventDatePicker.apply {
                 text = TimeStampProcessing.todaysDate(TimeFlags.FULL)
                 setOnClickListener { navigateToDatePicker() }
-            }
-            cancelButton.setOnClickListener { cancelButtonNavigation() }
-            saveAction.setOnClickListener { saveButton() }
         }
 
         addEventViewModel.apply {
@@ -83,17 +79,6 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
     /**
      *  Observers
      */
-
-    private val errorMessageObserver = Observer<String> { errorMessage ->
-        alert {
-            title = getString(R.string.error_alert_dialog)
-            message = errorMessage
-            isCancelable = false
-            positiveButton(getString(R.string.error_alert_okay)) { dialog ->
-                dialog.dismiss()
-            }
-        }.show()
-    }
 
     private val returnEventObserver = Observer<EventEntity> { event ->
         addEventBinding.apply {
@@ -110,6 +95,17 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
             eventLocationAddress.setText(event.address)
             eventNotes.setText(event.notes)
         }
+    }
+
+    private val errorMessageObserver = Observer<String> { errorMessage ->
+        alert {
+            title = getString(R.string.error_alert_dialog)
+            message = errorMessage
+            isCancelable = false
+            positiveButton(getString(R.string.error_alert_okay)) { dialog ->
+                dialog.dismiss()
+            }
+        }.show()
     }
 
 
@@ -168,12 +164,12 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
      * Button Functionality
      */
 
-    private fun cancelButtonNavigation() {
+    fun cancelButtonNavigation() {
         Navigation.findNavController(addEventBinding.cancelButton)
             .navigate(R.id.action_addEventFragment_to_navigation_home)
     }
 
-    private fun saveButton() {
+    fun saveButton() {
         if (savedMillis > 0) {
             saveActionNavigation()
         } else {
@@ -204,7 +200,6 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
         Navigation.findNavController(addEventBinding.saveAction)
             .navigate(R.id.action_addEventFragment_to_navigation_home)
     }
-
 
 }
 

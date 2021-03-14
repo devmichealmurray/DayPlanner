@@ -11,6 +11,10 @@
         <variable
             name="event"
             type="com.devmmurray.dayplanner.data.model.local.Event" />
+
+        <variable
+            name="addEventFragment"
+            type="com.devmmurray.dayplanner.ui.fragment.AddEventFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -159,6 +163,7 @@
                     android:layout_marginBottom="60dp"
                     android:clickable="true"
                     android:gravity="center"
+                    android:onClick="@{() -> addEventFragment.cancelButtonNavigation()}"
                     android:text="@string/cancel"
                     app:layout_constraintEnd_toStartOf="@+id/save_action"
                     app:layout_constraintStart_toStartOf="parent"
@@ -174,6 +179,7 @@
                     android:layout_marginEnd="8dp"
                     android:clickable="true"
                     android:gravity="center"
+                    android:onClick="@{() -> addEventFragment.saveButton()}"
                     android:text="@string/save"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"

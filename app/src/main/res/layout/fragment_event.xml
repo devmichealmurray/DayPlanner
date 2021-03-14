@@ -11,6 +11,7 @@
         <variable
             name="eventFragment"
             type="com.devmmurray.dayplanner.ui.fragment.EventFragment" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -116,6 +117,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginEnd="2dp"
             android:padding="4dp"
+            android:onClick="@{() -> eventFragment.deleteEvent(event.id)}"
             android:text="@string/delete"
             app:icon="@drawable/ic_delete"
             app:iconTint="@color/yellow_dark"
@@ -132,6 +134,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginEnd="2dp"
             android:padding="4dp"
+            android:onClick="@{() -> eventFragment.updateEvent(event.id)}"
             android:text="@string/update"
             app:icon="@drawable/ic_update"
             app:iconTint="@color/yellow_dark"
@@ -148,6 +151,7 @@
             android:layout_marginTop="12dp"
             android:layout_marginEnd="2dp"
             android:padding="4dp"
+            android:onClick="@{() -> eventFragment.shareEvent(event.title, event.locationName, event.address, event.eventTime)}"
             android:text="@string/share"
             app:icon="@drawable/ic_share"
             app:iconTint="@color/yellow_dark"
@@ -162,6 +166,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:padding="8dp"
+            android:onClick="@{() -> eventFragment.eventDirections(event.address)}"
             android:text="@string/directions"
             app:icon="@drawable/ic_map"
             app:iconTint="@color/white"
