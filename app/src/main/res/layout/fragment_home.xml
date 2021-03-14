@@ -17,8 +17,6 @@
             name="home"
             type="com.devmmurray.dayplanner.ui.fragment.HomeFragment" />
 
-        <import type="android.view.View" />
-
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -81,7 +79,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_marginTop="2dp"
+                        android:orientation="horizontal"
                         android:paddingBottom="4dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent" />
@@ -241,8 +241,8 @@
                             style="@style/CurrentWeatherMoreLessButtons"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="8dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginBottom="2dp"
                             android:onClick="@{() -> home.moreButtonFunction()}"
                             android:padding="4dp"
                             android:text="@string/more"
@@ -257,8 +257,8 @@
                             style="@style/CurrentWeatherMoreLessButtons"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:layout_marginBottom="8dp"
+                            android:layout_marginTop="2dp"
+                            android:layout_marginBottom="2dp"
                             android:onClick="@{() -> home.lessButtonFunction()}"
                             android:padding="4dp"
                             android:text="@string/less"
@@ -354,7 +354,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="8dp"
                     android:background="@color/white"
-                    android:transitionGroup="true"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

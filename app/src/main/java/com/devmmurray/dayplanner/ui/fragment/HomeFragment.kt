@@ -4,17 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.devmmurray.dayplanner.BR
 import com.devmmurray.dayplanner.R
-import com.devmmurray.dayplanner.data.model.entity.EventEntity
-import com.devmmurray.dayplanner.data.model.entity.HourlyForecastEntity
 import com.devmmurray.dayplanner.data.model.local.CityStateLocation
 import com.devmmurray.dayplanner.data.model.local.CurrentWeather
+import com.devmmurray.dayplanner.data.model.local.Event
+import com.devmmurray.dayplanner.data.model.local.HourlyForecasts
 import com.devmmurray.dayplanner.databinding.FragmentHomeBinding
 import com.devmmurray.dayplanner.ui.adapter.DayPlannerRecyclerView
 import com.devmmurray.dayplanner.ui.viewmodel.HomeViewModel
@@ -61,26 +60,25 @@ class HomeFragment : Fragment() {
             getWeatherFromDB()
             getEventsFromDB()
             getCityState()
-            weatherProgress.observe(viewLifecycleOwner, weatherProgressObserver)
-            eventProgress.observe(viewLifecycleOwner, eventProgressObserver)
-            forecastList.observe(viewLifecycleOwner, weatherListObserver)
-            eventsList.observe(viewLifecycleOwner, eventListObserver)
-            homeErrorMessage.observe(viewLifecycleOwner, errorObserver)
             cityState.observe(viewLifecycleOwner, cityStateObserver)
+            weatherProgress.observe(viewLifecycleOwner, weatherProgressObserver)
+            forecastList.observe(viewLifecycleOwner, hourlyForecastObserver)
             currentWeather.observe(viewLifecycleOwner, currentWeatherObserver)
+            eventsList.observe(viewLifecycleOwner, eventListObserver)
+            eventProgress.observe(viewLifecycleOwner, eventProgressObserver)
+            homeErrorMessage.observe(viewLifecycleOwner, errorObserver)
         }
 
-        homeBinding.apply {
-            switchEventsToAll.setOnCheckedChangeListener { _, isChecked ->
+        homeBinding.switchEventsToAll.setOnCheckedChangeListener { _, isChecked ->
                 eventChangeListener(isChecked)
             }
-        }
-
     }
+
 
     private val cityStateObserver = Observer<CityStateLocation> { location ->
         "${location.city}, ${location.state}".also { homeBinding.cityState.text = it }
     }
+
 
     /**
      *  Weather Observers
@@ -93,14 +91,10 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private val weatherListObserver = Observer<List<HourlyForecastEntity>> { list ->
-        val forecastList = list.map { it.toHourlyForecastObject() }
-        if (forecastList.isNotEmpty()) {
-            homeBinding.hourlyForecastRecycler.apply {
-                layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                adapter = DayPlannerRecyclerView(forecastList, ListFlags.FORECASTS)
-            }
+    private val hourlyForecastObserver = Observer<List<HourlyForecasts>> { list ->
+        if (list.isNotEmpty()) {
+            homeBinding.hourlyForecastRecycler.adapter =
+                DayPlannerRecyclerView(list, ListFlags.FORECASTS)
         }
     }
 
@@ -114,17 +108,13 @@ class HomeFragment : Fragment() {
      *  Event Observers
      */
 
-    private val eventListObserver = Observer<List<EventEntity>> { list ->
-        val eventsList = list.map { it.toEventObject() }
-        if (eventsList.isNotEmpty()) {
+    private val eventListObserver = Observer<List<Event>> { list ->
+        if (list.isNotEmpty()) {
             homeBinding.eventRecyclerProgressBar.visibility = View.INVISIBLE
             homeBinding.noEventsTextView.visibility = View.INVISIBLE
             homeBinding.todaysEventsRecycler.apply {
                 visibility = View.VISIBLE
-                layoutManager =
-                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                adapter =
-                    DayPlannerRecyclerView(eventsList, ListFlags.EVENTS)
+                adapter = DayPlannerRecyclerView(list, ListFlags.EVENTS)
             }
         } else {
             homeBinding.todaysEventsRecycler.visibility = View.INVISIBLE
@@ -148,15 +138,14 @@ class HomeFragment : Fragment() {
         }.show()
     }
 
+
     /**
      * Click Listener Functionality
-     * Move to Binding
      */
 
-    fun addEventNavigation() {
-        Navigation.findNavController(homeBinding.addEventButton)
+    fun addEventNavigation() = Navigation.findNavController(homeBinding.addEventButton)
             .navigate(R.id.action_navigation_home_to_addEventFragment)
-    }
+
 
     fun moreButtonFunction() {
         homeBinding.apply {
@@ -175,7 +164,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun eventChangeListener(isChecked: Boolean) {
-        homeBinding.todaysEvents.text = if (isChecked) "All Events" else "Todays Events"
+        homeBinding.todaysEvents.text = if (isChecked) getString(R.string.all_events)
+        else getString(R.string.today_s_events)
         homeViewModel.changeEventsList(isChecked)
     }
 
