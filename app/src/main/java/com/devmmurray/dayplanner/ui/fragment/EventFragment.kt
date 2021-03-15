@@ -78,12 +78,12 @@ class EventFragment : DialogFragment() {
     fun deleteEvent(id: Long) {
         context?.let { context ->
             AlertDialog.Builder(context)
-                .setTitle("Delete Event")
-                .setMessage("Are You Sure You Would Like To Delete This Event?")
-                .setPositiveButton("Okay") { _, _ ->
+                .setTitle(getString(R.string.delete_event))
+                .setMessage(getString(R.string.sure_to_delete))
+                .setPositiveButton(getString(R.string.error_alert_okay)) { _, _ ->
                     okayToDelete(id)
                 }
-                .setNegativeButton("Cancel") { dialog, _ ->
+                .setNegativeButton(getString(R.string.cancel)) { dialog, _ ->
                     dialog.dismiss()
                 }.create().show()
         }
@@ -110,8 +110,7 @@ class EventFragment : DialogFragment() {
             )
             type = "text/plain"
         }
-        val shareIntent = Intent.createChooser(sendIntent, null)
-        context?.startActivity(shareIntent)
+        context?.startActivity(Intent.createChooser(sendIntent, null))
     }
 
     fun eventDirections(address: String) {

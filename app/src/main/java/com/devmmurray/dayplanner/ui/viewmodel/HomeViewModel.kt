@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "Home View Model"
 
-class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
+open class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
 
     private val _weatherProgress by lazy { MutableLiveData<Boolean>() }
     val weatherProgress: LiveData<Boolean> get() = _weatherProgress

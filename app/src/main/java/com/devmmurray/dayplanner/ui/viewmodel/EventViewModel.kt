@@ -5,12 +5,14 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.devmmurray.dayplanner.data.model.local.Event
+import com.devmmurray.dayplanner.util.time.TimeFlags
+import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
-class EventViewModel(app: Application) : SplashActivityViewModel(app) {
+class EventViewModel(app: Application) : HomeViewModel(app) {
 
     private val _returnEvent by lazy { MutableLiveData<Event>() }
     val returnEvent: LiveData<Event> get() = _returnEvent
@@ -37,6 +39,9 @@ class EventViewModel(app: Application) : SplashActivityViewModel(app) {
         viewModelScope.launch {
             try {
                 eventsUseCases.deleteEvent.invoke(id)
+                eventsUseCases.getEvents.invoke(
+                    TimeStampProcessing.todaysDate(TimeFlags.DATE_ID)
+                )
             } catch (e: Exception) {
                 _eventErrorMessage.value = e.message.toString()
             }

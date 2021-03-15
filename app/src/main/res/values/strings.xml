@@ -42,6 +42,7 @@
     <string name="directions">Directions</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="sure_to_delete">Are You Sure You Would Like To Delete This Event?</string>
 
     <!-- To Do Fragment -->
     <string name="to_do_list">To Do List</string>
@@ -58,5 +59,7 @@
     <!-- Splash Activity -->
     <string name="thatcher_quote">Plan your work for today and every day, \n \n then work your plan ~ Margret Thatcher</string>
     <string name="day_planner">Day Planner</string>
+    <string name="delete_event">Delete Event</string>
+
 
 </resources>
