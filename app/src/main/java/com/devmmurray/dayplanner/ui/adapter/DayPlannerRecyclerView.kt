@@ -15,7 +15,7 @@ import com.devmmurray.dayplanner.databinding.*
 import com.devmmurray.dayplanner.ui.fragment.HomeFragmentDirections
 import com.devmmurray.dayplanner.ui.fragment.NewsFragmentDirections
 import com.devmmurray.dayplanner.ui.viewmodel.TodoViewModel
-import com.devmmurray.dayplanner.util.ListFlags
+import com.devmmurray.dayplanner.util.flags.ListFlags
 
 class RVHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
 

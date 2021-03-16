@@ -13,7 +13,7 @@ import com.devmmurray.dayplanner.data.model.local.TodoTask
 import com.devmmurray.dayplanner.databinding.FragmentTodoBinding
 import com.devmmurray.dayplanner.ui.adapter.DayPlannerRecyclerView
 import com.devmmurray.dayplanner.ui.viewmodel.TodoViewModel
-import com.devmmurray.dayplanner.util.ListFlags
+import com.devmmurray.dayplanner.util.flags.ListFlags
 import com.devmmurray.dayplanner.util.Utils
 import com.google.android.material.transition.MaterialElevationScale
 import org.jetbrains.anko.support.v4.alert

@@ -15,7 +15,7 @@ import com.devmmurray.dayplanner.data.model.local.NewsArticle
 import com.devmmurray.dayplanner.databinding.FragmentSearchResultsBinding
 import com.devmmurray.dayplanner.ui.adapter.DayPlannerRecyclerView
 import com.devmmurray.dayplanner.ui.viewmodel.SearchResultsViewModel
-import com.devmmurray.dayplanner.util.ListFlags
+import com.devmmurray.dayplanner.util.flags.ListFlags
 import org.jetbrains.anko.support.v4.alert
 
 class SearchResultsFragment: Fragment() {

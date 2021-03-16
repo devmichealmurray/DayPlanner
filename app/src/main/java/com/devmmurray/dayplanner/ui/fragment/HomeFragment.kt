@@ -17,7 +17,7 @@ import com.devmmurray.dayplanner.data.model.local.HourlyForecasts
 import com.devmmurray.dayplanner.databinding.FragmentHomeBinding
 import com.devmmurray.dayplanner.ui.adapter.DayPlannerRecyclerView
 import com.devmmurray.dayplanner.ui.viewmodel.HomeViewModel
-import com.devmmurray.dayplanner.util.ListFlags
+import com.devmmurray.dayplanner.util.flags.ListFlags
 import com.google.android.material.transition.MaterialElevationScale
 import org.jetbrains.anko.support.v4.alert
 

@@ -6,41 +6,45 @@ import com.devmmurray.dayplanner.data.model.entity.*
 import com.devmmurray.dayplanner.util.time.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import retrofit2.Response
+import java.util.*
+import kotlin.collections.ArrayList
 
 private const val TAG = "JSON Processing"
 
 object JsonProcessing {
 
     fun parseForCurrentWeather(result: Response<WeatherDTO>): CurrentWeatherEntity {
-        val currentResponse = result.body()?.current
-        var currentWeatherDescription: CurrentWeatherDescriptionEntity? = null
 
-        currentResponse?.weather?.forEach {
-            currentWeatherDescription = CurrentWeatherDescriptionEntity(
-                currentId = it.currentId,
-                mainDescription = it.mainDescription,
-                description = it.description?.capitalize(),
-                currentIcon = it.currentIcon
+            val currentResponse = result.body()?.current
+            var currentWeatherDescription: CurrentWeatherDescriptionEntity? = null
+
+            currentResponse?.weather?.forEach {
+                currentWeatherDescription = CurrentWeatherDescriptionEntity(
+                    currentId = it.currentId,
+                    mainDescription = it.mainDescription,
+                    description = it.description?.capitalize(Locale.ROOT),
+                    currentIcon = it.currentIcon
+                )
+            }
+
+            return CurrentWeatherEntity(
+                time = currentResponse?.time?.let { utcTime ->
+                    TimeStampProcessing.transformUTCTime(utcTime, TimeFlags.FULL)
+                },
+                sunrise = "Sunrise:  " + currentResponse?.sunrise?.let {
+                    TimeStampProcessing.transformUTCTime(it, TimeFlags.HOUR)
+                },
+                sunset = "Sunset:  " + currentResponse?.sunset?.let {
+                    TimeStampProcessing.transformUTCTime(it, TimeFlags.HOUR)
+                },
+                temp = "Current Temperature:  " + currentResponse?.temp?.toInt()
+                    .toString() + "\u00B0",
+                feels = "Feels Like:  " + currentResponse?.feels?.toInt().toString() + "\u00B0",
+                humidity = "Current Humidity:  " + currentResponse?.humidity.toString() + "%",
+                windSpeed = "Wind Speed:  " + currentResponse?.windSpeed.toString() + "mph",
+                currentWeatherDescription = currentWeatherDescription
+
             )
-        }
-
-        return CurrentWeatherEntity(
-            time = currentResponse?.time?.let { utcTime ->
-                TimeStampProcessing.transformUTCTime(utcTime, TimeFlags.FULL)
-            },
-            sunrise = "Sunrise:  " + currentResponse?.sunrise?.let {
-                TimeStampProcessing.transformUTCTime(it, TimeFlags.HOUR)
-            },
-            sunset = "Sunset:  " + currentResponse?.sunset?.let {
-                TimeStampProcessing.transformUTCTime(it, TimeFlags.HOUR)
-            },
-            temp = "Current Temperature:  " + currentResponse?.temp?.toInt().toString() + "\u00B0",
-            feels = "Feels Like:  " + currentResponse?.feels?.toInt().toString() + "\u00B0",
-            humidity = "Current Humidity:  " + currentResponse?.humidity.toString() + "%",
-            windSpeed = "Wind Speed:  " + currentResponse?.windSpeed.toString() + "mph",
-            currentWeatherDescription = currentWeatherDescription
-
-        )
     }
 
 
@@ -53,7 +57,7 @@ object JsonProcessing {
                 hourlyForecastWeather = HourlyForecastWeatherEntity(
                     hourlyId = hourly.hourlyId,
                     mainForecast = hourly.mainForecast,
-                    forecastDescription = hourly.forecastDescription?.capitalize(),
+                    forecastDescription = hourly.forecastDescription?.capitalize(Locale.ROOT),
                     forecastIcon = hourly.forecastIcon
                 )
                 val hourlyForecast = HourlyForecastEntity(

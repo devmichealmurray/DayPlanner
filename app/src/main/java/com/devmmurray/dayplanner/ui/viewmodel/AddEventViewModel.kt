@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.devmmurray.dayplanner.data.model.entity.EventEntity
 import com.devmmurray.dayplanner.data.model.local.Event
+import com.devmmurray.dayplanner.util.flags.DatePickerFlags
 import com.devmmurray.dayplanner.util.time.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import kotlinx.coroutines.Dispatchers
@@ -17,10 +18,10 @@ private const val TAG = "AddEventViewModel"
 
 class AddEventViewModel(app: Application) : SplashActivityViewModel(app) {
 
-    var savedDay = -1
-    var savedMonth = -1
-    var savedYear = -1
-    var savedMillis: Long = 0
+    private var savedDay = -1
+    private var savedMonth = -1
+    private var savedYear = -1
+    private var savedMillis: Long = 0
 
     private val _returnEvent by lazy { MutableLiveData<Event>() }
     val returnEvent: LiveData<Event> get() = _returnEvent
@@ -34,6 +35,14 @@ class AddEventViewModel(app: Application) : SplashActivityViewModel(app) {
     private val _setDatePickerTime by lazy { MutableLiveData<String>() }
     val setDatePickerTime: LiveData<String> get() = _setDatePickerTime
 
+
+    fun updateSavedValues(value: Int, field: DatePickerFlags) {
+        when (field) {
+            DatePickerFlags.DAY -> savedDay = value
+            DatePickerFlags.MONTH -> savedMonth = value.plus(1)
+            DatePickerFlags.YEAR -> savedYear = value
+        }
+    }
 
     fun setNewTimeMillis(hour: Int, minute: Int) {
         val dateMillis = TimeStampProcessing
