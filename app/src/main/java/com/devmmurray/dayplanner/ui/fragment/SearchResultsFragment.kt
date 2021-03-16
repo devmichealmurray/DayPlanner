@@ -7,9 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.data.model.local.NewsArticle
 import com.devmmurray.dayplanner.databinding.FragmentSearchResultsBinding
@@ -18,7 +17,7 @@ import com.devmmurray.dayplanner.ui.viewmodel.SearchResultsViewModel
 import com.devmmurray.dayplanner.util.flags.ListFlags
 import org.jetbrains.anko.support.v4.alert
 
-class SearchResultsFragment: Fragment() {
+class SearchResultsFragment : Fragment() {
 
     private val searchResultsViewModel: SearchResultsViewModel by viewModels()
     private lateinit var searchResultsBinding: FragmentSearchResultsBinding
@@ -30,6 +29,7 @@ class SearchResultsFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         searchResultsBinding = FragmentSearchResultsBinding.inflate(inflater, container, false)
+        searchResultsBinding.fragment = this
         return searchResultsBinding.root
     }
 
@@ -42,9 +42,6 @@ class SearchResultsFragment: Fragment() {
             getNewsArticles()
             searchErrorMessage.observe(viewLifecycleOwner, searchErrorObserver)
             searchResultList.observe(viewLifecycleOwner, searchResultObserver)
-        }
-        searchResultsBinding.searchResultsBackButton.setOnClickListener {
-            Navigation.findNavController(view).popBackStack()
         }
     }
 
@@ -60,10 +57,12 @@ class SearchResultsFragment: Fragment() {
     }
 
     private val searchResultObserver = Observer<List<NewsArticle>> { newsSearchResults ->
-        searchResultsBinding.newsSearchRecycler.apply {
-            layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = DayPlannerRecyclerView(newsSearchResults, ListFlags.NEWS_ARTICLE)
-        }
+        searchResultsBinding.newsSearchRecycler.adapter =
+            DayPlannerRecyclerView(newsSearchResults, ListFlags.NEWS_ARTICLE)
     }
+
+    fun onBackPressed() {
+        findNavController().popBackStack()
+    }
+
 }

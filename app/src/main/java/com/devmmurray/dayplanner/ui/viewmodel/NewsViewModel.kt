@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.devmmurray.dayplanner.data.model.entity.NewsEntity
+import com.devmmurray.dayplanner.data.model.local.NewsArticle
 import com.devmmurray.dayplanner.data.model.local.SuggestionObject
 import com.devmmurray.dayplanner.data.model.local.Suggestions
 import kotlinx.coroutines.Dispatchers
@@ -14,8 +14,8 @@ import kotlinx.coroutines.launch
 
 class NewsViewModel(app: Application) : SplashActivityViewModel(app) {
 
-    private val _newsList by lazy { MutableLiveData<List<NewsEntity>>() }
-    val newsList: LiveData<List<NewsEntity>> get() = _newsList
+    private val _newsList by lazy { MutableLiveData<List<NewsArticle>>() }
+    val newsList: LiveData<List<NewsArticle>> get() = _newsList
 
     private val _newsErrorMessage by lazy { MutableLiveData<String>() }
     val newsErrorMessage: LiveData<String> get() = _newsErrorMessage
@@ -28,8 +28,9 @@ class NewsViewModel(app: Application) : SplashActivityViewModel(app) {
             try {
                 newsUseCases.getNewsArticle.invoke()
                     .flowOn(Dispatchers.IO)
-                    .collect {
-                        _newsList.value = it
+                    .collect { list ->
+                        val articleList = list.map { it.toNewsArticle() }
+                        _newsList.value = articleList
                     }
             } catch (e: Exception) {
                 _newsErrorMessage.value = e.message.toString()

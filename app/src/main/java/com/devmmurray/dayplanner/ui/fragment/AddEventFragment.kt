@@ -9,20 +9,16 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.DatePicker
 import android.widget.TimePicker
-import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.devmmurray.dayplanner.R
-import com.devmmurray.dayplanner.data.model.local.Event
 import com.devmmurray.dayplanner.databinding.FragmentAddEventBinding
 import com.devmmurray.dayplanner.ui.viewmodel.AddEventViewModel
 import com.devmmurray.dayplanner.util.Utils
 import com.devmmurray.dayplanner.util.flags.DatePickerFlags
-import com.devmmurray.dayplanner.util.time.TimeFlags
-import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import com.google.android.material.transition.MaterialElevationScale
 import org.jetbrains.anko.support.v4.alert
 import java.util.*
@@ -34,7 +30,7 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
 
     private lateinit var addEventBinding: FragmentAddEventBinding
-    private val addEventViewModel: AddEventViewModel by viewModels()
+    private val viewModel: AddEventViewModel by viewModels()
     private val args: AddEventFragmentArgs by navArgs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,20 +52,19 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener,
         // Keeps EditText Fields Above the Keyboard
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
         addEventBinding = FragmentAddEventBinding.inflate(inflater, container, false)
+        addEventBinding.viewModel = viewModel
+        addEventBinding.addEventFragment = this
+        addEventBinding.lifecycleOwner = this
         return addEventBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        addEventBinding.setVariable(BR.addEventFragment, this)
-        addEventBinding.eventDatePicker.text = TimeStampProcessing.todaysDate(TimeFlags.FULL)
-
-        addEventViewModel.apply {
+        viewModel.apply {
             eventChecker(args.eventId)
-            returnEvent.observe(viewLifecycleOwner, returnEventObserver)
+            todaysDate()
             eventSaved.observe(viewLifecycleOwner, eventSavedObserver)
-            setDatePickerTime.observe(viewLifecycleOwner, setDatePickerTimeObserver)
             addEventErrorMessage.observe(viewLifecycleOwner, errorMessageObserver)
         }
     }
@@ -79,28 +74,10 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener,
      *  Observers
      */
 
-    private val returnEventObserver = Observer<Event> { event ->
-        // Binds an event sent from EventFragment for updating
-        addEventBinding.apply {
-            addEventTextView.text = getString(R.string.update_event)
-            saveAction.text = getString(R.string.update)
-            eventTitle.setText(event.title)
-            eventDatePicker.text = event.eventTime
-            eventLocationName.setText(event.locationName)
-            eventLocationAddress.setText(event.address)
-            eventNotes.setText(event.notes)
-        }
-    }
-
     // Once event is successful saved, navigate back to home fragment
     private val eventSavedObserver = Observer<Boolean> {
         if (it) Navigation.findNavController(addEventBinding.saveAction)
             .navigate(R.id.action_addEventFragment_to_navigation_home)
-    }
-
-    // Updates the date textView to reflect the date and time chosen by the user
-    private val setDatePickerTimeObserver = Observer<String> {
-        addEventBinding.eventDatePicker.text = it
     }
 
     private val errorMessageObserver = Observer<String> { errorMessage ->
@@ -123,6 +100,7 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener,
         // Close keyboard
         context?.let { context -> view?.let { Utils.hideKeyboard(context, requireView()) } }
 
+        // Set Calendar Date to Today
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
         val month = calendar.get(Calendar.MONTH)
@@ -132,7 +110,8 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener,
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        addEventViewModel.apply {
+        // Post values to ViewModel
+        viewModel.apply {
             updateSavedValues(dayOfMonth, DatePickerFlags.DAY)
             updateSavedValues(month, DatePickerFlags.MONTH)
             updateSavedValues(year, DatePickerFlags.YEAR)
@@ -150,7 +129,7 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener,
         calendar.set(Calendar.HOUR, hour)
         calendar.set(Calendar.MINUTE, minute)
 
-        addEventViewModel.setNewTimeMillis(hour, minute)
+        viewModel.setNewTimeMillis(hour, minute)
     }
 
 
@@ -164,7 +143,7 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener,
     }
 
     fun saveButton() {
-        addEventViewModel.prepareEvent(
+        viewModel.prepareEvent(
             args.eventId,
             addEventBinding.eventTitle.text.toString().capitalize(Locale.ROOT),
             addEventBinding.eventLocationName.text.toString().capitalize(Locale.ROOT),

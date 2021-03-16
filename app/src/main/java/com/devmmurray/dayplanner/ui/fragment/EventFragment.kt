@@ -1,7 +1,6 @@
 package com.devmmurray.dayplanner.ui.fragment
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,9 +9,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.devmmurray.dayplanner.BR
 import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.databinding.FragmentEventBinding
 import com.devmmurray.dayplanner.ui.viewmodel.EventViewModel
@@ -42,19 +40,20 @@ class EventFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         eventBinding = FragmentEventBinding.inflate(inflater, container, false)
+        eventBinding.viewModel = eventViewModel
+        eventBinding.eventFragment = this
+        eventBinding.lifecycleOwner = this
         return eventBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        eventBinding.setVariable(BR.eventFragment, this)
-
-        val id = args.eventId
         eventViewModel.apply {
-            getEventById(id)
-            returnEvent.observe(viewLifecycleOwner, { eventBinding.setVariable(BR.event, it) })
+            getEventById(args.eventId)
             eventErrorMessage.observe(viewLifecycleOwner, eventErrorObserver)
+            shareIntent.observe(viewLifecycleOwner, shareIntentObserver)
+            mapsIntent.observe(viewLifecycleOwner, mapsIntentObserver)
         }
     }
 
@@ -68,6 +67,14 @@ class EventFragment : DialogFragment() {
                 dialog.dismiss()
             }
         }.show()
+    }
+
+    private val shareIntentObserver = Observer<Intent> { shareIntent ->
+        context?.startActivity(Intent.createChooser(shareIntent, null))
+    }
+
+    private val mapsIntentObserver = Observer<Intent> { mapsIntent ->
+        startActivity(mapsIntent)
     }
 
 
@@ -95,28 +102,16 @@ class EventFragment : DialogFragment() {
     }
 
     fun updateEvent(id: Long) {
-        val directions = EventFragmentDirections.actionEventFragmentToAddEventFragment(id)
-        parentFragment?.view?.let {
-            Navigation.findNavController(it).navigate(directions)
-        }
+        findNavController().navigate(EventFragmentDirections
+            .actionEventFragmentToAddEventFragment(id)
+        )
     }
 
     fun shareEvent(title: String?, location: String?, address: String?, time: String?) {
-        val sendIntent: Intent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(
-                Intent.EXTRA_TEXT,
-                "Don't Forget About This Event! \n$title \n$location \n$address \n$time"
-            )
-            type = "text/plain"
-        }
-        context?.startActivity(Intent.createChooser(sendIntent, null))
+        eventViewModel.createShareIntent(title, location, address, time)
     }
 
     fun eventDirections(address: String) {
-        val gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(address))
-        val intent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-        intent.setPackage("com.google.android.apps.maps")
-        startActivity(intent)
+        eventViewModel.createMapsIntent(address)
     }
 }

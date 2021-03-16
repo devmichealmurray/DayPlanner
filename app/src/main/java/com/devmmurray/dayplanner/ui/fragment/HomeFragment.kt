@@ -4,14 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import com.devmmurray.dayplanner.R
-import com.devmmurray.dayplanner.data.model.local.CityStateLocation
-import com.devmmurray.dayplanner.data.model.local.CurrentWeather
 import com.devmmurray.dayplanner.data.model.local.Event
 import com.devmmurray.dayplanner.data.model.local.HourlyForecasts
 import com.devmmurray.dayplanner.databinding.FragmentHomeBinding
@@ -46,16 +43,16 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         homeBinding = FragmentHomeBinding.inflate(inflater, container, false)
-        homeBinding.apply {
+        homeBinding.viewModel = homeViewModel
+        homeBinding.home = this
+        homeBinding.lifecycleOwner = this
+        return homeBinding.root
 
-            return homeBinding.root
-        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        homeBinding.setVariable(BR.home, this)
         homeBinding.switchEventsToAll.setOnCheckedChangeListener { _, isChecked ->
             eventChangeListener(isChecked)
         }
@@ -64,19 +61,12 @@ class HomeFragment : Fragment() {
             getWeatherFromDB()
             getEventsFromDB()
             getCityState()
-            cityState.observe(viewLifecycleOwner, cityStateObserver)
             weatherProgress.observe(viewLifecycleOwner, weatherProgressObserver)
             forecastList.observe(viewLifecycleOwner, hourlyForecastObserver)
-            currentWeather.observe(viewLifecycleOwner, currentWeatherObserver)
             eventsList.observe(viewLifecycleOwner, eventListObserver)
             eventProgress.observe(viewLifecycleOwner, eventProgressObserver)
             homeErrorMessage.observe(viewLifecycleOwner, errorObserver)
         }
-    }
-
-
-    private val cityStateObserver = Observer<CityStateLocation> { location ->
-        "${location.city}, ${location.state}".also { homeBinding.cityState.text = it }
     }
 
 
@@ -96,11 +86,6 @@ class HomeFragment : Fragment() {
             homeBinding.hourlyForecastRecycler.adapter =
                 DayPlannerRecyclerView(list, ListFlags.FORECASTS)
         }
-    }
-
-    private val currentWeatherObserver = Observer<CurrentWeather> {
-        homeBinding.setVariable(BR.currentWeather, it)
-        homeBinding.setVariable(BR.weatherDescription, it.currentWeatherDescription)
     }
 
 
@@ -144,7 +129,7 @@ class HomeFragment : Fragment() {
      */
 
     fun addEventNavigation() = Navigation.findNavController(homeBinding.addEventButton)
-            .navigate(R.id.action_navigation_home_to_addEventFragment)
+        .navigate(R.id.action_navigation_home_to_addEventFragment)
 
 
     fun moreButtonFunction() {
@@ -164,8 +149,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun eventChangeListener(isChecked: Boolean) {
-        homeBinding.todaysEvents.text = if (isChecked) getString(R.string.all_events)
-        else getString(R.string.today_s_events)
+        homeBinding.todaysEvents.text =
+            if (isChecked) getString(R.string.all_events) else getString(R.string.today_s_events)
         homeViewModel.changeEventsList(isChecked)
     }
 

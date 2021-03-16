@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -64,13 +65,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:hint="@string/event_title"
                     android:inputType="text"
                     android:maxLines="1"
-                    android:text="@{event.title}"
+                    android:text="@{viewModel.returnEvent.title}"
+                    android:hint="@string/event_title"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="Event Title" />
 
                 <TextView
                     android:id="@+id/event_date_textView"
@@ -93,13 +95,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:clickable="true"
-                    android:onClick="@{() -> addEventFragment.navigateToDatePicker()}"
                     android:gravity="end"
-                    android:hint="@string/mon_march_1_4_30_pm"
+                    android:onClick="@{() -> addEventFragment.navigateToDatePicker()}"
                     android:padding="8dp"
+                    android:text="@{viewModel.setDatePickerTime}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/event_date_textView"
-                    app:layout_constraintTop_toBottomOf="@+id/event_title" />
+                    app:layout_constraintTop_toBottomOf="@+id/event_title"
+                    tools:text="@string/mon_march_1_4_30_pm" />
 
                 <EditText
                     android:id="@+id/event_location_name"
@@ -112,11 +115,11 @@
                     android:inputType="textPostalAddress"
                     android:maxLines="1"
                     android:padding="8dp"
-                    android:text="@{event.locationName}"
+                    android:text="@{viewModel.returnEvent.locationName}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/event_date_picker"
-                    android:autofillHints="@string/location_name" />
+                    tools:text="@string/location_name"/>
 
                 <EditText
                     android:id="@+id/event_location_address"
@@ -129,11 +132,11 @@
                     android:inputType="textPostalAddress"
                     android:maxLines="1"
                     android:padding="8dp"
-                    android:text="@{event.address}"
+                    android:text="@{viewModel.returnEvent.address}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/event_location_name"
-                    android:autofillHints="@string/location_address" />
+                    tools:text="@string/location_address"/>
 
                 <EditText
                     android:id="@+id/event_notes"
@@ -147,11 +150,11 @@
                     android:hint="@string/event_notes"
                     android:inputType="textMultiLine"
                     android:padding="8dp"
-                    android:text="@{event.notes}"
+                    android:text="@{viewModel.returnEvent.notes}"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/event_location_address"
-                    android:autofillHints="@string/event_notes" />
+                    tools:text="@string/event_notes"/>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/cancel_button"

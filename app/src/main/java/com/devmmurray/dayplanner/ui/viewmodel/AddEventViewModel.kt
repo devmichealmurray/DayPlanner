@@ -36,6 +36,12 @@ class AddEventViewModel(app: Application) : SplashActivityViewModel(app) {
     val setDatePickerTime: LiveData<String> get() = _setDatePickerTime
 
 
+    fun todaysDate() {
+        _setDatePickerTime.value =
+            TimeStampProcessing.todaysDate(TimeFlags.FULL)
+    }
+
+
     fun updateSavedValues(value: Int, field: DatePickerFlags) {
         when (field) {
             DatePickerFlags.DAY -> savedDay = value
@@ -110,6 +116,11 @@ class AddEventViewModel(app: Application) : SplashActivityViewModel(app) {
                     .collect { event ->
                         _returnEvent.value = event.toEventObject()
                         event.eventTime?.let { savedMillis = it }
+                        _setDatePickerTime.value =
+                            event.eventTime?.let {
+                                TimeStampProcessing
+                                    .transformSystemTime(it, TimeFlags.FULL)
+                            }
                     }
             } catch (e: Exception) {
                 _errorMessage.value = e.message.toString()

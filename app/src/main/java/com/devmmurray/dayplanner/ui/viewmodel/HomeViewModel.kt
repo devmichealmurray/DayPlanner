@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.devmmurray.dayplanner.data.model.entity.EventEntity
-import com.devmmurray.dayplanner.data.model.local.CityStateLocation
 import com.devmmurray.dayplanner.data.model.local.CurrentWeather
 import com.devmmurray.dayplanner.data.model.local.Event
 import com.devmmurray.dayplanner.data.model.local.HourlyForecasts
@@ -35,8 +34,8 @@ open class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
     private val _eventsList by lazy { MutableLiveData<List<Event>>() }
     val eventsList: LiveData<List<Event>> get() = _eventsList
 
-    private val _cityState by lazy { MutableLiveData<CityStateLocation>() }
-    val cityState: LiveData<CityStateLocation> get() = _cityState
+    private val _cityState by lazy { MutableLiveData<String>() }
+    val cityState: LiveData<String> get() = _cityState
 
     private val _errorMessage by lazy { MutableLiveData<String>() }
     val homeErrorMessage: LiveData<String> get() = _errorMessage
@@ -140,9 +139,10 @@ open class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
     fun getCityState() {
         viewModelScope.launch {
             try {
-                val cityState =
+                val cityStateEntity =
                     cityUseCases.getCityState.invoke()
-                _cityState.value = cityState.toCityStateObject()
+                val cityState = cityStateEntity.toCityStateObject()
+                _cityState.value = "${cityState.city}, ${cityState.state}"
             } catch (e: Exception) {
                 _errorMessage.value = e.message.toString()
             }

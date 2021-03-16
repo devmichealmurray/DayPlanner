@@ -5,12 +5,12 @@
     <data>
 
         <variable
-            name="event"
-            type="com.devmmurray.dayplanner.data.model.local.Event" />
-
-        <variable
             name="eventFragment"
             type="com.devmmurray.dayplanner.ui.fragment.EventFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.devmmurray.dayplanner.ui.viewmodel.EventViewModel" />
 
     </data>
 
@@ -32,8 +32,7 @@
             android:layout_marginTop="12dp"
             android:hint="@string/event_title"
             android:padding="8dp"
-
-            android:text="@{event.title}"
+            android:text="@{viewModel.returnEvent.title}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -61,7 +60,7 @@
             android:gravity="end"
             android:hint="@string/mon_march_1_4_30_pm"
             android:padding="8dp"
-            android:text="@{event.eventTime}"
+            android:text="@{viewModel.returnEvent.eventTime}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/event_date_textView"
             app:layout_constraintTop_toBottomOf="@+id/event_title" />
@@ -75,7 +74,7 @@
             android:drawableStart="@drawable/ic_location"
             android:hint="@string/location_name"
             android:padding="8dp"
-            android:text="@{event.locationName}"
+            android:text="@{viewModel.returnEvent.locationName}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/event_date_picker" />
@@ -89,7 +88,7 @@
             android:drawableStart="@drawable/ic_location"
             android:hint="@string/location_address"
             android:padding="8dp"
-            android:text="@{event.address}"
+            android:text="@{viewModel.returnEvent.address}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/event_location_name" />
@@ -104,7 +103,7 @@
             android:gravity="start|top"
             android:hint="@string/event_notes"
             android:padding="8dp"
-            android:text="@{event.notes}"
+            android:text="@{viewModel.returnEvent.notes}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/event_location_address" />
@@ -116,8 +115,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="2dp"
+            android:onClick="@{() -> eventFragment.deleteEvent(viewModel.returnEvent.id)}"
             android:padding="4dp"
-            android:onClick="@{() -> eventFragment.deleteEvent(event.id)}"
             android:text="@string/delete"
             app:icon="@drawable/ic_delete"
             app:iconTint="@color/yellow_dark"
@@ -133,8 +132,8 @@
             android:layout_marginStart="2dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="2dp"
+            android:onClick="@{() -> eventFragment.updateEvent(viewModel.returnEvent.id)}"
             android:padding="4dp"
-            android:onClick="@{() -> eventFragment.updateEvent(event.id)}"
             android:text="@string/update"
             app:icon="@drawable/ic_update"
             app:iconTint="@color/yellow_dark"
@@ -150,8 +149,8 @@
             android:layout_marginStart="2dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="2dp"
+            android:onClick="@{() -> eventFragment.shareEvent(viewModel.returnEvent.title, viewModel.returnEvent.locationName, viewModel.returnEvent.address, viewModel.returnEvent.eventTime)}"
             android:padding="4dp"
-            android:onClick="@{() -> eventFragment.shareEvent(event.title, event.locationName, event.address, event.eventTime)}"
             android:text="@string/share"
             app:icon="@drawable/ic_share"
             app:iconTint="@color/yellow_dark"
@@ -165,8 +164,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            android:onClick="@{() -> eventFragment.eventDirections(viewModel.returnEvent.address)}"
             android:padding="8dp"
-            android:onClick="@{() -> eventFragment.eventDirections(event.address)}"
             android:text="@string/directions"
             app:icon="@drawable/ic_map"
             app:iconTint="@color/white"

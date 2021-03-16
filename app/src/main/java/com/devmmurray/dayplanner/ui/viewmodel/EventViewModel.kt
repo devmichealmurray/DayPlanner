@@ -1,6 +1,8 @@
 package com.devmmurray.dayplanner.ui.viewmodel
 
 import android.app.Application
+import android.content.Intent
+import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -19,6 +21,12 @@ class EventViewModel(app: Application) : HomeViewModel(app) {
 
     private val _eventErrorMessage by lazy { MutableLiveData<String>() }
     val eventErrorMessage: LiveData<String> get() = _eventErrorMessage
+
+    private val _shareIntent by lazy { MutableLiveData<Intent>() }
+    val shareIntent: LiveData<Intent> get() = _shareIntent
+
+    private val _mapsIntent by lazy { MutableLiveData<Intent>() }
+    val mapsIntent: LiveData<Intent> get() = _mapsIntent
 
     fun getEventById(id: Long) {
         viewModelScope.launch {
@@ -46,5 +54,24 @@ class EventViewModel(app: Application) : HomeViewModel(app) {
                 _eventErrorMessage.value = e.message.toString()
             }
         }
+    }
+
+    fun createShareIntent(title: String?, location: String?, address: String?, time: String?) {
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(
+                Intent.EXTRA_TEXT,
+                "Don't Forget About This Event! \n$title \n$location \n$address \n$time"
+            )
+            type = "text/plain"
+        }
+        _shareIntent.value = sendIntent
+    }
+
+    fun createMapsIntent(address: String?) {
+        val gmmIntentUri = Uri.parse("geo:0,0?q=" + Uri.encode(address))
+        val intent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+        intent.setPackage("com.google.android.apps.maps")
+        _mapsIntent.value = intent
     }
 }

@@ -8,16 +8,15 @@ import androidx.databinding.library.baseAdapters.BR
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.fragment.findNavController
 import com.devmmurray.dayplanner.R
-import com.devmmurray.dayplanner.data.model.entity.NewsEntity
+import com.devmmurray.dayplanner.data.model.local.NewsArticle
 import com.devmmurray.dayplanner.data.model.local.SuggestionObject
 import com.devmmurray.dayplanner.databinding.FragmentNewsBinding
 import com.devmmurray.dayplanner.ui.adapter.DayPlannerRecyclerView
 import com.devmmurray.dayplanner.ui.viewmodel.NewsViewModel
-import com.devmmurray.dayplanner.util.flags.ListFlags
 import com.devmmurray.dayplanner.util.Utils
+import com.devmmurray.dayplanner.util.flags.ListFlags
 import com.google.android.material.transition.MaterialElevationScale
 import org.jetbrains.anko.support.v4.alert
 
@@ -64,12 +63,9 @@ class NewsFragment : Fragment() {
      *  Observers
      */
 
-    private val newsListObserver = Observer<List<NewsEntity>> { list ->
-        val news = list.map { it.toNewsArticle() }
-        newsBinding.newsRecycler.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = DayPlannerRecyclerView(news, ListFlags.NEWS_ARTICLE)
-        }
+    private val newsListObserver = Observer<List<NewsArticle>> { list ->
+        newsBinding.newsRecycler.adapter =
+            DayPlannerRecyclerView(list, ListFlags.NEWS_ARTICLE)
     }
 
     private val suggestionsObserver = Observer<List<SuggestionObject>> { list ->
@@ -97,16 +93,13 @@ class NewsFragment : Fragment() {
         val searchTerm = newsBinding.searchEditText.text.toString()
         newsBinding.searchEditText.text.clear()
         newsBinding.searchEditText.clearFocus()
-        context?.let { context ->
-            view.let { view ->
-                if (view != null) {
-                    Utils.hideKeyboard(context, view)
-                }
-            }
-        }
-        val directions = NewsFragmentDirections
-            .actionNavigationNewsToSearchResultsFragment(searchTerm)
-        view?.let { Navigation.findNavController(it).navigate(directions) }
+        context?.let { context -> view?.let { view -> Utils.hideKeyboard(context, view) } }
+
+        findNavController().navigate(
+            NewsFragmentDirections
+                .actionNavigationNewsToSearchResultsFragment(searchTerm)
+        )
     }
+
 
 }

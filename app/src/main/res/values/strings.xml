@@ -60,6 +60,7 @@
     <string name="thatcher_quote">Plan your work for today and every day, \n \n then work your plan ~ Margret Thatcher</string>
     <string name="day_planner">Day Planner</string>
     <string name="delete_event">Delete Event</string>
+    <string name="guardian_news_search_results">Guardian News Search Results</string>
 
 
 </resources>
