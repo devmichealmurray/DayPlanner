@@ -16,7 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.devmmurray.dayplanner.R
-import com.devmmurray.dayplanner.data.model.entity.EventEntity
+import com.devmmurray.dayplanner.data.model.local.Event
 import com.devmmurray.dayplanner.databinding.FragmentAddEventBinding
 import com.devmmurray.dayplanner.ui.viewmodel.AddEventViewModel
 import com.devmmurray.dayplanner.util.Utils
@@ -34,11 +34,6 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
     private lateinit var addEventBinding: FragmentAddEventBinding
     private val addEventViewModel: AddEventViewModel by viewModels()
     private val args: AddEventFragmentArgs by navArgs()
-
-    var savedDay = -1
-    var savedMonth = -1
-    var savedYear = -1
-    var savedMillis: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +67,8 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
             eventChecker(args.eventId)
             returnEvent.observe(viewLifecycleOwner, returnEventObserver)
             addEventErrorMessage.observe(viewLifecycleOwner, errorMessageObserver)
+            eventSaved.observe(viewLifecycleOwner, eventSavedObserver)
+            setDatePickerTime.observe(viewLifecycleOwner, setDatePickerTimeObserver)
         }
     }
 
@@ -80,17 +77,12 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
      *  Observers
      */
 
-    private val returnEventObserver = Observer<EventEntity> { event ->
+    private val returnEventObserver = Observer<Event> { event ->
         addEventBinding.apply {
             addEventTextView.text = getString(R.string.update_event)
             saveAction.text = getString(R.string.update)
             eventTitle.setText(event.title)
-            eventDatePicker.text = event.eventTime?.let { eventTime ->
-                TimeStampProcessing.transformSystemTime(
-                    eventTime, TimeFlags.FULL
-                )
-            }
-            event.eventTime?.let { savedMillis = it }
+            eventDatePicker.text = event.eventTime
             eventLocationName.setText(event.locationName)
             eventLocationAddress.setText(event.address)
             eventNotes.setText(event.notes)
@@ -106,6 +98,15 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
                 dialog.dismiss()
             }
         }.show()
+    }
+
+    private val eventSavedObserver = Observer<Boolean> {
+        if (it) Navigation.findNavController(addEventBinding.saveAction)
+            .navigate(R.id.action_addEventFragment_to_navigation_home)
+    }
+
+    private val setDatePickerTimeObserver = Observer<String> {
+        addEventBinding.eventDatePicker.text = it
     }
 
 
@@ -130,9 +131,9 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
     }
 
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        savedDay = dayOfMonth
-        savedMonth = month + 1
-        savedYear = year
+        addEventViewModel.savedDay = dayOfMonth
+        addEventViewModel.savedMonth = month + 1
+        addEventViewModel.savedYear = year
         val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR)
         val minute = calendar.get(Calendar.MINUTE)
@@ -140,23 +141,15 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
         TimePickerDialog(context, this, hour, minute, false).show()
     }
 
-    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+    override fun onTimeSet(view: TimePicker?, hour: Int, minute: Int) {
         val calendar = Calendar.getInstance()
-        calendar.set(Calendar.YEAR, savedYear)
-        calendar.set(Calendar.MONTH, savedMonth)
-        calendar.set(Calendar.DAY_OF_MONTH, savedDay)
-        calendar.set(Calendar.HOUR, hourOfDay)
+        calendar.set(Calendar.YEAR, addEventViewModel.savedYear)
+        calendar.set(Calendar.MONTH, addEventViewModel.savedMonth)
+        calendar.set(Calendar.DAY_OF_MONTH, addEventViewModel.savedDay)
+        calendar.set(Calendar.HOUR, hour)
         calendar.set(Calendar.MINUTE, minute)
 
-        val dateMillis = TimeStampProcessing
-            .transformDateStringToMillis("$savedDay-$savedMonth-$savedYear $hourOfDay:$minute")
-        savedMillis = dateMillis
-        setDatePickerTime(dateMillis)
-    }
-
-    private fun setDatePickerTime(millis: Long) {
-        addEventBinding.eventDatePicker.text =
-            millis.let { TimeStampProcessing.transformSystemTime(it, TimeFlags.FULL) }
+        addEventViewModel.setNewTimeMillis(hour, minute)
     }
 
 
@@ -170,35 +163,13 @@ class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener, T
     }
 
     fun saveButton() {
-        if (savedMillis > 0) {
-            saveActionNavigation()
-        } else {
-            alert {
-                title = getString(R.string.error_alert_dialog)
-                message = "No Date or Time Selected For This Event"
-                isCancelable = false
-                positiveButton(getString(R.string.error_alert_okay)) { dialog ->
-                    dialog.dismiss()
-                }
-            }.show()
-        }
-    }
-
-    private fun saveActionNavigation() {
-        val dateId = "$savedMonth-$savedDay-$savedYear"
-        val title = addEventBinding.eventTitle.text.toString().capitalize(Locale.ROOT)
-        val date = savedMillis
-        val locationName =
-            addEventBinding.eventLocationName.text.toString().capitalize(Locale.ROOT)
-        val locationAddress = addEventBinding.eventLocationAddress.text.toString()
-        val notes = addEventBinding.eventNotes.text.toString().capitalize(Locale.ROOT)
-
         addEventViewModel.prepareEvent(
-            args.eventId, dateId, title, date, locationName, locationAddress, notes
+            args.eventId,
+            addEventBinding.eventTitle.text.toString().capitalize(Locale.ROOT),
+            addEventBinding.eventLocationName.text.toString().capitalize(Locale.ROOT),
+            addEventBinding.eventLocationAddress.text.toString(),
+            addEventBinding.eventNotes.text.toString().capitalize(Locale.ROOT)
         )
-
-        Navigation.findNavController(addEventBinding.saveAction)
-            .navigate(R.id.action_addEventFragment_to_navigation_home)
     }
 
 }
