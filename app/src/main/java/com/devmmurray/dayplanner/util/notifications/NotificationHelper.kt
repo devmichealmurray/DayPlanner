@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.devmmurray.dayplanner.NOTIFICATION_CHANNEL_ID
 import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.ui.activity.SplashActivity
 

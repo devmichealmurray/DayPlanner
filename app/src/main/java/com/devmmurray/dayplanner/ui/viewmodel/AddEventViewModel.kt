@@ -18,11 +18,14 @@ private const val TAG = "AddEventViewModel"
 
 class AddEventViewModel(app: Application) : SplashActivityViewModel(app) {
 
+    // Date/Time Picker Values
     private var savedDay = -1
     private var savedMonth = -1
     private var savedYear = -1
     private var savedMillis: Long = 0
 
+
+    // Live Data
     private val _returnEvent by lazy { MutableLiveData<Event>() }
     val returnEvent: LiveData<Event> get() = _returnEvent
 
@@ -36,12 +39,13 @@ class AddEventViewModel(app: Application) : SplashActivityViewModel(app) {
     val setDatePickerTime: LiveData<String> get() = _setDatePickerTime
 
 
+    // Sets the Date/Time Picker TextView to Today's Date
     fun todaysDate() {
         _setDatePickerTime.value =
             TimeStampProcessing.todaysDate(TimeFlags.FULL)
     }
 
-
+    // New Date values sent from Date/Picker
     fun updateSavedValues(value: Int, field: DatePickerFlags) {
         when (field) {
             DatePickerFlags.DAY -> savedDay = value

@@ -16,9 +16,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="@dimen/small_margin"
         android:background="@drawable/todo_item_background"
-        android:padding="4dp">
+        android:padding="@dimen/very_small_padding">
 
         <CheckBox
             android:id="@+id/todo_check_box"
@@ -36,7 +36,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="14dp"
-            android:hint="This is a todo task item"
+            android:hint="@string/this_is_a_todo_task_item"
             android:text="@{taskObject.title.toString()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/todo_check_box"
@@ -47,10 +47,10 @@
             style="@style/ToDoDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:hint="Saturday, March 6, 12:08 PM"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:layout_marginTop="@dimen/small_padding"
+            android:hint="@string/saturday_march_6_12_08_pm"
+            android:paddingStart="@dimen/small_padding"
+            android:paddingEnd="@dimen/small_padding"
             android:text="@{taskObject.dateAdded.toString()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

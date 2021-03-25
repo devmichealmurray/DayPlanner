@@ -33,9 +33,8 @@ class TodoViewModel(app: Application) : SplashActivityViewModel(app) {
                     .collect { list ->
                         val tasks =
                             list.toMutableList()
-                                .also { it.asReversed() }
                                 .map { it.toTodoTaskObject() }
-                        _todoTaskList.value = tasks
+                        _todoTaskList.value = tasks.reversed()
                     }
             } catch (e: Exception) {
                 _todoErrorMessage.value = e.message.toString()

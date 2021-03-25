@@ -61,6 +61,7 @@
     <string name="day_planner">Day Planner</string>
     <string name="delete_event">Delete Event</string>
     <string name="guardian_news_search_results">Guardian News Search Results</string>
-
+    <string name="saturday_march_6_12_08_pm">Saturday, March 6, 12:08 PM</string>
+    <string name="this_is_a_todo_task_item">This is a todo task item</string>
 
 </resources>

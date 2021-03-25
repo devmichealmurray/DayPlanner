@@ -61,12 +61,11 @@ class SplashActivity : AppCompatActivity() {
     }
 
 
-
     /**
      *  Live Data Observers
      */
 
-  private val errorObserver = Observer<String> { errorMessage ->
+    private val errorObserver = Observer<String> { errorMessage ->
         alert {
             title = getString(R.string.error_alert_dialog)
             message = errorMessage
@@ -189,23 +188,28 @@ class SplashActivity : AppCompatActivity() {
      */
 
     private fun setAlarm() {
+
+        // Sets calendar time for repeating alarm
         val calendar: Calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
             set(Calendar.HOUR_OF_DAY, 8)
             set(Calendar.MINUTE, 30)
         }
 
+        // Sets the pending intent for the alarm
         val intent = Intent(this, AlarmReceiver::class.java)
         intent.addFlags(Intent.FLAG_RECEIVER_FOREGROUND)
         val pending = PendingIntent.getBroadcast(
             this,
             0,
             intent,
-            PendingIntent.FLAG_UPDATE_CURRENT)
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
 
         val alarmManager =
             getSystemService(Context.ALARM_SERVICE) as? AlarmManager
 
+        // Sets up the repeating alarm with the time and intent
         alarmManager?.setRepeating(
             AlarmManager.RTC_WAKEUP,
             calendar.timeInMillis,

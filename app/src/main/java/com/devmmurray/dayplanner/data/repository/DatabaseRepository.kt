@@ -3,7 +3,6 @@ package com.devmmurray.dayplanner.data.repository
 import com.devmmurray.dayplanner.data.database.dao.*
 import com.devmmurray.dayplanner.data.model.entity.*
 
-
 class DatabaseRepository(
     private val hourlyForecastDataSource: HourlyForecastDAO,
     private val currentWeatherDataSource: CurrentWeatherDAO,

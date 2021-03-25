@@ -41,7 +41,6 @@ class SearchResultsViewModel(app: Application) : SplashActivityViewModel(app) {
     private fun addNewsArticle(article: NewsEntity) {
         viewModelScope.launch {
             newsUseCases.addNewsArticle.invoke(article)
-//            dbRepo.addNewsArticle(article)
         }
     }
 
@@ -49,7 +48,6 @@ class SearchResultsViewModel(app: Application) : SplashActivityViewModel(app) {
         viewModelScope.launch {
             try {
                 newsUseCases.getNewsArticle.invoke()
-//                dbRepo.getNewsArticles()
                     .flowOn(Dispatchers.IO)
                     .collect { entityList ->
                         val news = entityList.map { it.toNewsArticle() }

@@ -110,6 +110,7 @@ open class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
         }
     }
 
+    // Switch to change what events list displays
     fun changeEventsList(isChecked: Boolean) {
         if (isChecked) {
             _eventProgress.value = true
@@ -135,7 +136,24 @@ open class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
         }
     }
 
+    fun deleteOldEvents(date: Long) {
+        viewModelScope.launch {
+            eventsUseCases.getAllEvents.invoke()
+                .flowOn(Dispatchers.IO)
+                .collect { list ->
+                    list.forEach { event ->
+                        event.eventTime?.let { eventTime ->
+                            if (eventTime < date) {
+                                eventsUseCases.deleteEvent.invoke(event.uid)
+                            }
+                        }
+                    }
+                }
+        }
+    }
 
+
+    // Gets current location stored in database
     fun getCityState() {
         viewModelScope.launch {
             try {
