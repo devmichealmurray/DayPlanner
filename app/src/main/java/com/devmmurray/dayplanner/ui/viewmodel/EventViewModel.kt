@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.devmmurray.dayplanner.data.model.local.Event
-import com.devmmurray.dayplanner.util.time.TimeFlags
+import com.devmmurray.dayplanner.util.flags.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect

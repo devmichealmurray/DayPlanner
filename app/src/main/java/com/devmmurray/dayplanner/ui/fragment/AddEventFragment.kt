@@ -24,9 +24,6 @@ import com.google.android.material.transition.MaterialElevationScale
 import org.jetbrains.anko.support.v4.alert
 import java.util.*
 
-
-private const val TAG = "AddEventFragment"
-
 class AddEventFragment : DialogFragment(), DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
 

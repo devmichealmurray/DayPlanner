@@ -63,5 +63,8 @@
     <string name="guardian_news_search_results">Guardian News Search Results</string>
     <string name="saturday_march_6_12_08_pm">Saturday, March 6, 12:08 PM</string>
     <string name="this_is_a_todo_task_item">This is a todo task item</string>
+    <string name="missing_task_warning">You Must Have A Task To Add</string>
+    <string name="location_access_warning">Could Not Access Location</string>
+    <string name="no_date_selected_warning">No Date or Time Selected For This Event</string>
 
 </resources>

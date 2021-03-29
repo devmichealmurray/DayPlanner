@@ -18,8 +18,6 @@ import com.devmmurray.dayplanner.util.flags.ListFlags
 import com.google.android.material.transition.MaterialElevationScale
 import org.jetbrains.anko.support.v4.alert
 
-private const val TAG = "Home Fragment"
-
 class HomeFragment : Fragment() {
 
     private val homeViewModel: HomeViewModel by viewModels()

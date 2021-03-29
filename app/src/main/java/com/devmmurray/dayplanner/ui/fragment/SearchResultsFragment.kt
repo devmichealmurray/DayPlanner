@@ -61,8 +61,6 @@ class SearchResultsFragment : Fragment() {
             DayPlannerRecyclerView(newsSearchResults, ListFlags.NEWS_ARTICLE)
     }
 
-    fun onBackPressed() {
-        findNavController().popBackStack()
-    }
+    fun onBackPressed() = findNavController().popBackStack()
 
 }

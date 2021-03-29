@@ -8,14 +8,12 @@ import com.devmmurray.dayplanner.data.model.entity.EventEntity
 import com.devmmurray.dayplanner.data.model.local.CurrentWeather
 import com.devmmurray.dayplanner.data.model.local.Event
 import com.devmmurray.dayplanner.data.model.local.HourlyForecasts
-import com.devmmurray.dayplanner.util.time.TimeFlags
+import com.devmmurray.dayplanner.util.flags.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-
-private const val TAG = "Home View Model"
 
 open class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
 

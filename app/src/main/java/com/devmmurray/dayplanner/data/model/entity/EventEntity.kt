@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.devmmurray.dayplanner.data.model.local.Event
-import com.devmmurray.dayplanner.util.time.TimeFlags
+import com.devmmurray.dayplanner.util.flags.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 
 @Entity(tableName = "events")

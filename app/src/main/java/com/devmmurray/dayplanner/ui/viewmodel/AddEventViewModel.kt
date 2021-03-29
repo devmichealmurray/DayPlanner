@@ -4,17 +4,16 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.data.model.entity.EventEntity
 import com.devmmurray.dayplanner.data.model.local.Event
 import com.devmmurray.dayplanner.util.flags.DatePickerFlags
-import com.devmmurray.dayplanner.util.time.TimeFlags
+import com.devmmurray.dayplanner.util.flags.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-
-private const val TAG = "AddEventViewModel"
 
 class AddEventViewModel(app: Application) : SplashActivityViewModel(app) {
 
@@ -97,7 +96,7 @@ class AddEventViewModel(app: Application) : SplashActivityViewModel(app) {
                 saveEventToDB(event)
             }
         } else {
-            _errorMessage.value = "No Date or Time Selected For This Event"
+            _errorMessage.value = context.getString(R.string.no_date_selected_warning)
         }
     }
 

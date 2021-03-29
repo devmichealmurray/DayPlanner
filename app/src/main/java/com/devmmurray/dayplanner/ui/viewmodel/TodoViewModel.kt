@@ -4,17 +4,16 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.data.model.entity.TodoTaskEntity
 import com.devmmurray.dayplanner.data.model.local.TodoTask
-import com.devmmurray.dayplanner.util.time.TimeFlags
+import com.devmmurray.dayplanner.util.flags.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import java.util.*
-
-private const val TAG = "TodoViewModel"
 
 class TodoViewModel(app: Application) : SplashActivityViewModel(app) {
 
@@ -72,7 +71,7 @@ class TodoViewModel(app: Application) : SplashActivityViewModel(app) {
                 )
             addTaskToDb(taskEntity)
         } else {
-            _todoErrorMessage.value = "You Must Have A Task To Add"
+            _todoErrorMessage.value = context.getString(R.string.missing_task_warning)
         }
     }
 

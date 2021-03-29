@@ -7,11 +7,10 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.devmmurray.dayplanner.NOTIFICATION_CHANNEL_ID
 import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.ui.activity.SplashActivity
+import com.devmmurray.dayplanner.util.Constants
 
-private const val TAG = "Notification Helper"
 object NotificationHelper {
 
     fun createNotificationChannel(channelId: String, context: Context) {
@@ -36,7 +35,7 @@ object NotificationHelper {
         val pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, 0)
 
         val notification = context.let {
-            NotificationCompat.Builder(it, NOTIFICATION_CHANNEL_ID)
+            NotificationCompat.Builder(it, Constants.NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_logo)
                 .setContentTitle("Day Planner")
                 .setContentText("Plan Your Day With Day Planner!!")

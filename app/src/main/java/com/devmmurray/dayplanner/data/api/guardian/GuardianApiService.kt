@@ -1,13 +1,11 @@
 package com.devmmurray.dayplanner.data.api.guardian
 
+import com.devmmurray.dayplanner.util.Constants
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.util.concurrent.TimeUnit
-
-
-private const val BASE_URL = "https://content.guardianapis.com"
 
 object GuardianApiService {
 
@@ -22,7 +20,7 @@ object GuardianApiService {
         .build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
+        .baseUrl(Constants.NEWS_BASE_URL)
         .addConverterFactory(MoshiConverterFactory.create())
         .callFactory(okHttp)
         .build()

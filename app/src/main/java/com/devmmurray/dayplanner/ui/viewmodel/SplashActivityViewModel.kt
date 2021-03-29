@@ -7,6 +7,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.data.di.ApplicationModule
 import com.devmmurray.dayplanner.data.di.DaggerViewModelComponent
 import com.devmmurray.dayplanner.data.model.entity.CityStateEntity
@@ -16,16 +17,13 @@ import com.devmmurray.dayplanner.data.model.entity.NewsEntity
 import com.devmmurray.dayplanner.data.repository.ApiRepository
 import com.devmmurray.dayplanner.data.usecases.*
 import com.devmmurray.dayplanner.util.JsonProcessing
-import com.devmmurray.dayplanner.util.time.TimeFlags
+import com.devmmurray.dayplanner.util.flags.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import kotlinx.coroutines.launch
 import java.io.IOException
 import javax.inject.Inject
 
-private const val TAG = "SplashActivityViewModel"
-
 open class SplashActivityViewModel(app: Application) : AndroidViewModel(app) {
-
 
     /**
      *  Set Up of Database
@@ -77,7 +75,7 @@ open class SplashActivityViewModel(app: Application) : AndroidViewModel(app) {
             getWeatherFromOpenWeather(location.latitude, location.longitude)
             getGuardianNews(searchDate)
         } else {
-            _errorMessage.value = "Could Not Access Location"
+            _errorMessage.value = context.getString(R.string.location_access_warning)
         }
     }
 

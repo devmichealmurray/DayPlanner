@@ -20,13 +20,11 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import com.devmmurray.dayplanner.R
 import com.devmmurray.dayplanner.ui.viewmodel.SplashActivityViewModel
+import com.devmmurray.dayplanner.util.Constants
 import com.devmmurray.dayplanner.util.notifications.AlarmReceiver
 import org.jetbrains.anko.alert
 import org.jetbrains.anko.intentFor
 import java.util.*
-
-private const val REQ_CODE_PERMISSION = 123
-private const val TAG = "Splash Activity"
 
 class SplashActivity : AppCompatActivity() {
 
@@ -132,7 +130,7 @@ class SplashActivity : AppCompatActivity() {
                         arrayOf(
                             android.Manifest.permission.ACCESS_FINE_LOCATION
                         ),
-                        REQ_CODE_PERMISSION
+                        Constants.REQ_CODE_PERMISSION
                     )
                 }
                 .setNegativeButton("Cancel") { dialog, _ ->
@@ -144,7 +142,7 @@ class SplashActivity : AppCompatActivity() {
                 arrayOf(
                     android.Manifest.permission.ACCESS_FINE_LOCATION
                 ),
-                REQ_CODE_PERMISSION
+                Constants.REQ_CODE_PERMISSION
             )
         }
     }
@@ -160,7 +158,7 @@ class SplashActivity : AppCompatActivity() {
             this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
 
         when (requestCode) {
-            REQ_CODE_PERMISSION -> {
+            Constants.REQ_CODE_PERMISSION -> {
                 if ((grantResults.isNotEmpty()
                             && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 ) {

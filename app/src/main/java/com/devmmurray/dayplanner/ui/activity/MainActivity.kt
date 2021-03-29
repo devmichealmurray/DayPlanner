@@ -8,9 +8,6 @@ import androidx.navigation.ui.NavigationUI
 import com.devmmurray.dayplanner.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
-
-private const val TAG = "Main Activity"
-
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

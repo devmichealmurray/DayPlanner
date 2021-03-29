@@ -3,13 +3,12 @@ package com.devmmurray.dayplanner
 import android.app.Application
 import androidx.work.*
 import com.devmmurray.dayplanner.util.CleanDbWorker
+import com.devmmurray.dayplanner.util.Constants
 import com.devmmurray.dayplanner.util.notifications.NotificationHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
-
-const val NOTIFICATION_CHANNEL_ID = "1"
 
 class DayPlannerApplication : Application() {
     private lateinit var instance: DayPlannerApplication
@@ -19,7 +18,7 @@ class DayPlannerApplication : Application() {
         super.onCreate()
         instance = this
 
-        NotificationHelper.createNotificationChannel(NOTIFICATION_CHANNEL_ID, this)
+        NotificationHelper.createNotificationChannel(Constants.NOTIFICATION_CHANNEL_ID, this)
         delayedInit()
     }
 

@@ -3,7 +3,7 @@ package com.devmmurray.dayplanner.util
 import com.devmmurray.dayplanner.data.model.dto.news.NewsDTO
 import com.devmmurray.dayplanner.data.model.dto.weather.WeatherDTO
 import com.devmmurray.dayplanner.data.model.entity.*
-import com.devmmurray.dayplanner.util.time.TimeFlags
+import com.devmmurray.dayplanner.util.flags.TimeFlags
 import com.devmmurray.dayplanner.util.time.TimeStampProcessing
 import retrofit2.Response
 import java.util.*
