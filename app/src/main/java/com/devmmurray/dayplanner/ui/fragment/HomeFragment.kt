@@ -59,7 +59,6 @@ class HomeFragment : Fragment() {
             getWeatherFromDB()
             getEventsFromDB()
             getCityState()
-            weatherProgress.observe(viewLifecycleOwner, weatherProgressObserver)
             forecastList.observe(viewLifecycleOwner, hourlyForecastObserver)
             eventsList.observe(viewLifecycleOwner, eventListObserver)
             eventProgress.observe(viewLifecycleOwner, eventProgressObserver)
@@ -72,17 +71,12 @@ class HomeFragment : Fragment() {
      *  Weather Observers
      */
 
-    private val weatherProgressObserver = Observer<Boolean> {
-        if (!it) {
-            homeBinding.hourlyForecastRecycler.visibility = View.VISIBLE
-            homeBinding.forecastProgressBar.visibility = View.INVISIBLE
-        }
-    }
-
     private val hourlyForecastObserver = Observer<List<HourlyForecasts>> { list ->
-        if (list.isNotEmpty()) {
-            homeBinding.hourlyForecastRecycler.adapter =
+        homeBinding.apply {
+            hourlyForecastRecycler.adapter =
                 DayPlannerRecyclerView(list, ListFlags.FORECASTS)
+            hourlyForecastRecycler.visibility = View.VISIBLE
+
         }
     }
 

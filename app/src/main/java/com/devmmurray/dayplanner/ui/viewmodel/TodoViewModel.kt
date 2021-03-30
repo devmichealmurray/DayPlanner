@@ -71,7 +71,8 @@ class TodoViewModel(app: Application) : SplashActivityViewModel(app) {
                 )
             addTaskToDb(taskEntity)
         } else {
-            _todoErrorMessage.value = context.getString(R.string.missing_task_warning)
+            _todoErrorMessage.value =
+                getApplication<Application>().resources.getString(R.string.missing_task_warning)
         }
     }
 

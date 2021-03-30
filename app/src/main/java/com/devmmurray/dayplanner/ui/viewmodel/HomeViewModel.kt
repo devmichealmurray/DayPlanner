@@ -17,9 +17,6 @@ import kotlinx.coroutines.launch
 
 open class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
 
-    private val _weatherProgress by lazy { MutableLiveData<Boolean>() }
-    val weatherProgress: LiveData<Boolean> get() = _weatherProgress
-
     private val _forecastList by lazy { MutableLiveData<List<HourlyForecasts>>() }
     val forecastList: LiveData<List<HourlyForecasts>> get() = _forecastList
 
@@ -50,18 +47,15 @@ open class HomeViewModel(app: Application) : SplashActivityViewModel(app) {
 
     private fun getHourlyForecastsFromDB() {
         viewModelScope.launch {
-            _weatherProgress.value = true
             try {
                 hourlyForecastsUseCases.getHourlyForecasts.invoke()
                     .flowOn(Dispatchers.IO)
                     .collect { list ->
                         val forecasts = list.map { it.toHourlyForecastObject() }
                         _forecastList.value = forecasts
-                        _weatherProgress.value = false
                     }
             } catch (e: Exception) {
                 _errorMessage.value = e.message.toString()
-                _weatherProgress.value = false
             }
         }
 

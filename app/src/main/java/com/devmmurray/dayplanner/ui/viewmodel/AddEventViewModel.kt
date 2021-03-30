@@ -96,7 +96,8 @@ class AddEventViewModel(app: Application) : SplashActivityViewModel(app) {
                 saveEventToDB(event)
             }
         } else {
-            _errorMessage.value = context.getString(R.string.no_date_selected_warning)
+            _errorMessage.value =
+                getApplication<Application>().resources.getString(R.string.no_date_selected_warning)
         }
     }
 

@@ -36,9 +36,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.constraintlayout.motion.widget.MotionLayout
+                    android:id="@+id/hourly_recycler_motion_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    app:layoutDescription="@xml/fragment_home_scene">
 
                     <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/todays_outlook"
@@ -69,7 +71,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/todays_outlook"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="@string/fort_worth_texas"/>
+                        tools:text="@string/fort_worth_texas" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/hourly_forecast_recycler"
@@ -78,23 +80,10 @@
                         android:layout_marginTop="@dimen/tiny_margin"
                         android:orientation="horizontal"
                         android:paddingBottom="@dimen/very_small_padding"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-                    <ProgressBar
-                        android:id="@+id/forecast_progress_bar"
-                        style="?android:attr/progressBarStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="visible"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/todays_outlook" />
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.motion.widget.MotionLayout>
 
             </com.google.android.material.card.MaterialCardView>
 
@@ -137,7 +126,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            tools:text="@string/fri_march_5_10_36_am"/>
+                            tools:text="@string/fri_march_5_10_36_am" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/sunrise"
@@ -146,7 +135,7 @@
                             android:layout_height="wrap_content"
                             android:text="@{viewModel.currentWeather.sunrise}"
                             app:layout_constraintTop_toBottomOf="@id/current_time"
-                            tools:text="@string/_6_am"/>
+                            tools:text="@string/_6_am" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/sunset"
@@ -157,7 +146,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/sunrise"
-                            tools:text="@string/_7_pm"/>
+                            tools:text="@string/_7_pm" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/temp"
@@ -168,7 +157,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/sunset"
-                            tools:text="@string/_70"/>
+                            tools:text="@string/_70" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/feels"
@@ -179,7 +168,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/temp"
-                            tools:text="@string/_55"/>
+                            tools:text="@string/_55" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/humidity"
@@ -190,7 +179,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/feels"
-                            tools:text="@string/_42"/>
+                            tools:text="@string/_42" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/wind_speed"
@@ -201,7 +190,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/humidity"
-                            tools:text="@string/_9_22"/>
+                            tools:text="@string/_9_22" />
 
                         <com.google.android.material.textview.MaterialTextView
                             android:id="@+id/current_weather_main_description"
@@ -212,7 +201,7 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/humidity"
-                            tools:text="@string/clouds"/>
+                            tools:text="@string/clouds" />
 
 
                     </LinearLayout>
@@ -371,11 +360,14 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/no_events_textView"
                     style="@style/SmallTextBlack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="@color/white"
+                    android:gravity="center"
+                    android:paddingTop="20dp"
                     android:text="@string/no_events_currently_scheduled"
                     android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

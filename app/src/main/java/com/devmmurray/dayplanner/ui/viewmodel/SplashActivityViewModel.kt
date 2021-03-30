@@ -75,7 +75,8 @@ open class SplashActivityViewModel(app: Application) : AndroidViewModel(app) {
             getWeatherFromOpenWeather(location.latitude, location.longitude)
             getGuardianNews(searchDate)
         } else {
-            _errorMessage.value = context.getString(R.string.location_access_warning)
+            _errorMessage.value =
+                getApplication<Application>().resources.getString(R.string.location_access_warning)
         }
     }
 
